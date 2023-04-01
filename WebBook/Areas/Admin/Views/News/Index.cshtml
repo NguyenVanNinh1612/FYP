@@ -1,0 +1,186 @@
+﻿@model IEnumerable<WebBook.Models.News>
+
+@{
+    ViewData["Title"] = "Tin tuc";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a asp-action="Index" asp-controller="Home" asp-area="Admin" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a asp-action="Index" asp-area="Admin" asp-controller="News" class="nav-link">@ViewData["Title"]</a>
+        </li>
+    </ul>
+
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quan ly Danh muc</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Title</h3>
+
+            <div class="card-tools">
+                <a asp-area="Admin" asp-controller="News" asp-action="Create" class="btn btn-primary">Them moi</a>
+                <a href="#" class="btn btn-danger" id="btnDeleteAll">Delete All</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="SelectAll" /></th>
+                            <th>STT</th>
+                           
+                            <th>Title</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                           
+                            <th>Created Date</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var stt = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr id="trow_@item.Id">
+                                <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
+                                <td>@stt</td>
+                                
+                                <td>@item.Title</td>
+                                <td>
+
+                                    <img class="img-fluid" src="~/thumbnails/@item.Image" style="object-fit: fill; height: 100px;">
+                                </td>
+                                <td>@item.Description</td>
+                            
+                                <td>@item.CreatedDate.ToShortDateString()</td>
+                                <td>
+                                    <a class="btn btn-sm btn-warning" asp-area="Admin" asp-action="Edit" asp-controller="News" asp-route-id="@item.Id">Edit</a>
+                                    <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            Footer
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#btnDeleteAll', function(e){
+                e.preventDefault();
+                var str = "";
+                var checkbox = $(this).parents('.card').find('tr td input:checkbox');
+                var i = 0;
+                checkbox.each(function(){
+                    if(this.checked){
+                        checkbox.attr('selected', 'checked');
+                        var _id = $(this).val();
+                        if(i==0){
+                            str += _id;
+                        }
+                        else{
+                            str+=","+_id;
+                        }
+                        i++;
+                    }
+                    else{
+                        checkbox.attr('selected', '');
+                    
+                    }
+                });
+                if(str.length>0){
+                    var conf = confirm("Ban co muon xoa cac ban ghi nay hay khong?");
+                    if(conf==true){
+                        $.ajax({
+                            url: '/admin/news/deleteAll',
+                            type: 'POST',
+                            data: {ids: str},
+                            success: function(rs){
+                                if(rs.success){
+                                    location.reload();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+
+            $('body').on('change', '#SelectAll', function(){
+                var checkStatus = this.checked;
+                var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+                checkbox.each(function(){
+                    this.checked = checkStatus;
+                    if(this.checked){
+                        checkbox.attr('selected', 'checked');
+                    }
+                    else{
+                        checkbox.arrt('selected', '');
+                    }
+                })
+            });
+
+
+
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data('id');
+                var conf = confirm('Ban co muon xoa ban ghi nay khong?');
+                if (conf == true) {
+                    $.ajax({
+                        url: '/admin/news/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

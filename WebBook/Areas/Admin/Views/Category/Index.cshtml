@@ -1,0 +1,215 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+@model IPagedList<WebBook.Models.Category>
+
+
+@{
+    ViewData["Title"] = "Danh muc";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a asp-action="Index" asp-controller="Home" asp-area="Admin" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Danh muc</a>
+        </li>
+    </ul>
+
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quan ly Danh muc</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Danh muc</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            @ViewBag.Timkiem
+                            <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="btn btn-sm btn-primary">Them moi</a>
+                            <a href="#" class="btn btn-sm btn-danger" id="btnDeleteAll">Delete All</a>
+                        </div>
+                        <div class="card-tools">
+                            <form asp-area="admin" asp-action="Index" asp-controller="Category" class="input-group input-group-sm" style="width: 250px;">
+                                <input type="text" name="searchString" class="form-control float-right" placeholder="Search" value="@ViewBag.CurrentFilter">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default" style="width: 70px">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20px;"><input type="checkbox" id="SelectAll" /></th>
+                                    <th>STT</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Position</th>
+                                    <th>Created Date</th>
+                                    <th>Modifed Date</th>
+                                    <th class="float-right mr-4">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var stt = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        if (ViewBag.Page > 1)
+                                        {
+                                            stt = ViewBag.PageSize * (ViewBag.Page - 1) + 1;
+                                        }
+                                        <tr id="trow_@item.Id">
+                                            <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
+                                            <td>@stt</td>
+                                            <td>@item.Title</td>
+                                            <td>@Html.Raw(item.Description)</td>
+                                            <td>@item.Position</td>
+                                            <td>@item.CreatedDate.ToShortDateString()</td>
+                                            <td>@item.ModifiedDate.ToShortDateString()</td>
+                                            <td class="float-right">
+                                                <a class="btn btn-sm btn-warning" asp-area="Admin" asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id">Edit</a>
+                                                <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">Delete</a>
+                                            </td>
+                                        </tr>
+                                        stt++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">Không có bản ghi nào!</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <div class="row float-right">
+
+                            @* Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount*@
+                            @Html.PagedListPager(Model, page=> Url.Action("Index",new{page, currentFilter = ViewBag.CurrentFilter}),
+                            new PagedListRenderOptions{
+                            LiElementClasses = new string[] { "page-item" },
+                            PageClasses = new string[] { "page-link" }
+                            })
+                        </div>
+                    </div>
+                    <!--/.card-footer -->
+                </div>
+                  <!-- /.card -->
+            </div>
+        </div>
+    </div>
+  
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('body').on('click', '#btnDeleteAll', function (e) {
+                e.preventDefault();
+                var str = "";
+                var checkbox = $(this).parents('.card').find('tr td input:checkbox');
+                var i = 0;
+                checkbox.each(function () {
+                    if (this.checked) {
+                        checkbox.attr('selected', 'checked');
+                        var _id = $(this).val();
+                        if (i == 0) {
+                            str += _id;
+                        }
+                        else {
+                            str += "," + _id;
+                        }
+                        i++;
+                    }
+                    else {
+                        checkbox.attr('selected', '');
+
+                    }
+                });
+                if (str.length > 0) {
+                    var conf = confirm("Ban co muon xoa cac ban ghi nay hay khong?");
+                    if (conf == true) {
+                        $.ajax({
+                            url: '/admin/category/deleteAll',
+                            type: 'POST',
+                            data: { ids: str },
+                            success: function (rs) {
+                                if (rs.success) {
+                                    location.reload();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+
+            $('body').on('change', '#SelectAll', function () {
+                var checkStatus = this.checked;
+                var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+                checkbox.each(function () {
+                    this.checked = checkStatus;
+                    if (this.checked) {
+                        checkbox.attr('selected', 'checked');
+                    }
+                    else {
+                        checkbox.attr('selected', '');
+                    }
+                });
+            });
+
+
+
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data('id');
+                var conf = confirm('Ban co muon xoa ban ghi nay khong?');
+                if (conf == true) {
+                    $.ajax({
+                        url: '/admin/category/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

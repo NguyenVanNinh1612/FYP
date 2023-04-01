@@ -1,0 +1,101 @@
+﻿@model WebBook.Models.Category
+
+@{
+    ViewData["Title"] = "Chinh sua danh muc";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a asp-action="Index" asp-controller="Home" asp-area="Admin" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">Danh muc</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Them moi</a>
+        </li>
+    </ul>
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Them moi danh muc</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Danh muc</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Chinh sua danh muc</h3>
+        </div>
+        <div class="card-body">
+            <div class="bs-stepper-content">
+                <!-- your steps content here -->
+                <form asp-action="Edit" asp-controller="Category" asp-area="Admin" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Ten danh muc</label>
+                        <input asp-for="Title" type="text" class="form-control">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Mo ta</label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Seo title</label>
+                        <input asp-for="SeoTitle" type="text" class="form-control">
+                        <span asp-validation-for="SeoTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Seo Description</label>
+                        <input asp-for="SeoDescription" type="text" class="form-control">
+                        <span asp-validation-for="SeoDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Seo Keywords</label>
+                        <input asp-for="SeoKeywords" type="text" class="form-control">
+                        <span asp-validation-for="SeoKeywords" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Thu tu</label>
+                        <input asp-for="Position" type="text" class="form-control">
+                        <span asp-validation-for="Position" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <a asp-action="Index" class="btn btn-primary" onclick="stepper.previous()">Previous</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
