@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebBook.Common;
 using WebBook.Data;
 using WebBook.Models;
-using WebBook.Models.Common;
 using WebBook.ViewModels;
 
 namespace WebBook.Areas.Admin.Controllers
@@ -40,15 +40,15 @@ namespace WebBook.Areas.Admin.Controllers
             var posts = new Post();
             posts.Id = vm.Id;
             posts.Title = vm.Title;
-            posts.Alias = Filter.FilterChar(vm.Title);
+            posts.Slug = SeoUrlHelper.FrientlyUrl(vm.Title);
             if (vm.Image != null)
             {
                 posts.Image = UploadImage(vm.Image);
             }
 
-            posts.CreatedDate = DateTime.Now;
+  
             posts.CategoryId = 4;
-            posts.ModifiedDate = DateTime.Now;
+
 
             await _context.Posts!.AddAsync(posts);
             await _context.SaveChangesAsync();
@@ -88,7 +88,7 @@ namespace WebBook.Areas.Admin.Controllers
             var posts = new Post();
             posts.Id = vm.Id;
             posts.Title = vm.Title;
-            posts.Alias = Filter.FilterChar(vm.Title!);
+            posts.Slug = SeoUrlHelper.FrientlyUrl(vm.Title!);
             if (vm.Image != null)
             {
                 posts.Image = UploadImage(vm.Image);
@@ -96,9 +96,9 @@ namespace WebBook.Areas.Admin.Controllers
 
 
 
-            posts.CreatedDate = DateTime.Now;
+     
             posts.CategoryId = 4;
-            posts.ModifiedDate = DateTime.Now;
+        
 
 
             await _context.Posts!.AddAsync(posts);

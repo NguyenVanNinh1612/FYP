@@ -18,6 +18,6 @@ namespace WebBook.ViewModels
         public string? SeoDescription { get; set; }
         public string? SeoKeywords { get; set; }
 
-        public virtual Category? Category { get; set; }
+        public virtual Menu? Menu { get; set; }
     }
 }

@@ -12,12 +12,14 @@ namespace WebBook.Data
         }
 
         public DbSet<ApplicationUser>? ApplicationUser { get; set; }
-        public DbSet<Category>? Categories { get; set; }
-        public DbSet<Adv>? Advs { get; set; }
+        public DbSet<Menu>? Menus { get; set; }
+        public DbSet<Event>? Events { get; set; }
         public DbSet<Post>? Posts { get; set; }
         public DbSet<News>? News { get; set; }
         public DbSet<SystemSetting>? SystemSettings { get; set; }
-        public DbSet<ProductCategory>? ProductCategories { get; set; }
+        public DbSet<Category>? Categories { get; set; }
+        public DbSet<Supplier>? Suppliers{get; set;}
+        public DbSet<Comment>? Comments { get; set; }
         public DbSet<Product>? Prodcts { get; set; }
         public DbSet<Contact>? Contact { get; set; }
         public DbSet<Order>? Orders { get; set; }

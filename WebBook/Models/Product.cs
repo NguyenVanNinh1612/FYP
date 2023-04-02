@@ -8,12 +8,16 @@ namespace WebBook.Models
         public int Id { get; set; }
         [Required]
         [StringLength(250)]
-        public string? Title { get; set; }
-        public string? Alias { get; set; }
+        public string? Name { get; set; }
+        public string? Slug { get; set; }
         public string? ProductCode { get; set; }
         public string? Description { get; set; }
         public string? Detail { get; set; }
+        public int NumberOfPage { get; set; }
         public string? Image { get; set; }
+        [Required]
+        [StringLength(255)]
+        public string Author { get; set; }
         public decimal Price { get; set; }
         public decimal PriceSale { get; set; }
         public int Quantity { get; set; }
@@ -27,6 +31,8 @@ namespace WebBook.Models
         public string? SeoDescription { get; set; }
         public string? SeoKeywords { get; set; }
 
-        public virtual ProductCategory? ProductCategory { get; set; }
+
+        public virtual Category? ProductCategory { get; set; }
+        public virtual Supplier? Supplier { get; set; }
     }
 }

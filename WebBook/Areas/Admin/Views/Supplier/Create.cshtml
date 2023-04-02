@@ -1,7 +1,7 @@
-﻿@model WebBook.Models.Category
+﻿@model WebBook.Models.Supplier
 
 @{
-    ViewData["Title"] = "Category";
+    ViewData["Title"] = "Supplier";
 }
 
 
@@ -14,7 +14,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Category" asp-action="Index">@ViewData["Title"]</a></li>
+                    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Supplier" asp-action="Index">@ViewData["Title"]</a></li>
                     <li class="breadcrumb-item active">Create</li>
                 </ol>
             </div>
@@ -33,33 +33,27 @@
         <div class="card-body">
             <div class="bs-stepper-content">
                 <!-- your steps content here -->
-                <form asp-action="Create" asp-controller="Category" asp-area="Admin" method="post" enctype="multipart/form-data">
+                <form asp-action="Create" asp-controller="Supplier" asp-area="Admin" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Name</label>
                         <input asp-for="Name" type="text" class="form-control">
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea asp-for="Description" class="form-control"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <label>Phone</label>
+                        <input type="number" asp-for="Phone" class="form-control">
+                        <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Seo Title</label>
-                        <input asp-for="SeoTitle" type="text" class="form-control">
-                        <span asp-validation-for="SeoTitle" class="text-danger"></span>
+                        <label>Email</label>
+                        <input asp-for="Email" type="text" class="form-control">
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Seo Description</label>
-                        <input asp-for="SeoDescription" type="text" class="form-control">
-                        <span asp-validation-for="SeoDescription" class="text-danger"></span>
+                        <label>Address</label>
+                        <input asp-for="Address" type="text" class="form-control">
+                        <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label>Seo Keywords</label>
-                        <input asp-for="SeoKeywords" type="text" class="form-control">
-                        <span asp-validation-for="SeoKeywords" class="text-danger"></span>
-                    </div>
-     
                     <div class="form-group">
                         <a asp-action="Index" class="btn btn-primary" onclick="stepper.previous()">Previous</a>
                         <button type="submit" class="btn btn-primary">Add</button>

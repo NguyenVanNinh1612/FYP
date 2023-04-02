@@ -8,12 +8,12 @@ using X.PagedList;
 namespace WebBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class SupplierController : Controller
     {
         private readonly ApplicationDbContext _context;
         public INotyfService _notifyService;
 
-        public CategoryController(ApplicationDbContext context, INotyfService notifyService)
+        public SupplierController(ApplicationDbContext context, INotyfService notifyService)
         {
             _context = context;
             _notifyService = notifyService;
@@ -36,14 +36,14 @@ namespace WebBook.Areas.Admin.Controllers
             ViewBag.PageSize = pageSize;
             ViewBag.Page = page;
 
-            IEnumerable<Category> categories = _context.Categories!.OrderByDescending(x => x.CreatedDate);
+            IEnumerable<Supplier> suppliers = _context.Suppliers!.OrderByDescending(x => x.CreatedDate);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                categories = categories.Where(x => x.Name.ToLower().Contains(searchString.ToLower()));
+                suppliers = suppliers.Where(x => x.Name.ToLower().Contains(searchString.ToLower()));
             }
 
-            return View(categories.ToPagedList(pageNumber, pageSize));
+            return View(suppliers.ToPagedList(pageNumber, pageSize));
         }
 
         public IActionResult Create()
@@ -53,63 +53,61 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category model)
+        public IActionResult Create(Supplier model)
         {
             if (ModelState.IsValid)
             {
-                model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
-                _context.Categories!.Add(model);
+                _context.Suppliers!.Add(model);
                 _context.SaveChanges();
-                _notifyService.Success("Category created successfully!");
+                _notifyService.Success("Supplier created successfully!");
 
                 return RedirectToAction("Index");
             }
 
-            _notifyService.Error("Category created failed!");
+            _notifyService.Error("Supplier created failed!");
             return View(model);
 
         }
 
         public IActionResult Edit(int id)
         {
-            var category = _context.Categories!.Find(id);
-            if (category == null)
+            var supplier = _context.Suppliers!.Find(id);
+            if (supplier == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(supplier);
         }
 
         [HttpPost]
-        public IActionResult Edit(Category model)
+        public IActionResult Edit(Supplier model)
         {
             if (ModelState.IsValid)
             {
-                model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
-                _context.Categories!.Update(model);
+                _context.Suppliers!.Update(model);
                 _context.SaveChanges();
-                _notifyService.Success("Category updated successfully!");
+                _notifyService.Success("Supplier updated successfully!");
                 return RedirectToAction("Index");
             }
 
-            _notifyService.Error("Category updated failed!");
+            _notifyService.Error("Supplier updated failed!");
             return View(model);
         }
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var category = _context.Categories!.Find(id);
-            if (category != null)
+            var supplier = _context.Suppliers!.Find(id);
+            if (supplier != null)
             {
-                _context.Categories.Remove(category);
+                _context.Suppliers.Remove(supplier);
                 _context.SaveChanges();
-                _notifyService.Success("Category deleted successfully!");
+                _notifyService.Success("Supplier deleted successfully!");
 
                 return Json(new { success = true });
             }
 
-            _notifyService.Error("Category deleted failed!");
+            _notifyService.Error("Supplier deleted failed!");
             return Json(new { success = false });
         }
 
@@ -123,17 +121,17 @@ namespace WebBook.Areas.Admin.Controllers
                 {
                     foreach (var item in items)
                     {
-                        var obj = _context.Categories!.Find(Convert.ToInt32(item));
-                        _context.Categories.Remove(obj);
+                        var obj = _context.Suppliers!.Find(Convert.ToInt32(item));
+                        _context.Suppliers.Remove(obj);
                         _context.SaveChanges();
                     }
                 }
 
-                _notifyService.Success("The selected category has been deleted successfully!");
+                _notifyService.Success("The selected supplier has been deleted successfully!");
                 return Json(new { success = true });
             }
 
-            _notifyService.Error("The selected category has been deleted failed!");
+            _notifyService.Error("The selected supplier has been deleted failed!");
             return Json(new { success = false });
         }
     }

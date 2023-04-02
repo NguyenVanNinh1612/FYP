@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using WebBook.Common;
 using WebBook.Data;
 using WebBook.Models;
-using WebBook.Models.Common;
 using WebBook.ViewModels;
+using X.PagedList;
 
 namespace WebBook.Areas.Admin.Controllers
 { 
@@ -12,16 +13,39 @@ namespace WebBook.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public NewsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public INotyfService _notifyService { get; }
+        public NewsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, INotyfService notifyService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _notifyService = notifyService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page, string searchString, string currentFilter)
         {
-            var items = _context.News!.OrderByDescending(x=>x.CreatedDate).ToList();
-            return View(items);
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
+
+            int pageSize = 5;
+            int pageNumber = (page ?? 1); // Neu page == null thi tra ve 1       
+            ViewBag.PageSize = pageSize;
+            ViewBag.Page = page;
+
+            IEnumerable<News> news = _context.News!.OrderByDescending(x => x.CreatedDate);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                news = news.Where(x => x.Title!.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return View(news.ToPagedList(pageNumber, pageSize));
         }
 
         public IActionResult Create()
@@ -40,7 +64,7 @@ namespace WebBook.Areas.Admin.Controllers
             var news = new News();
             news.Id = vm.Id;
             news.Title = vm.Title;
-            news.Alias = Filter.FilterChar(vm.Title);
+            news.Slug = SeoUrlHelper.FrientlyUrl(vm.Title);
             if(vm.Image != null)
             {
                 news.Image = UploadImage(vm.Image);
@@ -48,9 +72,9 @@ namespace WebBook.Areas.Admin.Controllers
                 
 
 
-            news.CreatedDate = DateTime.Now;
+           
             news.CategoryId = 4;
-            news.ModifiedDate = DateTime.Now;
+        
           
  
             _context.News!.Add(news);
@@ -87,7 +111,7 @@ namespace WebBook.Areas.Admin.Controllers
                 {
                     Id = vm.Id,
                     Title = vm.Title,
-                    Alias = Filter.FilterChar(vm.Title!)
+                    Slug = SeoUrlHelper.FrientlyUrl(vm.Title!)
                 };
                 if (vm.Image != null)
                 {
@@ -96,10 +120,7 @@ namespace WebBook.Areas.Admin.Controllers
 
 
 
-                news.CreatedDate = DateTime.Now;
-                news.CategoryId = 4;
-                news.ModifiedDate = DateTime.Now;
-
+             
 
                 _context.News!.Add(news);
                 _context.SaveChanges();

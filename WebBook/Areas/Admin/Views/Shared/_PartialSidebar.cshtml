@@ -1,69 +1,79 @@
 ﻿<nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Danh mục</p>
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
             </a>
-          </li>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Menu" asp-action="Index" class="nav-link">
+                <i class="nav-icon fas fa-table"></i>
+                <p>Menu</p>
+            </a>
+        </li>
 
-          <li class="nav-item">
+        <li class="nav-item">
             <a asp-area="Admin" asp-action="Index" asp-controller="News" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Tin tức
-                <span class="right badge badge-danger">New</span>
-              </p>
+                <i class="nav-icon fas fa-copy"></i>
+                <p>
+                    News
+                    <span class="right badge badge-danger">New</span>
+                </p>
             </a>
-          </li>
+        </li>
 
-          <li class="nav-item">
+        <li class="nav-item">
             <a asp-area="Admin" asp-controller="Post" asp-action="Index" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Bài viết</p>
+                <i class="nav-icon fas fa-file"></i>
+                <p>Post</p>
             </a>
-          </li>
+        </li>
 
-          <li class="nav-item">
+        <li class="nav-item">
             <a href="../widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Quảng cáo</p>
+                <i class="nav-icon far fa-image"></i>
+                <p>Event</p>
             </a>
-          </li>
-
-          <li class="nav-item">
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin" asp-controller="Supplier" asp-action="Index" class="nav-link">
+                <i class=" nav-icon far fa-plus-square"></i>
+                <p>Supplier</p>
+            </a>
+        </li>
+       
+        <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                  Quản lý sản phẩm
-                  <i class="right fas fa-angle-left"></i>
-              </p>
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Product Management
+                    <i class="right fas fa-angle-left"></i>
+                </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../index.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh mục</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sản phẩm</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Category</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Product</p>
+                    </a>
+                </li>
             </ul>
-          </li>
+        </li>
 
-          <li class="nav-item">
+        <li class="nav-item">
             <a href="../widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Cấu hình hệ thống</p>
+                <i class="nav-icon fas fa-cog"></i>
+                <p>System</p>
             </a>
-          </li>
-
-
-        </ul>
-      </nav>
+        </li>
+    </ul>
+</nav>
