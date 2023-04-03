@@ -21,15 +21,18 @@ namespace WebBook.Models
         public decimal Price { get; set; }
         public decimal PriceSale { get; set; }
         public int Quantity { get; set; }
-        public bool IsFearure { get; set; }
+        public bool IsFeature { get; set; }
         public bool IsHome { get; set; }
         public bool IsHot { get; set; }
-        public int ProductCategoryId { get; set; }
         public bool IsSale { get; set; }
+        public int ProductCategoryId { get; set; }
         public int CategoryId { get; set; }
+        public int SupplierId { get; set; }
         public string? SeoTitle { get; set; }
         public string? SeoDescription { get; set; }
         public string? SeoKeywords { get; set; }
+
+        
 
 
         public virtual Category? ProductCategory { get; set; }

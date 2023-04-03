@@ -83,8 +83,13 @@
                                             <td>@item.CreatedDate.ToShortDateString()</td>
                                             <td>@item.ModifiedDate.ToShortDateString()</td>
                                             <td style="text-align:center">
-                                                <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Supplier" asp-route-id="@item.Id">Edit</a>
-                                                <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">Delete</a>
+                                                <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Supplier" asp-route-id="@item.Id">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    Edit</a>
+                                                <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">
+                                                    <i class="fas fa-trash"></i>
+                                                    Delete
+                                                </a>
                                             </td>
                                         </tr>
                                         stt++;

@@ -20,7 +20,7 @@ namespace WebBook.Data
         public DbSet<Category>? Categories { get; set; }
         public DbSet<Supplier>? Suppliers{get; set;}
         public DbSet<Comment>? Comments { get; set; }
-        public DbSet<Product>? Prodcts { get; set; }
+        public DbSet<Product>? Products { get; set; }
         public DbSet<Contact>? Contact { get; set; }
         public DbSet<Order>? Orders { get; set; }
         public DbSet<OrderDetail>? OrderDetails { get; set; }

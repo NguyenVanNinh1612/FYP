@@ -1,11 +1,11 @@
 ﻿@using X.PagedList
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common
-@model IPagedList<WebBook.Models.Menu>
+@model IPagedList<WebBook.Models.Product>
 
 
 @{
-    ViewData["Title"] = "Menu";
+    ViewData["Title"] = "Product";
 }
 
 <!-- Content Header (Page header) -->
@@ -33,11 +33,11 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
-                            <a asp-area="Admin" asp-controller="Menu" asp-action="Create" class="btn btn-sm btn-primary">Add</a>
+                            <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="btn btn-sm btn-primary">Add</a>
                             <a href="#" class="btn btn-sm btn-danger" id="btnDeleteAll">Delete All</a>
                         </div>
                         <div class="card-tools">
-                            <form asp-area="Admin" asp-action="Index" asp-controller="Menu" class="input-group input-group-sm" style="width: 250px;">
+                            <form asp-area="Admin" asp-action="Index" asp-controller="Product" class="input-group input-group-sm" style="width: 250px;">
                                 <input type="text" name="searchString" class="form-control float-right" placeholder="Search" value="@ViewBag.CurrentFilter">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-default" style="width: 70px">
@@ -54,9 +54,13 @@
                                 <tr>
                                     <th style="width: 20px;"><input type="checkbox" id="SelectAll" /></th>
                                     <th>STT</th>
+                                    <th>Image</th>
                                     <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
                                     <th>Description</th>
-                                    <th>Position</th>
+                                    <th>Supplier</th>
                                     <th>Created Date</th>
                                     <th>Modifed Date</th>
                                     <th style="text-align:center">Action</th>
@@ -75,13 +79,17 @@
                                         <tr id="trow_@item.Id">
                                             <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
                                             <td>@stt</td>
+                                            <td>@item.Image</td>
                                             <td>@item.Name</td>
+                                            <td>@item.CategoryId</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@item.Price</td>
                                             <td>@Html.Raw(item.Description)</td>
-                                            <td>@item.Position</td>
+                                            <td>@item.Supplier</td>
                                             <td>@item.CreatedDate.ToShortDateString()</td>
                                             <td>@item.ModifiedDate.ToShortDateString()</td>
                                             <td style="text-align:center">
-                                                <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Menu" asp-route-id="@item.Id">
+                                                <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Product" asp-route-id="@item.Id">
                                                     <i class="fas fa-pencil-alt"></i>
                                                     Edit
                                                 </a>
@@ -153,7 +161,7 @@
                     var conf = confirm("Do you want to delete all selected records?");
                     if (conf == true) {
                         $.ajax({
-                            url: '/admin/Menu/deleteAll',
+                            url: '/admin/product/deleteAll',
                             type: 'POST',
                             data: { ids: str },
                             success: function (rs) {
@@ -188,7 +196,7 @@
                 var conf = confirm('Do you want to delete this record??');
                 if (conf == true) {
                     $.ajax({
-                        url: '/admin/Menu/delete',
+                        url: '/admin/product/delete',
                         type: 'POST',
                         data: { id: id },
                         success: function (rs) {
