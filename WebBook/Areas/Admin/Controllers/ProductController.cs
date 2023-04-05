@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebBook.Common;
@@ -12,12 +13,14 @@ namespace WebBook.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public INotyfService _notifyService { get; }
 
-        public ProductController(ApplicationDbContext context, INotyfService notifyService)
+        public ProductController(ApplicationDbContext context, INotyfService notifyService, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _notifyService = notifyService;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index(int? page, string searchString, string currentFilter)
         {
@@ -75,6 +78,22 @@ namespace WebBook.Areas.Admin.Controllers
             _notifyService.Error("Product created failed!");
             return View(model);
 
+        }
+
+
+        private string UploadImage(IFormFile file)
+        {
+            string uniqueFileName = "";
+            var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "upload/images/product");
+            string extension = Path.GetExtension(file.FileName);
+            uniqueFileName = file.FileName + DateTime.Now.ToString("yymmssff") + extension;
+            //uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            var filePath = Path.Combine(folderPath, uniqueFileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
+            return uniqueFileName;
         }
 
 

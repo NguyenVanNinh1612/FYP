@@ -1,9 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebBook.Models
 {
     public class Product : CommonAbstract
     {
+        public Product()
+        {
+            ProductImage = new HashSet<ProductImage>();
+            OrderDetail = new HashSet<OrderDetail>();
+
+        }
         [Key]
         public int Id { get; set; }
         [Required]
@@ -37,5 +44,12 @@ namespace WebBook.Models
 
         public virtual Category? ProductCategory { get; set; }
         public virtual Supplier? Supplier { get; set; }
+
+        public virtual ICollection<ProductImage> ProductImage { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
+
+        [NotMapped]
+        public List<IFormFile>? Files { get; set; }
+        
     }
 }

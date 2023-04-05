@@ -145,10 +145,12 @@ namespace WebBook.Areas.Admin.Controllers
         private string UploadImage(IFormFile file)
         {
             string uniqueFileName = "";
-            var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "thumbnails");
-            uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "upload/images/product");
+            string extension = Path.GetExtension(file.FileName);
+            uniqueFileName = file.FileName + DateTime.Now.ToString("yymmssff") + extension;
+            //uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
             var filePath = Path.Combine(folderPath, uniqueFileName);
-            using (FileStream fileStream = System.IO.File.Create(filePath))
+            using(var fileStream  = new FileStream(filePath, FileMode.Create))
             {
                 file.CopyTo(fileStream);
             }
