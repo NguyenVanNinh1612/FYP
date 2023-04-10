@@ -1,4 +1,4 @@
-﻿@model WebBook.Models.Product
+﻿@model WebBook.ViewModels.ProductVM
 
 @{
     ViewData["Title"] = "Product";
@@ -15,7 +15,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Product" asp-action="Index">@ViewData["Title"]</a></li>
-                    <li class="breadcrumb-item active">Create</li>
+                    <li class="breadcrumb-item active">Edit</li>
                 </ol>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <h3 class="card-title">Create new @ViewData["Title"]</h3>
         </div>
         <div class="card-body">
-            <form asp-area="Admin" asp-action="Create" asp-controller="Product" method="post" enctype="multipart/form-data">
+            <form asp-area="Admin" asp-action="Edit" asp-controller="Product" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
@@ -42,12 +42,9 @@
                                 </ul>
                             </div>
                             <div class="card-body">
-                                <img id="main-image" class="img-fluid" />
+                                <img id="main-image" src="~/uploads/images/product/@Model.Avatar" class="img-fluid" />
                                 <span asp-validation-for="Avatar" class="text-danger"></span>
                                 <hr />
-                                @* <input type="file" class="custom-file" id="file" style="display: none" />*@
-                                @*     <input type="file" asp-for="Files" />
-                                <input type="file" asp-for="Files" />*@
                                 <a class="btn btn-primary btn-sm mb-2" id="upload-img">
                                     <i class="fas fa-upload"></i>
                                     <span>Upload Image</span>
@@ -61,9 +58,64 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbodyHtml"></tbody>
+                                    <tbody id="tbodyHtml">
+                                        <input type="file" asp-for="AvatarFile" class="imgFile" id="custom-file-1" style="display: none" />
+                                        <tr id="row-1">
+                                                    <td>1</td>
+                                                    <td class="text-center">
+                                                        <img id="image-1" width="100" src="~/uploads/images/product/@Model.Avatar"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="icheck-success d-inline">
+                                                            <input type="radio" checked name="isDefault" value="1"  class="rdoDefault" id="rdo-1">
+                                                            <label for="rdo-1"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pt-3">
+                                                        <a id="deleteImage" data-id="1" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                        @{var id = 1;}
+                                        if(@Model.Files != null){
+
+                                            @foreach(var item in @Model.Files){
+                                                <input type="file" asp-for="@item"  class="imgFile" id="custom-file-@id" style="display: none" />
+                                                id++;
+                                            }
+                                            id = 1;
+                                        }
+                                        @if (@Model.ListImages != null)
+                                        {
+                                            id = 2;
+                                            foreach (var item in @Model.ListImages)
+                                            {
+                                                <tr id="row-@id">
+                                                    <td>@id</td>
+                                                    <td class="text-center">
+                                                        <img id="image-@id" width="100" src="~/uploads/images/product/@item"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="icheck-success d-inline">
+                                                            <input type="radio" name="isDefault" value="@id"  class="rdoDefault" id="rdo-@id">
+                                                            <label for="rdo-@id"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pt-3">
+                                                        <a id="deleteImage" data-id="@id" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                id++;
+                                            }
+                                         
+                                        }
+                                        
+                                    </tbody>
                                 </table>
-                                <input id="currentId" value="0" type="hidden" />
+                                <input id="currentId" value="@id" type="hidden" />
                             </div>
                         </div>
                     </div>
@@ -207,13 +259,6 @@
                                                 <span asp-validation-for="SeoDescription" class="text-danger"></span>
                                             </div>
                                         </div>
-
-                                        @* <div class="form-group row">
-                                        <div class="offset-sm-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger">Submit</button>
-                                        </div>
-                                        </div>*@
-
                                     </div>
                                     <!-- /.tab-pane -->
                                 </div>

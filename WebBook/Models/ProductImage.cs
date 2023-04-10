@@ -6,10 +6,8 @@ namespace WebBook.Models
     {
         [Key]
         public int Id { get; set; }
-        public int ProductId { get; set; }
-        public string? Image { get; set; }
-        public bool IsDefault { get; set; }
-
+        public string ImageName { get; set; }
+        public int ProductId { get; set; }     
         public virtual Product Product { get; set; }
     }
 }

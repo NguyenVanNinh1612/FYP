@@ -1,7 +1,8 @@
 ﻿@using X.PagedList
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common
-@model IPagedList<WebBook.Models.Product>
+@*@model IPagedList<WebBook.Models.Product>*@
+@model IPagedList<WebBook.ViewModels.ProductVM>
 
 
 @{
@@ -59,10 +60,9 @@
                                     <th>Category</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
-                                    <th>Description</th>
+                                    <th>Price Sale</th>
                                     <th>Supplier</th>
-                                    <th>Created Date</th>
-                                    <th>Modifed Date</th>
+                                 
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
@@ -79,15 +79,15 @@
                                         <tr id="trow_@item.Id">
                                             <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
                                             <td>@stt</td>
-                                            <td>@item.Image</td>
+                                            <td><img width="100" src="~/uploads/images/product/@item.Avatar"></td>
                                             <td>@item.Name</td>
-                                            <td>@item.CategoryId</td>
+                                            <td>@item.CategoryName</td>
                                             <td>@item.Quantity</td>
                                             <td>@item.Price</td>
-                                            <td>@Html.Raw(item.Description)</td>
-                                            <td>@item.Supplier</td>
-                                            <td>@item.CreatedDate.ToShortDateString()</td>
-                                            <td>@item.ModifiedDate.ToShortDateString()</td>
+                                            <td>@item.PriceSale</td>
+                                           
+                                            <td>@item.SupplierName</td>
+                                           
                                             <td style="text-align:center">
                                                 <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Product" asp-route-id="@item.Id">
                                                     <i class="fas fa-pencil-alt"></i>

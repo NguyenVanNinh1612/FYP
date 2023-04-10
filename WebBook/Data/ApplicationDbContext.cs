@@ -6,9 +6,10 @@ namespace WebBook.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
+                
         }
 
         public DbSet<ApplicationUser>? ApplicationUser { get; set; }
@@ -21,6 +22,7 @@ namespace WebBook.Data
         public DbSet<Supplier>? Suppliers{get; set;}
         public DbSet<Comment>? Comments { get; set; }
         public DbSet<Product>? Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Contact>? Contact { get; set; }
         public DbSet<Order>? Orders { get; set; }
         public DbSet<OrderDetail>? OrderDetails { get; set; }

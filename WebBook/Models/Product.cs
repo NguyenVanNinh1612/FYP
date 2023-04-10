@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebBook.Models
@@ -15,13 +16,13 @@ namespace WebBook.Models
         public int Id { get; set; }
         [Required]
         [StringLength(250)]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string? Slug { get; set; }
-        public string? ProductCode { get; set; }
-        public string? Description { get; set; }
-        public string? Detail { get; set; }
+        public string ProductCode { get; set; }
+        public string Description { get; set; }
+        public string Detail { get; set; }
+        public string? Avatar { get; set; }
         public int NumberOfPage { get; set; }
-        public string? Image { get; set; }
         [Required]
         [StringLength(255)]
         public string Author { get; set; }
@@ -32,24 +33,24 @@ namespace WebBook.Models
         public bool IsHome { get; set; }
         public bool IsHot { get; set; }
         public bool IsSale { get; set; }
-        public int ProductCategoryId { get; set; }
         public int CategoryId { get; set; }
         public int SupplierId { get; set; }
         public string? SeoTitle { get; set; }
         public string? SeoDescription { get; set; }
         public string? SeoKeywords { get; set; }
 
-        
 
-
-        public virtual Category? ProductCategory { get; set; }
+        public virtual Category? Category { get; set; }
         public virtual Supplier? Supplier { get; set; }
 
-        public virtual ICollection<ProductImage> ProductImage { get; set; }
-        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
+        public virtual ICollection<ProductImage>? ProductImage { get; set; }
+        public virtual ICollection<OrderDetail>? OrderDetail { get; set; }
+
 
         [NotMapped]
         public List<IFormFile>? Files { get; set; }
+        [NotMapped]
+        public IFormFile? AvatarFile { get; set; }
         
     }
 }
