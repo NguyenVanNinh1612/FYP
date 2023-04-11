@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebBook.Models.Category>
+@if(Model!=null && Model.Any())
+{
+	<div class="banner">
+		<div class="container">
+			<div class="row">
+				@foreach(var item in Model)
+				{
+				<div class="col-md-3 mb-3">
+						<div class="banner_item align-items-center" style="background-image:url(client/images/children.jpg)">
+						<div class="banner_category">
+							<a href="@item.Slug">@item.Name</a>
+						</div>
+					</div>
+				</div>
+				}
+
+				@*<div class="col-md-4">
+					<div class="banner_item align-items-center" style="background-image:url(~/client/images/banner_2.jpg)">
+						<div class="banner_category">
+							<a href="categories.html">accessories's</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="banner_item align-items-center" style="background-image:url(~/client/images/banner_3.jpg)">
+						<div class="banner_category">
+							<a href="categories.html">men's</a>
+						</div>
+					</div>
+				</div>*@
+			</div>
+		</div>
+	</div>
+}

@@ -43,7 +43,6 @@
                             </div>
                             <div class="card-body">
                                 <img id="main-image" src="~/uploads/images/product/@Model.Avatar" class="img-fluid" />
-                                <span asp-validation-for="Avatar" class="text-danger"></span>
                                 <hr />
                                 <a class="btn btn-primary btn-sm mb-2" id="upload-img">
                                     <i class="fas fa-upload"></i>
@@ -59,7 +58,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbodyHtml">
-                                        <input type="file" asp-for="AvatarFile" class="imgFile" id="custom-file-1" style="display: none" />
+                                        <input type="file" name="Avatar" class="imgFile" id="custom-file-1" style="display: none" />
                                         <tr id="row-1">
                                                     <td>1</td>
                                                     <td class="text-center">
@@ -78,19 +77,12 @@
                                                     </td>
                                                 </tr>
                                         @{var id = 1;}
-                                        if(@Model.Files != null){
-
-                                            @foreach(var item in @Model.Files){
-                                                <input type="file" asp-for="@item"  class="imgFile" id="custom-file-@id" style="display: none" />
-                                                id++;
-                                            }
-                                            id = 1;
-                                        }
                                         @if (@Model.ListImages != null)
                                         {
                                             id = 2;
                                             foreach (var item in @Model.ListImages)
                                             {
+                                                <input type="file" name="Files"  class="imgFile" id="custom-file-@id" style="display: none" />
                                                 <tr id="row-@id">
                                                     <td>@id</td>
                                                     <td class="text-center">
@@ -110,7 +102,6 @@
                                                 </tr>
                                                 id++;
                                             }
-                                         
                                         }
                                         
                                     </tbody>
@@ -187,14 +178,16 @@
                                             <div class="col-3">
                                                 <div class="form-group">
                                                     <label>Price</label>
-                                                    <input asp-for="Price" type="number" class="form-control" placeholder="Price">
+                                                    <input type="text" id="numberPrice" value="@Model.Price" style="display: none"/>
+                                                    <input asp-for="Price" type="number" class="form-control" placeholder="Price"  id="price">
                                                     <span asp-validation-for="Price" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="col-3">
                                                 <div class="form-group">
                                                     <label>Price Sale</label>
-                                                    <input asp-for="PriceSale" type="number" class="form-control" placeholder="Price Sale">
+                                                    <input type="text" id="numberPriceSale" value="@Model.Price" style="display: none" />
+                                                    <input asp-for="PriceSale" type="number" class="form-control" placeholder="Price Sale" id="priceSale">
                                                     <span asp-validation-for="PriceSale" class="text-danger"></span>
                                                 </div>
                                             </div>
@@ -270,7 +263,7 @@
                 <div class="row">
                     <div class="form-group">
                         <a asp-action="Index" class="btn btn-primary">Previous</a>
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </form>
@@ -368,6 +361,8 @@
             });
         });
 
-
+        $('#price').val($('#numberPrice').val().replace(',', '.'));
+        $('#priceSale').val($('#numberPriceSale').val().replace(',', '.'));
+      
     </script>
 }

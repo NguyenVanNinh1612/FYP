@@ -34,19 +34,17 @@ namespace WebBook.ViewModels
         public string? SeoDescription { get; set; }
         public string? SeoKeywords { get; set; }
         
-        public string CategoryName { get; set; }
-        public string SupplierName { get; set; }
+        public string? CategoryName { get; set; }
+        public string? SupplierName { get; set; }
 
-        public List<string> ListImages { get; set; }
-        public List<IFormFile> Files { get; set; }
-        public IFormFile AvatarFile { get; set; }
+        public List<string>? ListImages { get; set; }
+       
 
 
         public ProductVM(int id, string name, string productCode, string description, string detail,
             string? avatar, int numberOfPage, string author, decimal price, decimal priceSale, 
             int quantity, bool isFeature, bool isHome, bool isHot, bool isSale, int categoryId, 
-            int supplierId, string? seoTitle, string? seoDescription, string? seoKeywords,  List<string> listImages,
-            List<IFormFile> files, IFormFile avatarFile)
+            int supplierId, string? seoTitle, string? seoDescription, string? seoKeywords,  List<string> listImages)
         {
             Id = id;
             Name = name;
@@ -70,8 +68,7 @@ namespace WebBook.ViewModels
             SeoKeywords = seoKeywords;
           
             ListImages = listImages;
-            Files = files;
-            AvatarFile = avatarFile;
+          
         }
 
         public ProductVM(int id, string name, string? avatar, decimal price, decimal priceSale, int quantity, int categoryId, int supplierId, string categoryName, string supplierName)

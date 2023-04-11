@@ -45,12 +45,6 @@ namespace WebBook.Models
 
         public virtual ICollection<ProductImage>? ProductImage { get; set; }
         public virtual ICollection<OrderDetail>? OrderDetail { get; set; }
-
-
-        [NotMapped]
-        public List<IFormFile>? Files { get; set; }
-        [NotMapped]
-        public IFormFile? AvatarFile { get; set; }
         
     }
 }

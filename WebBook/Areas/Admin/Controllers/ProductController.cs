@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using WebBook.Common;
 using WebBook.Data;
@@ -81,10 +82,6 @@ namespace WebBook.Areas.Admin.Controllers
             {
                 if (Files != null && Files.Count > 0)
                 {
-                   // model.Files = Files;
-                    model.Files = Files.Select(x => x).ToList();
-                   
-                    model.AvatarFile = Avatar;
                     foreach (var file in Files)
                     {
                         model.ProductImage!.Add(new ProductImage
@@ -96,8 +93,10 @@ namespace WebBook.Areas.Admin.Controllers
 
                 }
 
-
-                model.Avatar = UploadImage(Avatar);
+                if (Avatar != null)
+                {
+                    model.Avatar = UploadImage(Avatar);
+                }
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
                 _context.Products!.Add(model);
                 _context.SaveChanges();
@@ -130,9 +129,6 @@ namespace WebBook.Areas.Admin.Controllers
                 images.Add(item.ImageName);
             }
 
-            List<IFormFile>? files = product.Files;
-           
-
             ProductVM productVM = new ProductVM(
                     product.Id,
                     product.Name,
@@ -154,10 +150,7 @@ namespace WebBook.Areas.Admin.Controllers
                     product.SeoTitle,
                     product.SeoDescription,
                     product.SeoKeywords,
-                    listImages: images,
-                    files,
-                    product.AvatarFile
-
+                    listImages: images
                 );
 
             ViewBag.CategoryList = new SelectList(_context.Categories!.ToList(), "Id", "Name");
@@ -168,17 +161,109 @@ namespace WebBook.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(ProductVM vm, List<IFormFile> Files, IFormFile Avatar)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+           // {
+                var product = _context.Products!.FirstOrDefault(x => x.Id == vm.Id);
 
+                if(Files != null && Files.Count > 0)
+                {
+                    var productImage = _context.ProductImages.Where(x => x.ProductId == vm.Id);
+                    foreach(var item in productImage)
+                    {
+                        _context.ProductImages.Remove(item);
+                    }
+                    foreach (var file in Files)
+                    {
+                        product!.ProductImage!.Add(new ProductImage
+                        {
+                            ImageName = UploadImage(file),
+                            ProductId = product.Id
+                        });
+                    }
+                }
+                if (Avatar != null)
+                {
+                    product!.Avatar = UploadImage(Avatar);
+                }
+
+                product!.Name = vm.Name;
+                product.Slug = SeoUrlHelper.FrientlyUrl(product.Name);
+                product.ProductCode = vm.ProductCode;
+                product.Description = vm.Description;
+                product.Detail = vm.Detail;
+              
+                product.NumberOfPage = vm.NumberOfPage;
+                product.Author = vm.Author;
+
+                product.Price = vm.Price;
+                product.PriceSale = vm.PriceSale;
+                product.Quantity = vm.Quantity;
+                product.IsFeature = vm.IsFeature;
+                product.IsHome = vm.IsHome;
+                product.IsHot = vm.IsHot;
+                product.IsSale = vm.IsSale;
+                product.CategoryId = vm.CategoryId;
+                product.SupplierId = vm.SupplierId;
+                product.SeoTitle = vm.SeoTitle;
+                product.SeoDescription = vm.SeoDescription;
+                product.SeoKeywords = vm.SeoKeywords;
+
+
+                _context.SaveChanges();
                 _notifyService.Success("Product updated successfully!");
                 return RedirectToAction("Index");
-            }
+            //}
 
-            _notifyService.Error("Product updated failed!");
-            return View(vm);
+            //_notifyService.Error("Product updated failed!");
+            //return View(vm);
         }
 
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var product = _context.Products!.FirstOrDefault(x => x.Id == id);
+            if (product != null)
+            {
+                var productImage = _context.ProductImages.Where(x => x.ProductId == product.Id);
+                foreach (var item in productImage)
+                {
+                    _context.ProductImages.Remove(item);
+                }
+                _context.Products!.Remove(product);
+                _context.SaveChanges();
+                _notifyService.Success("Product deleted successfully!");
+                return Json(new { success = true });
+            }
+            _notifyService.Error("Product deleted failed!");
+            return Json(new { success = false });
+
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAll(string ids)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var items = ids.Split(',');
+                if (items != null && items.Any())
+                {
+                    foreach (var item in items)
+                    {
+                        var productImage = _context.ProductImages.Where(x => x.ProductId == Convert.ToInt32(item));
+                        foreach (var image in productImage)
+                        {
+                            _context.ProductImages.Remove(image);
+                        }
+                        var obj = _context.Products!.Find(Convert.ToInt32(item));
+                        _context.Products.Remove(obj);
+                        _context.SaveChanges();
+                    }
+                }
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
 
 
 
