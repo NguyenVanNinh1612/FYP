@@ -24,6 +24,7 @@ namespace WebBook.Areas.Admin.Controllers
             _notifyService = notifyService;
             _webHostEnvironment = webHostEnvironment;
         }
+
         public IActionResult Index(int? page, string searchString, string currentFilter)
         {
             if (searchString != null)
@@ -43,22 +44,30 @@ namespace WebBook.Areas.Admin.Controllers
 
             //IEnumerable<Product> products = _context.Products!.OrderByDescending(x => x.Id);
             var listProducts = new List<ProductVM>();
-            _context.Products!.OrderByDescending(x => x.Id).ToList().ForEach(product =>
+
+            var products = _context.Products!.OrderByDescending(x => x.Id).ToList();
+            foreach (var item in products)
             {
-                listProducts.Add(new ProductVM(product.Id,
-                                               product.Name,
-                                               product.Avatar,
-                                               product.Price,
-                                               product.PriceSale,
-                                               product.Quantity,
-                                               product.CategoryId,
-                                               product.SupplierId,
-                                               categoryName: _context.Categories.Find(product.CategoryId).Name,
-                                               supplierName: _context.Suppliers.Find(product.SupplierId).Name));
-            });
+                ProductVM pvm = new();
+                pvm.Id = item.Id;
+                pvm.Name = item.Name;
+                pvm.Price = item.Price;
+                pvm.PriceSale = item.PriceSale;
+                pvm.Quantity = item.CategoryId;
+                pvm.SupplierId = item.SupplierId;
+                pvm.CategoryName = _context.Categories.Find(item.CategoryId).Name;
+                pvm.SupplierName = _context.Suppliers.Find(item.SupplierId).Name;
 
+                var productImages = _context.ProductImages.Where(x => x.ProductId == pvm.Id).ToList();
+                var avt = productImages.FirstOrDefault(x => x.IsAvatar).ImageName;
+                if (avt != null)
+                {
+                    pvm.Avatar = avt;
+                }
 
-
+                listProducts.Add(pvm);
+            }
+           
             if (!string.IsNullOrEmpty(searchString))
             {
                 listProducts = (List<ProductVM>)listProducts.Where(x => x.Name.ToLower().Contains(searchString.ToLower()));
@@ -66,6 +75,49 @@ namespace WebBook.Areas.Admin.Controllers
 
             return View(listProducts.ToPagedList(pageNumber, pageSize));
         }
+
+        //public IActionResult Index(int? page, string searchString, string currentFilter)
+        //{
+        //    if (searchString != null)
+        //    {
+        //        page = 1;
+        //    }
+        //    else
+        //    {
+        //        searchString = currentFilter;
+        //    }
+        //    ViewBag.CurrentFilter = searchString;
+
+        //    int pageSize = 5;
+        //    int pageNumber = (page ?? 1); // Neu page == null thi tra ve 1       
+        //    ViewBag.PageSize = pageSize;
+        //    ViewBag.Page = page;
+
+        //    //IEnumerable<Product> products = _context.Products!.OrderByDescending(x => x.Id);
+        //    var listProducts = new List<ProductVM>();
+        //    _context.Products!.OrderByDescending(x => x.Id).ToList().ForEach(product =>
+        //    {
+        //        listProducts.Add(new ProductVM(product.Id,
+        //                                       product.Name,
+        //                                       product.Avatar,
+        //                                       product.Price,
+        //                                       product.PriceSale,
+        //                                       product.Quantity,
+        //                                       product.CategoryId,
+        //                                       product.SupplierId,
+        //                                       categoryName: _context.Categories.Find(product.CategoryId).Name,
+        //                                       supplierName: _context.Suppliers.Find(product.SupplierId).Name));
+        //    });
+
+
+
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
+        //        listProducts = (List<ProductVM>)listProducts.Where(x => x.Name.ToLower().Contains(searchString.ToLower()));
+        //    }
+
+        //    return View(listProducts.ToPagedList(pageNumber, pageSize));
+        //}
 
         public IActionResult Create()
         {
@@ -76,7 +128,7 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product model, List<IFormFile> Files, IFormFile Avatar)
+        public IActionResult Create(Product model, List<IFormFile> Files, string isDefault)
         {
             if (ModelState.IsValid)
             {
@@ -84,19 +136,29 @@ namespace WebBook.Areas.Admin.Controllers
                 {
                     foreach (var file in Files)
                     {
-                        model.ProductImage!.Add(new ProductImage
+                        if (isDefault == file.FileName)
                         {
-                            ImageName = UploadImage(file),
-                            ProductId = model.Id
-                        });
+                            model.ProductImage!.Add(new ProductImage
+                            {
+                                ImageName = UploadImage(file),
+                                ProductId = model.Id,
+                                IsAvatar = true
+                            });
+                        }
+                        else
+                        {
+                            model.ProductImage!.Add(new ProductImage
+                            {
+                                ImageName = UploadImage(file),
+                                ProductId = model.Id,
+                                IsAvatar = false
+                            });
+                        }
                     }
 
                 }
 
-                if (Avatar != null)
-                {
-                    model.Avatar = UploadImage(Avatar);
-                }
+                
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
                 _context.Products!.Add(model);
                 _context.SaveChanges();
@@ -112,6 +174,43 @@ namespace WebBook.Areas.Admin.Controllers
             return View(model);
 
         }
+
+        //public IActionResult Create(Product model, List<IFormFile> Files, IFormFile Avatar, int isDefault)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (Files != null && Files.Count > 0)
+        //        {
+        //            foreach (var file in Files)
+        //            {
+        //                model.ProductImage!.Add(new ProductImage
+        //                {
+        //                    ImageName = UploadImage(file),
+        //                    ProductId = model.Id
+        //                });
+        //            }
+
+        //        }
+
+        //        if (Avatar != null)
+        //        {
+        //            model.Avatar = UploadImage(Avatar);
+        //        }
+        //        model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
+        //        _context.Products!.Add(model);
+        //        _context.SaveChanges();
+
+        //        _notifyService.Success("Product created successfully!");
+        //        return RedirectToAction("Index");
+        //    }
+
+
+        //    ViewBag.CategoryList = new SelectList(_context.Categories!.ToList(), "Id", "Name");
+        //    ViewBag.SupplierList = new SelectList(_context.Suppliers!.ToList(), "Id", "Name");
+        //    _notifyService.Error("Product created failed!");
+        //    return View(model);
+
+        //}
 
 
 

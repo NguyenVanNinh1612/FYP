@@ -4,6 +4,7 @@
 @*@model IPagedList<WebBook.Models.Product>*@
 @model IPagedList<WebBook.ViewModels.ProductVM>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 @{
     ViewData["Title"] = "Product";
@@ -79,7 +80,7 @@
                                         <tr id="trow_@item.Id">
                                             <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
                                             <td>@stt</td>
-                                            <td><img width="100" src="~/uploads/images/product/@item.Avatar"></td>
+                                            <td><img width="100" src="~/uploads/images/product/@item.Avatar" class="imgproduct" data-id="@item.Id"></td>
                                             <td>@item.Name</td>
                                             <td>@item.CategoryName</td>
                                             <td>@item.Quantity</td>
@@ -130,11 +131,14 @@
     </div>
 
 </section>
+<div id="dialog">
+    <iframe id="myIframe" style="border: 0; width: 100%; height: 100%"></iframe>
+</div>
 
 @section scripts{
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
-
             $('body').on('click', '#btnDeleteAll', function (e) {
                 e.preventDefault();
                 var str = "";
@@ -207,6 +211,31 @@
                     });
                 }
             });
+
+            //Hien thi trang Edit anh san pham
+                $('#dialog').dialog({
+                    autoOpen: false,
+                    show: "fade",
+                    hide: "fade",
+                    model: true,
+                    height: '600',
+                    width: '700',
+                    resizable: true,
+                    title: 'Product image management',
+                    close: function(){
+                        window.location.reload();
+                    }
+                });
+
+                $('body').on('click','.imgproduct', function(){
+                    var productId = $(this).attr("data-id");
+                    $('#dialog #myIframe').attr('src', "/admin/productImage/Index?id="+productId);
+                    $('#dialog').dialog('open');
+                    return false;
+                });
+
+
+            //------------------
         });
     </script>
 }

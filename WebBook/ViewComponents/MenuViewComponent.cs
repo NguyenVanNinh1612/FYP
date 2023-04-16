@@ -18,9 +18,14 @@ namespace WebBook.ViewComponents
                 var menus = _context.Menus!.OrderBy(x => x.Position).ToList();
                 return View("Default", menus);
             }
+            else if(name == "MenuArrivals")
+            {
+                var menuArrivals = _context.Categories!.ToList();
+                return View("MenuArrivals", menuArrivals);
+            }
             else
             {
-                var categories = _context.Categories.ToList();
+                var categories = _context.Categories!.ToList();
                 return View("Category", categories);
             }
         }
