@@ -32,86 +32,86 @@
         <div class="card-body">
 
             <div class="row">
-                
+
                 <div class="col-md-4">
                     @await Component.InvokeAsync(typeof(ProductImageViewComponent), new{productId = Model.Id})
                     @*<div class="card">
-                        <div class="card-header p-2">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item">
-                                    <a class="nav-link active">Image</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-body">
-                            <img id="main-image" src="~/uploads/images/product/@Model.Avatar" class="img-fluid" />
-                            <hr />
-                            <a class="btn btn-primary btn-sm mb-2" id="upload-img">
-                                <i class="fas fa-upload"></i>
-                                <span>Upload Image</span>
-                            </a>
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th class="text-center">Image</th>
-                                        <th class="text-center">Default</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbodyHtml">
-                                    <input type="file" name="Avatar" class="imgFile" id="custom-file-1" style="display: none" />
-                                    <tr id="row-1">
-                                        <td>1</td>
-                                        <td class="text-center">
-                                            <img id="image-1" width="100" src="~/uploads/images/product/@Model.Avatar" />
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="icheck-success d-inline">
-                                                <input type="radio" checked name="isDefault" value="1" class="rdoDefault" id="rdo-1">
-                                                <label for="rdo-1"></label>
-                                            </div>
-                                        </td>
-                                        <td class="pt-3">
-                                            <a id="deleteImage" data-id="1" class="btn btn-sm btn-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @{
-                                        var id = 1;
-                                    }
-                                    @if (@Model.ListImages != null)
-                                    {
-                                        id = 2;
-                                        foreach (var item in @Model.ListImages)
-                                        {
-                                            <input type="file" name="Files" class="imgFile" id="custom-file-@id" style="display: none" />
-                                            <tr id="row-@id">
-                                                <td>@id</td>
-                                                <td class="text-center">
-                                                    <img id="image-@id" width="100" src="~/uploads/images/product/@item" />
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="icheck-success d-inline">
-                                                        <input type="radio" name="isDefault" value="@id" class="rdoDefault" id="rdo-@id">
-                                                        <label for="rdo-@id"></label>
-                                                    </div>
-                                                </td>
-                                                <td class="pt-3">
-                                                    <a id="deleteImage" data-id="@id" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            id++;
-                                        }
-                                    }
+                    <div class="card-header p-2">
+                    <ul class="nav nav-pills">
+                    <li class="nav-item">
+                    <a class="nav-link active">Image</a>
+                    </li>
+                    </ul>
+                    </div>
+                    <div class="card-body">
+                    <img id="main-image" src="~/uploads/images/product/@Model.Avatar" class="img-fluid" />
+                    <hr />
+                    <a class="btn btn-primary btn-sm mb-2" id="upload-img">
+                    <i class="fas fa-upload"></i>
+                    <span>Upload Image</span>
+                    </a>
+                    <table class="table table-sm">
+                    <thead>
+                    <tr>
+                    <th>#</th>
+                    <th class="text-center">Image</th>
+                    <th class="text-center">Default</th>
+                    <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbodyHtml">
+                    <input type="file" name="Avatar" class="imgFile" id="custom-file-1" style="display: none" />
+                    <tr id="row-1">
+                    <td>1</td>
+                    <td class="text-center">
+                    <img id="image-1" width="100" src="~/uploads/images/product/@Model.Avatar" />
+                    </td>
+                    <td class="text-center">
+                    <div class="icheck-success d-inline">
+                    <input type="radio" checked name="isDefault" value="1" class="rdoDefault" id="rdo-1">
+                    <label for="rdo-1"></label>
+                    </div>
+                    </td>
+                    <td class="pt-3">
+                    <a id="deleteImage" data-id="1" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash"></i>
+                    </a>
+                    </td>
+                    </tr>
+                    @{
+                    var id = 1;
+                    }
+                    @if (@Model.ListImages != null)
+                    {
+                    id = 2;
+                    foreach (var item in @Model.ListImages)
+                    {
+                    <input type="file" name="Files" class="imgFile" id="custom-file-@id" style="display: none" />
+                    <tr id="row-@id">
+                    <td>@id</td>
+                    <td class="text-center">
+                    <img id="image-@id" width="100" src="~/uploads/images/product/@item" />
+                    </td>
+                    <td class="text-center">
+                    <div class="icheck-success d-inline">
+                    <input type="radio" name="isDefault" value="@id" class="rdoDefault" id="rdo-@id">
+                    <label for="rdo-@id"></label>
+                    </div>
+                    </td>
+                    <td class="pt-3">
+                    <a id="deleteImage" data-id="@id" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash"></i>
+                    </a>
+                    </td>
+                    </tr>
+                    id++;
+                    }
+                    }
 
-                                </tbody>
-                            </table>
-                            <input id="currentId" value="@id" type="hidden" />
-                        </div>
+                    </tbody>
+                    </table>
+                    <input id="currentId" value="@id" type="hidden" />
+                    </div>
                     </div>*@
                 </div>
 
@@ -295,6 +295,8 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
 
+
+
         $(document).ready(function () {
 
             $('#upload-img').on('click', function () {
@@ -321,6 +323,32 @@
                     $('#rdo-' + id).val($(this).val().split('\\').pop());
                     $('#main-image').attr('src', $('#image-' + id).attr('src'));
                 }
+
+
+
+                //--Add image
+                var files = $(this).prop('files');
+                console.log(files);
+                var fileData = new FormData();
+                fileData.append('file', files[0]);
+                fileData.append('productId', @Model.Id);
+               
+                $.ajax({
+                    url: '/Admin/ProductImage/Add',
+                    type: 'POST',
+                    data: fileData,
+                    processData: false,
+                    contentType: false,
+                    success: function (rs) {
+                        if (rs.success) {
+                            alert('Image uploaded successfully!');
+                        }
+                        else {
+                            alert('Upload image failed!');
+                        }
+                    }
+                });
+                ///-----------///
             });
 
 
@@ -329,6 +357,14 @@
                 var conf = confirm('Do you want to delete this image?');
                 if (conf == true) {
                     var id = $(this).data('id');
+                    $.ajax({
+                        url: '/Admin/ProductImage/Delete',
+                        type: 'POST',
+                        data: {id: id},
+                        success: function (rs) {
+                            
+                        }
+                    });
 
                     if ($('#image-' + id).attr('src') === $('#main-image').attr('src')) {
 
@@ -355,6 +391,8 @@
                         $('#row-' + id).remove();
                         $('#custom-file-' + id).remove();
                     }
+
+                    
 
                 }
             });

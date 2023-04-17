@@ -9,8 +9,10 @@
         </ul>
     </div>
     <div class="card-body">
-        
-        <img id="main-image" src="~/uploads/images/product/@Model.FirstOrDefault(x=>x.IsAvatar).ImageName" class="img-fluid" />
+        @if(Model.FirstOrDefault(x=>x.IsAvatar) != null)
+        {
+            <img id="main-image" src="~/uploads/images/product/@Model.FirstOrDefault(x=>x.IsAvatar)!.ImageName" class="img-fluid" />
+        }
         <hr />
         <a class="btn btn-primary btn-sm mb-2" id="upload-img">
             <i class="fas fa-upload"></i>
@@ -54,55 +56,6 @@
                         </td>
                     </tr>
                 }
-
-                @*<input type="file" name="Avatar" class="imgFile" id="custom-file-1" style="display: none" />
-                <tr id="row-1">
-                    <td>1</td>
-                    <td class="text-center">
-                        <img id="image-1" width="100" src="~/uploads/images/product/@Model.Avatar" />
-                    </td>
-                    <td class="text-center">
-                        <div class="icheck-success d-inline">
-                            <input type="radio" checked name="isDefault" value="1" class="rdoDefault" id="rdo-1">
-                            <label for="rdo-1"></label>
-                        </div>
-                    </td>
-                    <td class="pt-3">
-                        <a id="deleteImage" data-id="1" class="btn btn-sm btn-danger">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-                @{
-                    var id = 1;
-                }
-                @if (@Model.ListImages != null)
-                {
-                    id = 2;
-                    foreach (var item in @Model.ListImages)
-                    {
-                        <input type="file" name="Files" class="imgFile" id="custom-file-@id" style="display: none" />
-                        <tr id="row-@id">
-                            <td>@id</td>
-                            <td class="text-center">
-                                <img id="image-@id" width="100" src="~/uploads/images/product/@item" />
-                            </td>
-                            <td class="text-center">
-                                <div class="icheck-success d-inline">
-                                    <input type="radio" name="isDefault" value="@id" class="rdoDefault" id="rdo-@id">
-                                    <label for="rdo-@id"></label>
-                                </div>
-                            </td>
-                            <td class="pt-3">
-                                <a id="deleteImage" data-id="@id" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        id++;
-                    }
-                }*@
-
             </tbody>
         </table>
         <input id="currentId" value="@currentId" type="hidden" />
