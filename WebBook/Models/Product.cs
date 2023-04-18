@@ -21,7 +21,7 @@ namespace WebBook.Models
         public string ProductCode { get; set; }
         public string Description { get; set; }
         public string Detail { get; set; }
-        public string? Avatar { get; set; }
+        //public string? Avatar { get; set; }
         public int NumberOfPage { get; set; }
         [Required]
         [StringLength(255)]

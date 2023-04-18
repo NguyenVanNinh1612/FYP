@@ -15,14 +15,14 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="active"><a asp-controller="Product" asp-action="Index"><i class="fa fa-angle-right" aria-hidden="true"></i>Product</a></li>
+                    <li class="active"><a asp-controller="Product" asp-action="ProductCategory" asp-route-slug="@ViewBag.categorySlug"><i class="fa fa-angle-right" aria-hidden="true"></i>@ViewBag.categoryName</a></li>
                 </ul>
             </div>
 
             <!-- Sidebar -->
 
             <div class="sidebar">
-                @await Component.InvokeAsync("Category")
+                @await Component.InvokeAsync("Category", new{categoryId = ViewBag.categoryId})
 
 
                 <!-- Price Range Filtering -->

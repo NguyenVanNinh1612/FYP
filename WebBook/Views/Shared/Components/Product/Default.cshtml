@@ -1,8 +1,8 @@
-﻿@model IEnumerable<WebBook.Models.Product>
+﻿@model IEnumerable<WebBook.ViewModels.ProductVM>
 @if(Model != null && Model.Any()){
     foreach(var item in Model)
     {
-        <div class="product-item @item.Category.Slug">
+        <div class="product-item @item.CategorySlug">
             <div class="product discount product_filter">
                 <div class="product_image">
                     <img src="~/uploads/images/product/@item.Avatar" alt="@item.Name">

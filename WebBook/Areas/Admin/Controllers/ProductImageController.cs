@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebBook.Data;
 using WebBook.Models;
 
@@ -16,13 +15,6 @@ namespace WebBook.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index(int id)
-		{
-			var productImages = _context.ProductImages.Where(x => x.ProductId == id).ToList();
-			return View(productImages);
-		}
-
-
         [HttpPost]
         public IActionResult Add(IFormFile file, int productId)
         {
@@ -36,7 +28,8 @@ namespace WebBook.Areas.Admin.Controllers
                 };
                 _context.ProductImages.Add(productImage);
                 _context.SaveChanges();
-                return Json(new { success = true, imageId = productImage.Id });
+
+                return Json(new { success = true, imageId = productImage.Id});
             }
 
 
@@ -61,13 +54,42 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult SetAvatar(int id)
+        {
+            var productImage = _context.ProductImages.FirstOrDefault(x => x.Id == id);
+            
+            if (productImage != null)
+            {
+                var pimages = _context.ProductImages.Where(x => x.ProductId == productImage.ProductId).ToList();
+                foreach(var item in pimages)
+                {
+                    if (item.Id == id)
+                    {
+                        item.IsAvatar = true;
+                    }
+                    else
+                    {
+                        item.IsAvatar = false;
+                    }
+                }
+               
+
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false });
+        }
+
+
         private string UploadImage(IFormFile file)
         {
-            string uniqueFileName = "";
             var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads/images/product");
             string extension = Path.GetExtension(file.FileName);
             string fileName = Path.GetFileNameWithoutExtension(file.FileName);
-            uniqueFileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
+            string uniqueFileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
             var filePath = Path.Combine(folderPath, uniqueFileName);
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {

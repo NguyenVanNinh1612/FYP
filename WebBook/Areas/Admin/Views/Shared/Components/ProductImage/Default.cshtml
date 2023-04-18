@@ -13,7 +13,12 @@
         {
             <img id="main-image" src="~/uploads/images/product/@Model.FirstOrDefault(x=>x.IsAvatar)!.ImageName" class="img-fluid" />
         }
+        else
+        {
+            <img id="main-image" class="img-fluid" />
+        }
         <hr />
+        <input type="file" id="uploadFile" style="display: none" />
         <a class="btn btn-primary btn-sm mb-2" id="upload-img">
             <i class="fas fa-upload"></i>
             <span>Upload Image</span>
@@ -28,10 +33,8 @@
                 </tr>
             </thead>
             <tbody id="tbodyHtml">
-                @{var currentId = 1;}
                 @foreach(var item in Model)
                 {
-                    currentId = item.Id;
                     <tr id="row-@item.Id">
                         <td>@item.Id</td>
                         <td class="text-center">
@@ -58,7 +61,6 @@
                 }
             </tbody>
         </table>
-        <input id="currentId" value="@currentId" type="hidden" />
     </div>
 </div>
 

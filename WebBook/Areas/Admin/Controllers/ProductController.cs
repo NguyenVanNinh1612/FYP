@@ -42,83 +42,36 @@ namespace WebBook.Areas.Admin.Controllers
             ViewBag.PageSize = pageSize;
             ViewBag.Page = page;
 
-            //IEnumerable<Product> products = _context.Products!.OrderByDescending(x => x.Id);
             var listProducts = new List<ProductVM>();
 
             var products = _context.Products!.OrderByDescending(x => x.Id).ToList();
             foreach (var item in products)
             {
-                ProductVM pvm = new();
-                pvm.Id = item.Id;
-                pvm.Name = item.Name;
-                pvm.Price = item.Price;
-                pvm.PriceSale = item.PriceSale;
-                pvm.Quantity = item.CategoryId;
-                pvm.SupplierId = item.SupplierId;
-                pvm.CategoryName = _context.Categories.Find(item.CategoryId).Name;
-                pvm.SupplierName = _context.Suppliers.Find(item.SupplierId).Name;
-
-                var productImages = _context.ProductImages.Where(x => x.ProductId == pvm.Id).ToList();
-                var avt = productImages.FirstOrDefault(x => x.IsAvatar).ImageName;
-                if (avt != null)
+                ProductVM vm = new()
                 {
-                    pvm.Avatar = avt;
-                }
+                    Id = item.Id,
+                    Name = item.Name,
+                    Price = item.Price,
+                    PriceSale = item.PriceSale,
+                    Quantity = item.CategoryId,
+                    SupplierId = item.SupplierId,
+                    CategoryName = _context?.Categories?.Find(item.CategoryId)?.Name,
+                    SupplierName = _context?.Suppliers?.Find(item.SupplierId)?.Name,
+                    Avatar = _context?.ProductImages?.Where(x => x.ProductId == item.Id).ToList()?.FirstOrDefault(x => x.IsAvatar)?.ImageName
+                };
 
-                listProducts.Add(pvm);
+                listProducts.Add(vm);
             }
            
             if (!string.IsNullOrEmpty(searchString))
             {
-                listProducts = (List<ProductVM>)listProducts.Where(x => x.Name.ToLower().Contains(searchString.ToLower()));
+                listProducts = listProducts.Where(x => x.Name.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
             return View(listProducts.ToPagedList(pageNumber, pageSize));
         }
 
-        //public IActionResult Index(int? page, string searchString, string currentFilter)
-        //{
-        //    if (searchString != null)
-        //    {
-        //        page = 1;
-        //    }
-        //    else
-        //    {
-        //        searchString = currentFilter;
-        //    }
-        //    ViewBag.CurrentFilter = searchString;
-
-        //    int pageSize = 5;
-        //    int pageNumber = (page ?? 1); // Neu page == null thi tra ve 1       
-        //    ViewBag.PageSize = pageSize;
-        //    ViewBag.Page = page;
-
-        //    //IEnumerable<Product> products = _context.Products!.OrderByDescending(x => x.Id);
-        //    var listProducts = new List<ProductVM>();
-        //    _context.Products!.OrderByDescending(x => x.Id).ToList().ForEach(product =>
-        //    {
-        //        listProducts.Add(new ProductVM(product.Id,
-        //                                       product.Name,
-        //                                       product.Avatar,
-        //                                       product.Price,
-        //                                       product.PriceSale,
-        //                                       product.Quantity,
-        //                                       product.CategoryId,
-        //                                       product.SupplierId,
-        //                                       categoryName: _context.Categories.Find(product.CategoryId).Name,
-        //                                       supplierName: _context.Suppliers.Find(product.SupplierId).Name));
-        //    });
-
-
-
-        //    if (!string.IsNullOrEmpty(searchString))
-        //    {
-        //        listProducts = (List<ProductVM>)listProducts.Where(x => x.Name.ToLower().Contains(searchString.ToLower()));
-        //    }
-
-        //    return View(listProducts.ToPagedList(pageNumber, pageSize));
-        //}
-
+       
         public IActionResult Create()
         {
             ViewBag.CategoryList = new SelectList(_context.Categories!.ToList(), "Id", "Name");
@@ -157,7 +110,6 @@ namespace WebBook.Areas.Admin.Controllers
                     }
 
                 }
-
                 
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
                 _context.Products!.Add(model);
@@ -175,45 +127,6 @@ namespace WebBook.Areas.Admin.Controllers
 
         }
 
-        //public IActionResult Create(Product model, List<IFormFile> Files, IFormFile Avatar, int isDefault)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (Files != null && Files.Count > 0)
-        //        {
-        //            foreach (var file in Files)
-        //            {
-        //                model.ProductImage!.Add(new ProductImage
-        //                {
-        //                    ImageName = UploadImage(file),
-        //                    ProductId = model.Id
-        //                });
-        //            }
-
-        //        }
-
-        //        if (Avatar != null)
-        //        {
-        //            model.Avatar = UploadImage(Avatar);
-        //        }
-        //        model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
-        //        _context.Products!.Add(model);
-        //        _context.SaveChanges();
-
-        //        _notifyService.Success("Product created successfully!");
-        //        return RedirectToAction("Index");
-        //    }
-
-
-        //    ViewBag.CategoryList = new SelectList(_context.Categories!.ToList(), "Id", "Name");
-        //    ViewBag.SupplierList = new SelectList(_context.Suppliers!.ToList(), "Id", "Name");
-        //    _notifyService.Error("Product created failed!");
-        //    return View(model);
-
-        //}
-
-
-
         public IActionResult Edit(int id)
         {
             var product = _context.Products!.FirstOrDefault(x => x.Id == id);
@@ -222,78 +135,48 @@ namespace WebBook.Areas.Admin.Controllers
                 return View();
             }
 
-            List<string> images = new List<string>();
-            foreach (var item in _context.ProductImages.Where(x => x.ProductId == id).ToList())
+            ProductVM vm = new()
             {
-                images.Add(item.ImageName);
-            }
-
-            ProductVM productVM = new ProductVM(
-                    product.Id,
-                    product.Name,
-                    product.ProductCode,
-                    product.Description,
-                    product.Detail,
-                    product.Avatar,
-                    product.NumberOfPage,
-                    product.Author,
-                    product.Price,
-                    product.PriceSale,
-                    product.Quantity,
-                    product.IsFeature,
-                    product.IsHome,
-                    product.IsHot,
-                    product.IsSale,
-                    product.CategoryId,
-                    product.SupplierId,
-                    product.SeoTitle,
-                    product.SeoDescription,
-                    product.SeoKeywords,
-                    listImages: images
-                );
+                Id = product.Id,
+                Name = product.Name,
+                ProductCode = product.ProductCode,
+                Description = product.Description,
+                Detail = product.Detail,
+                NumberOfPage = product.NumberOfPage,
+                Author = product.Author,
+                Price = product.Price,
+                PriceSale = product.PriceSale,
+                Quantity = product.Quantity,
+                IsFeature = product.IsFeature,
+                IsHome = product.IsHome,
+                IsHot = product.IsHot,
+                IsSale = product.IsSale,
+                CategoryId = product.CategoryId,
+                SupplierId = product.SupplierId,
+                SeoTitle = product.SeoTitle,
+                SeoDescription = product.SeoDescription,
+                SeoKeywords = product.SeoKeywords
+            };
 
             ViewBag.CategoryList = new SelectList(_context.Categories!.ToList(), "Id", "Name");
             ViewBag.SupplierList = new SelectList(_context.Suppliers!.ToList(), "Id", "Name");
-            return View(productVM);
+            return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Edit(ProductVM vm, List<IFormFile> Files, IFormFile Avatar)
+        public IActionResult Edit(ProductVM vm)
         {
-            //if (ModelState.IsValid)
-           // {
+            if (ModelState.IsValid)
+            {
                 var product = _context.Products!.FirstOrDefault(x => x.Id == vm.Id);
-
-                if(Files != null && Files.Count > 0)
-                {
-                    var productImage = _context.ProductImages.Where(x => x.ProductId == vm.Id);
-                    foreach(var item in productImage)
-                    {
-                        _context.ProductImages.Remove(item);
-                    }
-                    foreach (var file in Files)
-                    {
-                        product!.ProductImage!.Add(new ProductImage
-                        {
-                            ImageName = UploadImage(file),
-                            ProductId = product.Id
-                        });
-                    }
-                }
-                if (Avatar != null)
-                {
-                    product!.Avatar = UploadImage(Avatar);
-                }
 
                 product!.Name = vm.Name;
                 product.Slug = SeoUrlHelper.FrientlyUrl(product.Name);
                 product.ProductCode = vm.ProductCode;
                 product.Description = vm.Description;
                 product.Detail = vm.Detail;
-              
                 product.NumberOfPage = vm.NumberOfPage;
                 product.Author = vm.Author;
-
                 product.Price = vm.Price;
                 product.PriceSale = vm.PriceSale;
                 product.Quantity = vm.Quantity;
@@ -307,14 +190,13 @@ namespace WebBook.Areas.Admin.Controllers
                 product.SeoDescription = vm.SeoDescription;
                 product.SeoKeywords = vm.SeoKeywords;
 
-
                 _context.SaveChanges();
                 _notifyService.Success("Product updated successfully!");
                 return RedirectToAction("Index");
-            //}
+            }
 
-            //_notifyService.Error("Product updated failed!");
-            //return View(vm);
+            _notifyService.Error("Product updated failed!");
+            return View(vm);
         }
 
 
@@ -328,6 +210,8 @@ namespace WebBook.Areas.Admin.Controllers
                 foreach (var item in productImage)
                 {
                     _context.ProductImages.Remove(item);
+                    string path = "~/uploads/images/product/" + item.ImageName;
+                    System.IO.File.Delete(path);
                 }
                 _context.Products!.Remove(product);
                 _context.SaveChanges();
@@ -353,9 +237,11 @@ namespace WebBook.Areas.Admin.Controllers
                         foreach (var image in productImage)
                         {
                             _context.ProductImages.Remove(image);
+                            string path = "~/uploads/images/product/" + image.ImageName;
+                            System.IO.File.Delete(path);
                         }
                         var obj = _context.Products!.Find(Convert.ToInt32(item));
-                        _context.Products.Remove(obj);
+                        _context.Products.Remove(obj!);
                         _context.SaveChanges();
                     }
                 }
@@ -368,11 +254,10 @@ namespace WebBook.Areas.Admin.Controllers
 
         private string UploadImage(IFormFile file)
         {
-            string uniqueFileName = "";
             var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads/images/product");
             string extension = Path.GetExtension(file.FileName);
             string fileName = Path.GetFileNameWithoutExtension(file.FileName);
-            uniqueFileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
+            string uniqueFileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
             var filePath = Path.Combine(folderPath, uniqueFileName);
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {

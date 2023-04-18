@@ -1,0 +1,31 @@
+﻿@model IEnumerable<WebBook.Models.Category>
+
+<div class="sidebar_section">
+    <div class="sidebar_title">
+        <h5>Product Category</h5>
+    </div>
+    <ul class="sidebar_categories">
+        @foreach (var item in Model)
+        {
+            if (ViewBag.categoryId == item.Id)
+            {
+                <li class="active">
+                    <a asp-controller="Product" asp-action="ProductCategory" asp-route-slug="@item.Slug">
+                        <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>@item.Name
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li><a asp-controller="Product" asp-action="ProductCategory" asp-route-slug="@item.Slug">@item.Name</a></li>
+            }
+
+        }
+        @*	<li><a href="#">Men</a></li>
+        <li class="active"><a href="#"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>Women</a></li>
+        <li><a href="#">Accessories</a></li>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Collection</a></li>
+        <li><a href="#">Shop</a></li>*@
+    </ul>
+</div>
