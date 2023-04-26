@@ -13,6 +13,8 @@ namespace WebBook.Controllers
             _logger = logger;
         }
 
+        [Route("home")]
+        [Route("")]
         public IActionResult Index()
         {
             return View();

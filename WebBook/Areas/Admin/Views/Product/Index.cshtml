@@ -94,7 +94,7 @@
                                                     <i class="fas fa-pencil-alt"></i>
                                                     Edit
                                                 </a>
-                                                <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">
+                                                <a class="btn btn-sm btn-danger btnDelete"  data-id="@item.Id">
                                                     <i class="fas fa-trash"></i>
                                                     Delete
                                                 </a>
@@ -131,9 +131,7 @@
     </div>
 
 </section>
-<div id="dialog">
-    <iframe id="myIframe" style="border: 0; width: 100%; height: 100%"></iframe>
-</div>
+
 
 @section scripts{
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -212,28 +210,7 @@
                 }
             });
 
-            //Hien thi trang Edit anh san pham
-                $('#dialog').dialog({
-                    autoOpen: false,
-                    show: "fade",
-                    hide: "fade",
-                    model: true,
-                    height: '600',
-                    width: '700',
-                    resizable: true,
-                    title: 'Product image management',
-                    close: function(){
-                        window.location.reload();
-                    }
-                });
-
-                $('body').on('click','.imgproduct', function(){
-                    var productId = $(this).attr("data-id");
-                    $('#dialog #myIframe').attr('src', "/admin/productImage/Index?id="+productId);
-                    $('#dialog').dialog('open');
-                    return false;
-                });
-
+            
 
             //------------------
         });

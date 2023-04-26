@@ -63,7 +63,10 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.SaveChanges();
                 _notifyService.Success("Menu created successfully!");
                 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "menu", new
+                {
+                    area = "admin"
+                });
             }
 
             _notifyService.Error("Menu created failed!");
@@ -90,7 +93,10 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.Menus!.Update(model);
                 _context.SaveChanges();
                 _notifyService.Success("Menu updated successfully!");
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "menu", new
+                {
+                    area = "admin"
+                });
             }
 
             _notifyService.Error("Menu updated failed!");

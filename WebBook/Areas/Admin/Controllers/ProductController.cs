@@ -116,7 +116,7 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.SaveChanges();
 
                 _notifyService.Success("Product created successfully!");
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "product", new {area="admin"});
             }
 
 
@@ -192,7 +192,7 @@ namespace WebBook.Areas.Admin.Controllers
 
                 _context.SaveChanges();
                 _notifyService.Success("Product updated successfully!");
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "product", new { area = "admin" });
             }
 
             _notifyService.Error("Product updated failed!");
@@ -210,8 +210,8 @@ namespace WebBook.Areas.Admin.Controllers
                 foreach (var item in productImage)
                 {
                     _context.ProductImages.Remove(item);
-                    string path = "~/uploads/images/product/" + item.ImageName;
-                    System.IO.File.Delete(path);
+                    //string path = "~/uploads/images/product/" + item.ImageName;
+                    //System.IO.File.Delete(path);
                 }
                 _context.Products!.Remove(product);
                 _context.SaveChanges();
@@ -237,8 +237,8 @@ namespace WebBook.Areas.Admin.Controllers
                         foreach (var image in productImage)
                         {
                             _context.ProductImages.Remove(image);
-                            string path = "~/uploads/images/product/" + image.ImageName;
-                            System.IO.File.Delete(path);
+                           // string path = "~/uploads/images/product/" + image.ImageName;
+                           // System.IO.File.Delete(path);
                         }
                         var obj = _context.Products!.Find(Convert.ToInt32(item));
                         _context.Products.Remove(obj!);

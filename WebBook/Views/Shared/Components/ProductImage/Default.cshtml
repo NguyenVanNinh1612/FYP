@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WebBook.Models.ProductImage>
+@*
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        if (item.IsAvatar)
+        {
+            <li class="active swiper-slide"><img src="~/uploads/images/product/@item.ImageName" alt="" data-image="/uploads/images/product/@item.ImageName"></li>
+
+        }
+        else
+        {
+            <li class="swiper-slide"><img src="~/uploads/images/product/@item.ImageName" alt="" data-image="/uploads/images/product/@item.ImageName"></li>
+
+        }
+    }
+}*@
+
+@if (Model != null && Model.Any())
+{
+
+
+
+    <div class="row">
+        <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model)
+                {
+                    <div class="swiper-slide">
+                        <img src="~/uploads/images/product/@item.ImageName" />
+                    </div>
+                }
+            </div>
+
+        </div>
+        <div thumbsSlider="" class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model)
+                {
+                    <div class="swiper-slide">
+                        <img src="~/uploads/images/product/@item.ImageName" />
+                    </div>
+                }
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+
+}

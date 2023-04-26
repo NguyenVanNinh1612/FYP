@@ -1,8 +1,10 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Policy;
 using WebBook.Data;
 using WebBook.Models;
 
@@ -30,6 +32,19 @@ builder.Services.AddNotyf(config =>
     config.Position = NotyfPosition.TopCenter;
 });
 
+
+//Configure Session
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    //options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+///
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,12 +57,18 @@ if (!app.Environment.IsDevelopment())
 
 app.UseNotyf();
 
+
 app.UseHttpsRedirection();
+
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "area",
@@ -56,9 +77,10 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{slug?}/{id?}"
+    pattern: "{controller=Home}/{action=Index}/{id?}"
     );
 
 
 
 app.Run();
+

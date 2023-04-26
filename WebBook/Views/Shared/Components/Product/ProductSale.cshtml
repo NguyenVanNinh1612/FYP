@@ -24,7 +24,7 @@
                                             <div class="favorite favorite_left"></div>
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>Sale</span></div>
                                             <div class="product_info">
-                                                <h6 class="product_name"><a href="single.html">@item.Name</a></h6>
+                                                <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a></h6>
                                                 <div class="product_price">@item.Price<span>@item.PriceSale</span></div>
                                             </div>
                                         </div>

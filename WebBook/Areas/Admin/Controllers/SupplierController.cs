@@ -61,7 +61,10 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.SaveChanges();
                 _notifyService.Success("Supplier created successfully!");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "supplier", new
+                {
+                    area = "admin"
+                });
             }
 
             _notifyService.Error("Supplier created failed!");
@@ -87,7 +90,7 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.Suppliers!.Update(model);
                 _context.SaveChanges();
                 _notifyService.Success("Supplier updated successfully!");
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "supplier", new { area = "admin" });
             }
 
             _notifyService.Error("Supplier updated failed!");

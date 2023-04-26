@@ -124,7 +124,7 @@
                                             </div>
                                             <div classs="col-3">
                                                 <div class="form-group">
-                                                    <label>Quantity</label>
+                                                    <label>Number of page</label>
                                                     <input asp-for="NumberOfPage" type="number" class="form-control" placeholder="Numer of page">
                                                     <span asp-validation-for="NumberOfPage" class="text-danger"></span>
                                                 </div>
@@ -221,7 +221,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <a asp-action="Index" class="btn btn-primary">Previous</a>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-primary">Previous</a>
                         <button type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </div>

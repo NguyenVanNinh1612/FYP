@@ -48,7 +48,6 @@ namespace WebBook.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -62,7 +61,10 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.SaveChanges();
                 _notifyService.Success("Category created successfully!");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "category", new
+                {
+                    area = "admin"
+                });
             }
 
             _notifyService.Error("Category created failed!");
@@ -89,7 +91,10 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.Categories!.Update(model);
                 _context.SaveChanges();
                 _notifyService.Success("Category updated successfully!");
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "category", new
+                {
+                    area = "admin"
+                });
             }
 
             _notifyService.Error("Category updated failed!");

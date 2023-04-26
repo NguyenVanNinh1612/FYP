@@ -54,7 +54,7 @@ namespace WebBook.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
 
   
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "post", new { area = "admin" });
         }
 
         [HttpGet]
@@ -104,7 +104,7 @@ namespace WebBook.Areas.Admin.Controllers
             await _context.Posts!.AddAsync(posts);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "post", new { area = "admin" });
         }
 
         [HttpPost]

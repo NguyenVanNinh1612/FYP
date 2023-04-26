@@ -80,7 +80,7 @@ namespace WebBook.Areas.Admin.Controllers
             _context.News!.Add(news);
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "news", new { area = "admin" });
         }
 
         [HttpGet]
@@ -125,7 +125,7 @@ namespace WebBook.Areas.Admin.Controllers
                 _context.News!.Add(news);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "news", new { area = "admin" });
        
         }
 

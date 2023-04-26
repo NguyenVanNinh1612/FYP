@@ -1,4 +1,7 @@
-﻿@model IEnumerable<WebBook.ViewModels.ProductVM>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+@model IPagedList<WebBook.ViewModels.ProductVM>
 @{
     ViewData["Title"] = "Product";
 }
@@ -101,16 +104,18 @@
                                     </li>
                                     <li>
                                         <span>Show</span>
-                                        <span class="num_sorting_text">6</span>
+                                        <span class="num_sorting_text">8</span>
                                         <i class="fa fa-angle-down"></i>
+
                                         <ul class="sorting_num">
-                                            <li class="num_sorting_btn"><span>6</span></li>
+                                            <li class="num_sorting_btn"><span>4</span></li>
+                                            <li class="num_sorting_btn"><span>8</span></li>
                                             <li class="num_sorting_btn"><span>12</span></li>
                                             <li class="num_sorting_btn"><span>24</span></li>
                                         </ul>
                                     </li>
                                 </ul>
-                                <div class="pages d-flex flex-row align-items-center">
+                               @* <div class="pages d-flex flex-row align-items-center">
                                     <div class="page_current">
                                         <span>1</span>
                                         <ul class="page_selection">
@@ -121,7 +126,7 @@
                                     </div>
                                     <div class="page_total"><span>of</span> 3</div>
                                     <div id="next_page" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
-                                </div>
+                                </div>*@
 
                             </div>
 
@@ -142,11 +147,11 @@
                                                 <div class="favorite favorite_left"></div>
                                                 <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                                 <div class="product_info">
-                                                    <h6 class="product_name"><a href="single.html">@item.Name</a></h6>
+                                                    <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-slug="@item.Slug" asp-route-id="@item.Id">@item.Name</a></h6>
                                                     <div class="product_price">@item.PriceSale<span>@item.Price</span></div>
                                                 </div>
                                             </div>
-                                            <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+                                            <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" dataa-id="@item.Id">add to cart</a></div>
                                         </div>
                                     }
                                 }
@@ -157,7 +162,12 @@
                             <!-- Product Sorting -->
 
                             <div class="product_sorting_container product_sorting_container_bottom clearfix">
-                                <ul class="product_sorting">
+                                @Html.PagedListPager(Model, page=> Url.Action("Index",new{page}),
+                                new PagedListRenderOptions{
+                                LiElementClasses = new string[] { "page-item" },
+                                PageClasses = new string[] { "page-link" }
+                                })
+                               @* <ul class="product_sorting">
                                     <li>
                                         <span>Show:</span>
                                         <span class="num_sorting_text">04</span>
@@ -182,7 +192,7 @@
                                     </div>
                                     <div class="page_total"><span>of</span> 3</div>
                                     <div id="next_page_1" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
-                                </div>
+                                </div>*@
 
                             </div>
 
