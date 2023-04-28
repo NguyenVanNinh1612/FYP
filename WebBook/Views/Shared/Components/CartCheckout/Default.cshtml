@@ -1,0 +1,23 @@
+﻿@model IEnumerable<WebBook.Data.CartItem>
+@using WebBook.Common
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <tr class="text-center">
+            <td><img width="100" src="~/uploads/images/product/@item.ProductImage" /></td>
+            <td><a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a></td>
+            @if (item.PriceSale > 0)
+            {
+                <td>@ExtensionHelper.ToVnd(item.PriceSale)</td>
+            }
+            else
+            {
+                <td>@ExtensionHelper.ToVnd(item.Price)</td>
+            }
+            <td>@item.Quantity</td>
+            <td style="color: #fe4c50" id="totalPrice-@item.ProductId">@ExtensionHelper.ToVnd(item.TotalPrice)</td>
+
+        </tr>
+    }
+}

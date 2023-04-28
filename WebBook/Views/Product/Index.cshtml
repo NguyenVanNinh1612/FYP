@@ -2,6 +2,7 @@
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common
 @model IPagedList<WebBook.ViewModels.ProductVM>
+@using WebBook.Common
 @{
     ViewData["Title"] = "Product";
 }
@@ -9,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="~/client/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/client/styles/categories_responsive.css">
 
-<div class="container product_section_container">
+<div class="container product_section_container" style="margin-top: 130px">
     <div class="row">
         <div class="col product_section clearfix">
 
@@ -150,7 +151,14 @@
                                                 <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                                                 <div class="product_info">
                                                     <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-slug="@item.Slug" asp-route-id="@item.Id">@item.Name</a></h6>
-                                                    <div class="product_price">@item.PriceSale<span>@item.Price</span></div>
+                                                    @if (item.PriceSale > 0)
+                                                    {
+                                                        <div class="product_price">@ExtensionHelper.ToVnd(item.PriceSale)<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="product_price">@ExtensionHelper.ToVnd(item.Price)</div>
+                                                    }
                                                 </div>
                                             </div>
                                             <div class="red_button add_to_cart_button"><a class="btnAddToCart" href="#" data-id="@item.Id">add to cart</a></div>

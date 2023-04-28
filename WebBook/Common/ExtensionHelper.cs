@@ -6,7 +6,7 @@ namespace WebBook.Common
     {
         public static string ToVnd(this decimal value)
         {
-            return $"{value: #, ##0.00} đ";
+            return $"{value: #,##0.00} đ";
         }
 
         public static void Set<T>(this ISession session, string key, T value)

@@ -116,7 +116,7 @@
                     <div class="card-footer">
                         <div class="row float-right">
                             @* Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount*@
-                            @Html.PagedListPager(Model, page=> Url.Action("Index",new{page, currentFilter = ViewBag.CurrentFilter}),
+                            @Html.PagedListPager(Model, page=> Url.Action("Index", "Product" ,new{ Area="Admin", page, currentFilter = ViewBag.CurrentFilter}),
                             new PagedListRenderOptions{
                             LiElementClasses = new string[] { "page-item" },
                             PageClasses = new string[] { "page-link" }

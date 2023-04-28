@@ -20,6 +20,7 @@ namespace WebBook.Models
         public string Address { get; set; }
         public decimal TotalAmount { get; set; }
         public int Quantity { get; set; }
+        public bool PaymentMethod { get; set; }
 
         public ICollection<OrderDetail> OrderDetails { get; set; }
     }

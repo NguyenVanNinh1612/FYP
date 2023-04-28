@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<WebBook.ViewModels.ProductVM>
+@using WebBook.Common
 @if(Model != null && Model.Any()){
     <div class="best_sellers">
         <div class="container">
             <div class="row">
                 <div class="col text-center">
                     <div class="section_title new_arrivals_title">
-                        <h2>Best Sellers</h2>
+                        <h3>TOP SALES</h3>
                     </div>
                 </div>
             </div>
@@ -25,7 +26,14 @@
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>Sale</span></div>
                                             <div class="product_info">
                                                 <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a></h6>
-                                                <div class="product_price">@item.Price<span>@item.PriceSale</span></div>
+                                                @if (item.PriceSale > 0)
+                                                {
+                                                    <div class="product_price">@ExtensionHelper.ToVnd(item.PriceSale)<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="product_price">@ExtensionHelper.ToVnd(item.Price)</div>
+                                                }
                                             </div>
                                         </div>
                                     </div>

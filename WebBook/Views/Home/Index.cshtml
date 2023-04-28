@@ -4,23 +4,54 @@
 }
 <link rel="stylesheet" type="text/css" href="~/client/styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="~/client/styles/responsive.css">
+<style>
+	.home-slider .swiper {
+		width: 100%;
+		height: 500px;
+	}
 
-<div class="main_slider" style="background-image:url(/client/images/banner.jpg)">
-    <div class="container fill_height">
-        <div class="row align-items-center fill_height">
-            <div class="col">
-                <div class="main_slider_content">
-                    <h6>Spring / Summer Collection 2017</h6>
-                    <h1>Get up to 30% Off New Arrivals</h1>
-                    <div class="red_button shop_now_button"><a href="#">shop now</a></div>
-                </div>
-            </div>
-        </div>
-    </div>
+	.home-slider .swiper-slide {
+		text-align: center;
+		font-size: 18px;
+		background: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.home-slider .swiper-slide img {
+		display: block;
+		width: 100%;
+		height:500px;
+		/*object-fit: cover;*/
+	}
+</style>
+
+<div class="home-slider container">
+	<div class="row" style="margin-top: 130px">
+		<div class="col-md-8">
+			<div class="swiper books-slider">
+				<div class="swiper-wrapper">
+					<a href="" class="swiper-slide"><img src="~/thumbnails/m034t0017_book_day_15mar23.jpg" /></a>
+					<a href="" class="swiper-slide"><img src="~/thumbnails/bookbaner.png" /></a>
+				</div>
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</div>
+		<div class="col-md-4" style="padding-top: 80px">
+			<h2 style="font-weight: bold">Deal Sốc 50%</h2>
+			<div class="red_button shop_now_button"><a href="#">Mua ngay</a></div>
+		</div>
+	</div>
 </div>
 
-<!-- Banner -->
-@await Component.InvokeAsync(typeof(MenuViewComponent), new{name="Category"})
+<!-- Best Sellers -->
+@await Component.InvokeAsync(typeof(ProductViewComponent), new{name="ProductSale"})
+
+
+@*@await Component.InvokeAsync(typeof(MenuViewComponent), new{name="Category"})*@
 <!-- New Arrivals -->
 @await Component.InvokeAsync(typeof(MenuViewComponent), new{name="MenuArrivals"})
 
@@ -28,16 +59,16 @@
 
 <div class="deal_ofthe_week">
     <div class="container">
-        <div class="row align-items-center">
+		<div class="row align-items-center" style="background-image: url(/thumbnails/bannerBook.jpg); background-size: 100%">
             <div class="col-lg-6">
                 <div class="deal_ofthe_week_img">
-                    <img src="~/client/images/letters-bg.jpg" alt="">
+                    @*<img src="~/thumbnails/bookslider02.jpg" alt="">*@
                 </div>
             </div>
             <div class="col-lg-6 text-right deal_ofthe_week_col">
                 <div class="deal_ofthe_week_content d-flex flex-column align-items-center float-right">
                     <div class="section_title">
-                        <h2>Deal Of The Week</h2>
+                        <h3>DEAL OF THE WEEK
                     </div>
                     <ul class="timer">
                         <li class="d-inline-flex flex-column justify-content-center align-items-center">
@@ -64,55 +95,9 @@
     </div>
 </div>
 
-<!-- Best Sellers -->
-
-@await Component.InvokeAsync(typeof(ProductViewComponent), new{name="ProductSale"})
 
 
-<!-- Benefit -->
 
-<div class="benefit">
-	<div class="container">
-		<div class="row benefit_row">
-			<div class="col-lg-3 benefit_col">
-				<div class="benefit_item d-flex flex-row align-items-center">
-					<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
-					<div class="benefit_content">
-						<h6>free shipping</h6>
-						<p>Suffered Alteration in Some Form</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 benefit_col">
-				<div class="benefit_item d-flex flex-row align-items-center">
-					<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
-					<div class="benefit_content">
-						<h6>cach on delivery</h6>
-						<p>The Internet Tend To Repeat</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 benefit_col">
-				<div class="benefit_item d-flex flex-row align-items-center">
-					<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-					<div class="benefit_content">
-						<h6>45 days return</h6>
-						<p>Making it Look Like Readable</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 benefit_col">
-				<div class="benefit_item d-flex flex-row align-items-center">
-					<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-					<div class="benefit_content">
-						<h6>opening all week</h6>
-						<p>8AM - 09PM</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!-- Blogs -->
 
@@ -153,6 +138,52 @@
 						<h4 class="blog_title">Here are the trends I see coming this fall</h4>
 						<span class="blog_meta">by admin | dec 01, 2017</span>
 						<a class="blog_more" href="#">Read more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Benefit -->
+
+<div class="benefit">
+	<div class="container">
+		<div class="row benefit_row">
+			<div class="col-lg-3 benefit_col">
+				<div class="benefit_item d-flex flex-row align-items-center">
+					<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+					<div class="benefit_content">
+						<h6>free shipping</h6>
+						<p>Suffered Alteration in Some Form</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 benefit_col">
+				<div class="benefit_item d-flex flex-row align-items-center">
+					<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+					<div class="benefit_content">
+						<h6>cach on delivery</h6>
+						<p>The Internet Tend To Repeat</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 benefit_col">
+				<div class="benefit_item d-flex flex-row align-items-center">
+					<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+					<div class="benefit_content">
+						<h6>45 days return</h6>
+						<p>Making it Look Like Readable</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 benefit_col">
+				<div class="benefit_item d-flex flex-row align-items-center">
+					<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+					<div class="benefit_content">
+						<h6>opening all week</h6>
+						<p>8AM - 09PM</p>
 					</div>
 				</div>
 			</div>

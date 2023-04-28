@@ -212,20 +212,23 @@ jQuery(document).ready(function($)
 		{
 			var plus = $('.plus');
 			var minus = $('.minus');
-			var value = $('#quantity_value');
+			//var value = $('#quantity_value');
+
 
 			plus.on('click', function()
 			{
-				var x = parseInt(value.text());
-				value.text(x + 1);
+				var id = $(this).data('id');
+				var x = parseInt($('.quantity_value-'+id).text());
+				$('.quantity_value-' + id).text(x + 1);
 			});
 
 			minus.on('click', function()
 			{
-				var x = parseInt(value.text());
+				var id = $(this).data('id');
+				var x = parseInt($('.quantity_value-' + id).text());
 				if(x > 1)
 				{
-					value.text(x - 1);
+					$('.quantity_value-' + id).text(x - 1);
 				}
 			});
 		}

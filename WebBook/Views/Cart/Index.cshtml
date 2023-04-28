@@ -11,7 +11,7 @@
 
 
 
-<div class="container single_product_container">
+<div class="container single_product_container" style="margin-top: 130px">
     <div class="row">
         <div class="col">
 
@@ -27,9 +27,9 @@
             <div class="main_content">
                 @if (Model != null && Model.Any())
                 {
-                    <table class="table">
+                    <table class="table" id="table-cart">
                         <tr class="text-center">
-                            <th><input type="checkbox" /></th>
+                            <th><input type="checkbox" id="checkboxAll"/></th>
                             <th>Ảnh</th>
                             <th>Tên sản phẩm</th>
                             <th>Giá</th>
@@ -40,7 +40,7 @@
                         @foreach (var item in Model)
                         {
                             <tr class="text-center" id="trCartItem-@item.ProductId">
-                                <td><input type="checkbox" /></td>
+                                <td><input type="checkbox" id="checkboxItem" data-id="@item.ProductId" /></td>
                                 <td><img width="100" src="~/uploads/images/product/@item.ProductImage" /></td>
                                 <td><a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a></td>
                                 @if (item.PriceSale > 0)
@@ -65,6 +65,14 @@
                             </tr>
                         }
                     </table>
+                    <div class="float-right">
+                        <p style="font-weight: bold; ">Thành tiền: <span id="totalPrice" style="color:#fe4c50; font-size: 23px">0 đ</span></p>
+                        <form asp-controller="Cart" asp-action="CheckOut" id="formpay">
+                            <input type="hidden" id="list_IdCart" name="ids">
+                            <input style="cursor: pointer" type="submit" class="btn btn-danger" id="btnThanhToan" value="THANH TOÁN">
+                        </form>
+                    </div>
+
                 }
                 else
                 {

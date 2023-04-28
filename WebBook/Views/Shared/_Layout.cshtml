@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="~/client/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="~/client/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="~/client/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
 
 </head>
@@ -32,37 +33,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="top_nav_left">free shipping on all u.s orders over $50</div>
+                            <div class="top_nav_left">freeship tận nhà, flashsale 40%</div>
                         </div>
-                        <div class="col-md-6 text-right">
+                        @*<div class="col-md-6 text-right">
                             <div class="top_nav_right">
                                 <ul class="top_nav_menu">
-
-                                    <!-- Currency / Language / My Account -->
-                                    @*<li class="currency">
-                                    <a href="#">
-                                    usd
-                                    <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="currency_selection">
-                                    <li><a href="#">cad</a></li>
-                                    <li><a href="#">aud</a></li>
-                                    <li><a href="#">eur</a></li>
-                                    <li><a href="#">gbp</a></li>
-                                    </ul>
-                                    </li>
-                                    <li class="language">
-                                    <a href="#">
-                                    English
-                                    <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="language_selection">
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">Italian</a></li>
-                                    <li><a href="#">German</a></li>
-                                    <li><a href="#">Spanish</a></li>
-                                    </ul>
-                                    </li>*@
                                     <li class="account">
                                         <a href="#">
                                             My Account
@@ -75,7 +50,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>
@@ -97,7 +72,7 @@
                     <div class="col-lg-6">
                         <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
                             <h4>Newsletter</h4>
-                            <p>Subscribe to our newsletter and get 20% off your first purchase</p>
+                            <p>Đăng ký nhận bản tin</p>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -114,34 +89,41 @@
 
         <!-- Footer -->
 
-        <footer class="footer">
+        <footer class="footer"  style="background: #1e1e27; color: #b5aec4">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="footer_nav_container d-flex flex-sm-row flex-column align-items-center justify-content-lg-start justify-content-center text-center">
-                            <ul class="footer_nav">
-                                <li><a href="#">Blog</a></li>
-                                <li><a href="#">FAQs</a></li>
-                                <li><a href="contact.html">Contact us</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
+                    <div class="col-lg-4" style="padding-top: 25px">
+                        <h5 style="color: #b5aec4">DỊCH VỤ</h5>
                             <ul>
-                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-skype" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                <li style="padding-top: 5px">Điều khoản sử dụng</li>
+                                <li style="padding-top: 5px">Chính sách bảo mật thông tin cá nhân</li>
+                                <li style="padding-top: 5px">Chính sách bảo mật thanh toán</li>
+                                <li style="padding-top: 5px">Hệ thông trung tâm - nhà sách</li>
                             </ul>
-                        </div>
+                    </div>
+                    <div class="col-lg-4" style="padding-top: 25px">
+                        <h5 style="color: #b5aec4">HỖ TRỢ</h5>
+                        <ul>
+                            <li style="padding-top: 5px">Chính sách đổi trả - hoàn tiền</li>
+                            <li style="padding-top: 5px">Chính sách bảo hành</li>
+                            <li style="padding-top: 5px">Chính sách vận chuyển</li>
+                            <li style="padding-top: 5px">Chính sách thanh toán</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4" style="padding-top: 25px">
+                        <h5 style="color: #b5aec4">LIÊN HỆ</h5>
+                        <ul>
+                            <li style="padding-top: 5px"><i class="fa fa-map-marker"></i> Địa chỉ: Đại học Công Nghiệp Hà Nội</li>
+                            <li style="padding-top: 5px"><i class="fa fa-phone"></i> Diện thoại: 0123456789</li>
+                            <li style="padding-top: 5px"><i class="fa fa-facebook"></i> Facebook: abc</li>
+                            <li style="padding-top: 5px"><i class="fa fa-envelope"></i> Email: abc@gmail.com</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 130px; border-top: 1px solid #b5aec4">
                     <div class="col-lg-12">
-                        <div class="footer_nav_container">
-                            <div class="cr">©2018 All Rights Reserverd. Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#">Colorlib</a> &amp; distributed by <a href="https://themewagon.com">ThemeWagon</a></div>
+                        <div>
+                            <div class="cr">©2023 All Rights Reserverd.</div>
                         </div>
                     </div>
                 </div>
@@ -158,67 +140,13 @@
     <script src="~/client/plugins/easing/easing.js"></script>
     <script src="~/client/js/custom.js"></script>
 
-    @*<script src="~/client/js/cart.js"></script>*@
-    <script>
-        $(document).ready(function () {
-            $('body').on('click', '.btnAddToCart', function (e) {
-                e.preventDefault();
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
-                var id = $(this).data('id');
-                var quantity = 1;
-                var quantityText = $('#quantity_value').text();
-                if (quantityText != '') {
-                    quantity = parseInt(quantityText);
-                }
-
-                $.ajax({
-                    url: '/cart/addtocart',
-                    type: 'POST',
-                    data: { id: id, quantity: quantity },
-                    success: function (rs) {
-                        if (rs.success) {
-                            $('#checkout_items').html(rs.count);
-                        }
-                    }
-                });
-            });
-
-            $('body').on('click', '.updateQuantity', function (e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                var quantity = $('.quantity_value-'+id).text();
-                if (quantity != '') {
-                    quantity = parseInt(quantity);
-                }
-
-                $.ajax({
-                    url: 'cart/update',
-                    type: 'POST',
-                    data: { id: id, quantity: quantity },
-                    success: function (rs) {
-                        if (rs.success) {
-                            $('.quantity_value-'+id).html(rs.quantity);
-                            $('#totalPrice-'+id).html(rs.totalPrice);
-                        }
-                    }
-                });
-            });
-
-            $('body').on('click', '#btnDeleteCartItem', function(){
-                var id = $(this).data('id');
-                $.ajax({
-                    url: 'cart/delete',
-                    type: 'POST',
-                    data: {id: id},
-                    success: function(rs){
-                        if(rs.success){
-                            $('#trCartItem-'+id).remove();
-                        }
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="~/client/js/cart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
     @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)

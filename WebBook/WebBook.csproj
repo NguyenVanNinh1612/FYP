@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\thumbnails\" />
     <Folder Include="wwwroot\uploads\images\product\" />
   </ItemGroup>
 

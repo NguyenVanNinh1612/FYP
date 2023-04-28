@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using WebBook.Data;
 using WebBook.Models;
 
@@ -80,6 +81,25 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}"
     );
 
+
+var defaultDateCulture = "en-US";
+var ci = new CultureInfo(defaultDateCulture);
+ci.NumberFormat.NumberDecimalSeparator = ".";
+ci.NumberFormat.CurrencyDecimalSeparator = ".";
+
+// Configure the Localization middleware
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(ci),
+    SupportedCultures = new List<CultureInfo>
+    {
+        ci,
+    },
+    SupportedUICultures = new List<CultureInfo>
+    {
+        ci,
+    }
+});
 
 
 app.Run();
