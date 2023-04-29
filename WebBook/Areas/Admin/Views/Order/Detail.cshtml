@@ -108,7 +108,7 @@
                         <!-- accepted payments column -->
                         <div class="col-sm-6">
                             @*<p class="lead">Phương thức thanh toán:</p>*@
-                            @if (order.PaymentMethod == false)
+                            @if (order.PaymentMethod)
                             {
                                 <p><span style ="font-weight: bold">Phương thức thanh toán:</span> VNPAY</p>
                             }
@@ -118,7 +118,14 @@
                             }
 
                             <p><span style="font-weight: bold">Trạng thái:</span> <span id="trangthai">@ExtensionHelper.Status(order.Status)</span></p>
-
+                            @if (order.IsPay)
+                            {
+                                <p style="font-weight: bold; color: green">Đơn hàng đã được thanh toán</p>
+                            }
+                            else
+                            {
+                                <p style="font-weight: bold; color: darkred">Đơn hàng chưa được thanh toán</p>
+                            }
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-6">

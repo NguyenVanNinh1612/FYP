@@ -22,6 +22,7 @@ namespace WebBook.Models
         public decimal TotalAmount { get; set; }
         public int Quantity { get; set; }
         public bool PaymentMethod { get; set; }
+        public bool IsPay { get; set; } = false;
         public int Status { get; set; }
 
         public ICollection<OrderDetail> OrderDetails { get; set; }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using WebBook.Data;
 using WebBook.Models;
-
+using WebBook.Payment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +25,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 builder.Services.AddNotyf(config =>
 {

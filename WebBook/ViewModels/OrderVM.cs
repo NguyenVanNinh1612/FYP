@@ -14,7 +14,7 @@ namespace WebBook.ViewModels
         public string Address { get; set; }
         [Required(ErrorMessage = "Tỉnh/Thành phố không được để trống!")]
         public string City { get; set; }
-        [Required(ErrorMessage = "Huyện/Thị trấn không được để trống!")]
+        [Required(ErrorMessage = "Quận/Huyện trấn không được để trống!")]
         public string District { get; set; }
         [Required(ErrorMessage = "Phường/Xã không được để trống!")]
         public string Ward { get; set; }

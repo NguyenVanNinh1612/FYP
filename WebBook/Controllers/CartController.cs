@@ -4,6 +4,7 @@ using WebBook.ViewModels;
 using WebBook.Models;
 using WebBook.Common;
 using WebBook.Data;
+using WebBook.Payment;
 
 namespace WebBook.Controllers
 {
@@ -11,11 +12,12 @@ namespace WebBook.Controllers
     {
         private readonly ApplicationDbContext _context;
         public INotyfService _notifyService { get; }
-
-        public CartController(ApplicationDbContext context, INotyfService notifyService)
+        private readonly IVnPayService _vnPayService;
+        public CartController(ApplicationDbContext context, INotyfService notifyService, IVnPayService vnPayService)
         {
             _context = context;
             _notifyService = notifyService;
+            _vnPayService = vnPayService;
         }
 
 
@@ -101,7 +103,7 @@ namespace WebBook.Controllers
                 TotalAmount = carts.Sum(x => x.TotalPrice),
                 PaymentMethod = vm.PaymentMethod,
                 Code = "DH" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9),
-                Status = 1
+                Status = 0
             };
 
             _context.Orders?.Add(order);
@@ -130,9 +132,50 @@ namespace WebBook.Controllers
                     myCart.Remove(item);
                 }
             }
-
             HttpContext.Session.Set("GioHang", myCart);
+
+            if (order.PaymentMethod)
+            {
+                var url = _vnPayService.CreatePaymentUrl(order, HttpContext);
+                return Redirect(url);
+            }
+
+           
             return View("CheckOutSuccess");
+        }
+
+        public IActionResult PaymentCallback()
+        {
+            var response = _vnPayService.PaymentExecute(Request.Query);
+            if (response.IsPay)
+            {
+                var order = _context.Orders?.FirstOrDefault(x => x.Id == response.Id);
+                if (order != null) order.IsPay = true;
+                _context.SaveChanges();
+                return View("PaymentSuccess");
+            }
+            else
+            {
+                var orderDetails = _context.OrderDetails?.Where(x => x.OrderId == response.Id).ToList();
+                if (orderDetails.Count > 0)
+                {
+                    foreach(var item in orderDetails)
+                    {
+                        _context.OrderDetails.Remove(item);
+                    }
+                    var order = _context.Orders.FirstOrDefault(x => x.Id == response.Id);
+                    if (order != null)
+                    {
+                        _context.Orders.Remove(order);
+                    }
+
+                    _context.SaveChanges();
+
+                }
+                return View("PaymentFail");
+            }
+            //return Json(response);
+           
         }
 
         public IActionResult AddToCart(int id, int quantity)
