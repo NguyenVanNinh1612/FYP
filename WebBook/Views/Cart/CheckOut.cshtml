@@ -112,6 +112,7 @@
                     </div>
                     <div class="row">
                         <table class="table" id="table-cart">
+                            <input type="hidden" name="ids" value="@ViewBag.ids" />
                             @await Component.InvokeAsync("CartCheckout", new{carts = (List<CartItem>)ViewBag.carts})
                         </table>
                     </div>

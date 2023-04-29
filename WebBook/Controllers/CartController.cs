@@ -4,7 +4,6 @@ using WebBook.ViewModels;
 using WebBook.Models;
 using WebBook.Common;
 using WebBook.Data;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace WebBook.Controllers
 {
@@ -64,43 +63,76 @@ namespace WebBook.Controllers
             }
             ViewBag.totalPrice = totalPrice;
             ViewBag.carts = carts;
-            // return PartialView("_CartPartial", carts);
+            ViewBag.ids = ids;
             return View();
         }
 
         [HttpPost]
-        public IActionResult PaymentConfirm(OrderVM vm)
+        public IActionResult PaymentConfirm(OrderVM vm, string ids)
         {
-           
-            var carts = (List<CartItem>)ViewBag.carts;
+            if (ids == null)
+            {
+                return View();
+            }
+            var items = ids.Split(',');
+            var carts = new List<CartItem>();
+            decimal totalPrice = 0;
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    var cartItem = Carts.SingleOrDefault(x => x.ProductId == Convert.ToInt32(item));
+                    carts.Add(cartItem!);
+                    if (cartItem != null)
+                    {
+                        totalPrice += cartItem.TotalPrice;
+                    }
+
+                }
+            }
             Random rd = new();
             Order order = new()
             {
                 CustomerName = vm.Name,
-                Address = vm.City + ", " + vm.District + ", " + vm.Ward + ", " + vm.Address,
+                Address = vm.Address + ", " + vm.Ward + ", " + vm.District + ", " + vm.City,
+                Email = vm.Email,
                 Phone = vm.Phone,
-                TotalAmount = carts.Sum(x => (x.TotalPrice)),
+                Quantity = carts.Sum(x => x.Quantity),
+                TotalAmount = carts.Sum(x => x.TotalPrice),
                 PaymentMethod = vm.PaymentMethod,
-                Code = "DH" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9)
+                Code = "DH" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9),
+                Status = 1
             };
 
-            _context.Orders.Add(order);
-          
-            foreach(var item in carts)
+            _context.Orders?.Add(order);
+            _context.SaveChanges();
+
+            
+            foreach (var item in carts)
             {
                 OrderDetail od = new()
                 {
                     OrderId = order.Id,
                     ProductId = item.ProductId,
-                    Price = item.Price,
+                    Price = item.TotalPrice,
                     Quantity = item.Quantity
 
                 };
-                _context.OrderDetails.Add(od);
+                _context.OrderDetails?.Add(od);
+                _context.SaveChanges();
             }
-            
-             
-            return View("Index");
+            var myCart = Carts;
+            for(int i=0; i<carts.Count; i++)
+            {
+                var item = myCart.SingleOrDefault(x=>x.ProductId == carts[i].ProductId);
+                if (item != null)
+                {
+                    myCart.Remove(item);
+                }
+            }
+
+            HttpContext.Session.Set("GioHang", myCart);
+            return View("CheckOutSuccess");
         }
 
         public IActionResult AddToCart(int id, int quantity)

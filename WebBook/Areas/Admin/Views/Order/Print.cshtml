@@ -1,0 +1,141 @@
+﻿@using WebBook.Common
+@using WebBook.Models
+
+@model IEnumerable<WebBook.ViewModels.OrderDetailVM>
+@{
+    var order = (Order)ViewBag.order;
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Main content -->
+        <section class="invoice">
+            <div class="row" style="margin-bottom: 20px">
+               <div class="col">
+                    <h2 style="text-align: center">HÓA ĐƠN</h2>
+               </div>
+            </div>
+            <!-- info row -->
+            <div class="row invoice-info">
+                <div class="col-sm-6 invoice-col">
+                    <address>
+                        <strong>Khách hàng</strong><br>
+                        Họ tên: @order.CustomerName<br>
+                        Email: @order.Email<br>
+                        Phone: @order.Phone<br>
+                        Địa chỉ: @order.Address
+                    </address>
+                </div>
+                <div class="col-sm-6 invoice-col">
+                    <address>
+                        <strong>Đơn hàng</strong><br>
+                        Mã đơn hàng: @order.Code<br>
+                        Ngày tạo: @order.CreatedDate.ToShortDateString()<br>
+                        Ngày cập nhật: @order.ModifiedDate.ToShortDateString()<br>
+                    </address>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <!-- Table row -->
+            <div class="row">
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                var stt = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>@item.ProductName</td>
+                                        <td>@ExtensionHelper.ToVnd(item.Price)</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@ExtensionHelper.ToVnd(item.TotalPrice)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-sm-6">
+                    @*<p class="lead">Phương thức thanh toán:</p>*@
+                    @if (order.PaymentMethod == false)
+                    {
+                        <p><span style="font-weight: bold">Phương thức thanh toán:</span> VNPAY</p>
+                    }
+                    else
+                    {
+                        <p><span style="font-weight: bold">Phương thức thanh toán:</span> Trả tiền mặt khi nhận hàng</p>
+                    }
+
+                    <p><span style="font-weight: bold">Trạng thái:</span> @ExtensionHelper.Status(order.Status)</p>
+
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    @*<p class="lead">Amount Due 2/22/2014</p>*@
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th style="width:50%">Tổng thành tiền:</th>
+                                    <td>@ExtensionHelper.ToVnd(@order.TotalAmount)</td>
+                                </tr>
+                                <tr>
+                                    <th>Phí vận chuyển:</th>
+                                    <td>30,000 đ</td>
+                                </tr>
+                                <tr>
+                                    <th>Số tiền phải trả:</th>
+                                    <td>@ExtensionHelper.ToVnd(@order.TotalAmount + 30000)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- ./wrapper -->
+    <!-- Page specific script -->
+    <script>
+        window.addEventListener("load", window.print());
+    </script>
+</body>
+</html>
