@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebBook.Common;
 using WebBook.Data;
@@ -9,6 +10,7 @@ using X.PagedList;
 namespace WebBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Super")]
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +29,7 @@ namespace WebBook.Areas.Admin.Controllers
             ViewBag.Page = page;
 
             var listOrders = new List<Order>();
-            listOrders = _context.Orders.ToList();
+            listOrders = _context.Orders!.ToList();
 
             return View(listOrders.OrderByDescending(x=>x.Id).ToPagedList(pageNumber, pageSize));
         }

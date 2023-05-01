@@ -1,22 +1,13 @@
-﻿@model IEnumerable<WebBook.Models.Post>
+﻿@using WebBook.Common
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+@model IPagedList<WebBook.ViewModels.PostVM>
+
+
 
 @{
-    ViewData["Title"] = "Bai viet";
-}
-
-@section naviheader{
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a asp-action="Index" asp-controller="Home" asp-area="Admin" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a asp-action="Index" asp-area="Admin" asp-controller="Post" class="nav-link">@ViewData["Title"]</a>
-        </li>
-    </ul>
-
+    ViewData["Title"] = "Post";
 }
 
 <!-- Content Header (Page header) -->
@@ -24,11 +15,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Quan ly bai viet</h1>
+                <h1>@ViewData["Title"] Management</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li class="breadcrumb-item active">@ViewData["Title"]</li>
                 </ol>
             </div>
@@ -38,77 +29,109 @@
 
 <!-- Main content -->
 <section class="content">
-
-    <!-- Default box -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Title</h3>
-
-            <div class="card-tools">
-                <a asp-area="Admin" asp-controller="Post" asp-action="Create" class="btn btn-primary">Them moi</a>
-                <a href="#" class="btn btn-danger" id="btnDeleteAll">Delete All</a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <a asp-area="Admin" asp-controller="Post" asp-action="Create" class="btn btn-sm btn-primary">Add</a>
+                            <a href="#" class="btn btn-sm btn-danger" id="btnDeleteAll">Delete All</a>
+                        </div>
+                        <div class="card-tools">
+                            <form asp-area="Admin" asp-action="Index" asp-controller="Post" class="input-group input-group-sm" style="width: 250px;">
+                                <input type="text" name="searchString" class="form-control float-right" placeholder="Search" value="@ViewBag.CurrentFilter">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default" style="width: 70px">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20px;"><input type="checkbox" id="SelectAll" /></th>
+                                    <th>STT</th>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Created Date</th>
+                                    <th>Created By</th>
+                                    <th>Modifed Date</th>
+                                    <th>Modifed By</th>
+                                    <th style="text-align:center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var stt = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        if (ViewBag.Page > 1)
+                                        {
+                                            stt = ViewBag.PageSize * (ViewBag.Page - 1) + 1;
+                                        }
+                                        <tr id="trow_@item.Id">
+                                            <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
+                                            <td>@stt</td>
+                                            
+                                            <td><img width="120" src="~/uploads/images/post/@item.Image" /></td>
+                                            <td>@ExtensionHelper.ShorterText(item.Title)</td>
+                                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CreatedBy</td>
+                                            <td>@item.ModifiedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.ModifiedBy</td>
+                                            <td style="text-align:center">
+                                                <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Post" asp-route-id="@item.Id">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    Edit
+                                                </a>
+                                                <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">
+                                                    <i class="fas fa-trash"></i>
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        stt++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">There are no records!</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <div class="row float-right">
+                            @* Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount*@
+                            @Html.PagedListPager(Model, page=> Url.Action("Index",new{Area="Admin", page, currentFilter = ViewBag.CurrentFilter}),
+                            new PagedListRenderOptions{
+                            LiElementClasses = new string[] { "page-item" },
+                            PageClasses = new string[] { "page-link" }
+                            })
+                        </div>
+                    </div>
+                    <!--/.card-footer -->
+                </div>
+                <!-- /.card -->
             </div>
         </div>
-        <div class="card-body">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="SelectAll" /></th>
-                            <th>STT</th>
-
-                            <th>Title</th>
-                            <th>Image</th>
-                            <th>Description</th>
-
-                            <th>Created Date</th>
-                            <th>Action</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            var stt = 1;
-                        }
-                        @foreach (var item in Model)
-                        {
-                            <tr id="trow_@item.Id">
-                                <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
-                                <td>@stt</td>
-
-                                <td>@item.Title</td>
-                                <td>
-
-                                    <img class="img-fluid" src="~/thumbnails/@item.Image" style="object-fit: fill; height: 100px;">
-                                </td>
-                                <td>@item.Description</td>
-
-                                <td>@item.CreatedDate.ToShortDateString()</td>
-                                <td>
-                                    <a class="btn btn-sm btn-warning" asp-area="Admin" asp-action="Edit" asp-controller="Post" asp-route-id="@item.Id">Edit</a>
-                                    <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">Delete</a>
-                                </td>
-                            </tr>
-                            stt++;
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-            Footer
-        </div>
-        <!-- /.card-footer-->
     </div>
-    <!-- /.card -->
 
 </section>
 
 @section scripts{
     <script>
         $(document).ready(function () {
+
             $('body').on('click', '#btnDeleteAll', function (e) {
                 e.preventDefault();
                 var str = "";
@@ -132,10 +155,10 @@
                     }
                 });
                 if (str.length > 0) {
-                    var conf = confirm("Ban co muon xoa cac ban ghi nay hay khong?");
+                    var conf = confirm("Do you want to delete all selected records?");
                     if (conf == true) {
                         $.ajax({
-                            url: '/admin/post/deleteAll',
+                            url: '/admin/Post/deleteAll',
                             type: 'POST',
                             data: { ids: str },
                             success: function (rs) {
@@ -158,19 +181,19 @@
                         checkbox.attr('selected', 'checked');
                     }
                     else {
-                        checkbox.arrt('selected', '');
+                        checkbox.attr('selected', '');
                     }
-                })
+                });
             });
 
 
 
             $('body').on('click', '.btnDelete', function () {
                 var id = $(this).data('id');
-                var conf = confirm('Ban co muon xoa ban ghi nay khong?');
+                var conf = confirm('Do you want to delete this record??');
                 if (conf == true) {
                     $.ajax({
-                        url: '/admin/post/delete',
+                        url: '/admin/Post/delete',
                         type: 'POST',
                         data: { id: id },
                         success: function (rs) {

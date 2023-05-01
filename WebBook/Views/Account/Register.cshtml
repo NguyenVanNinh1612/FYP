@@ -1,0 +1,65 @@
+﻿@using WebBook.Common
+@using WebBook.Data
+@model WebBook.ViewModels.RegisterVM
+
+
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<link rel="stylesheet" type="text/css" href="~/client/styles/single_styles.css">
+<link rel="stylesheet" type="text/css" href="~/client/styles/single_responsive.css">
+
+
+<div class="container single_product_container" style="margin-top: 130px">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+            <div class="row" style="margin-bottom: 15px">
+                <div style="border-bottom: 1px solid #ced4da;">
+                    <h5>ĐĂNG KÝ TÀI KHOẢN</h5>
+                </div>
+            </div>
+            <form type="POST" enctype="multipart/form-data" asp-controller="Account" asp-action="Register">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Họ tên</label>
+                            <input asp-for="FullName" type="text" class="form-control" placeholder="Nhập họ tên người nhận" />
+                            <span asp-validation-for="FullName" class="checkout_validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Nhập email" />
+                            <span asp-validation-for="Email" class="checkout_validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input asp-for="Password" type="email" class="form-control" placeholder="Nhập email" />
+                            <span asp-validation-for="Password" class="checkout_validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input asp-for="UserName" type="text" class="form-control" placeholder="Nhập số điện thoại" />
+                            <span asp-validation-for="UserName" class="checkout_validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input asp-for="Phone" type="text" class="form-control" placeholder="Nhập số điện thoại" />
+                            <span asp-validation-for="Phone" class="checkout_validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            <input asp-for="Address" type="text" class="form-control" placeholder="Nhập địa chỉ nhận hàng" />
+                            <span asp-validation-for="Address" class="checkout_validation"></span>
+                        </div>
+                        <div class="form-group">
+                            <button style="cursor: pointer" type="submit" class="btn btn-danger">Đăng ký</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -253,7 +253,7 @@ jQuery(document).ready(function($)
 				star.on('click', function()
 				{
 					var i = star.index();
-
+					$('#rating_value').val(i);
 					stars.find('i').each(function()
 					{
 						$(this).removeClass('fa-star');

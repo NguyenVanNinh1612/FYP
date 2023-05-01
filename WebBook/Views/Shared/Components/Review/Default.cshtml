@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebBook.ViewModels.ReviewVM>
+
+<div class="tab_title reviews_title">
+    @if (ViewBag.countReview != null)
+    {
+        <h4>Reviews (<span id="count_review">@ViewBag.countReview</span>)</h4>
+    }
+    else
+    {
+        <h4 id="count_review">Reviews (<span id="count_review">0</span>)</h4>
+    }
+</div>
+
+<!-- User Review -->
+<img src="~/thumbnails/pic-1.jpg" style="display: none" id="get_user_pic"/>
+<div id="prepend_review">
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <div class="user_review_container d-flex flex-column flex-sm-row">
+                <div class="user">
+                    <div class="user_pic"><img width="100%" src="~/thumbnails/pic-1.jpg" /></div>
+                    <div class="user_rating">
+                        <ul class="star_rating">
+                            @for (int i = 0; i <= item.Rating; i++)
+                            {
+                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                            }
+                            @for (int i = 0; i < (4 - item.Rating); i++)
+                            {
+                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="review">
+                    <div class="review_date">@item.CreatedDate.ToString("dd MMM yyyy")</div>
+                    <div class="user_name">@item.FullName</div>
+                    <p>@item.Content</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+

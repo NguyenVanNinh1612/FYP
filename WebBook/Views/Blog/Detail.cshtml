@@ -1,0 +1,50 @@
+﻿@model WebBook.Models.Post
+@{
+    ViewData["Title"] = "Blog";
+}
+
+<link rel="stylesheet" type="text/css" href="~/client/styles/single_styles.css">
+<link rel="stylesheet" type="text/css" href="~/client/styles/single_responsive.css">
+
+
+<div class="container single_product_container" style="margin-top: 130px">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a asp-controller="Blog" asp-action="Index"><i class="fa fa-angle-right" aria-hidden="true"></i>Blog</a></li>
+                    <li class="active"><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@Model.Slug" asp-route-id="@Model.Id"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.Slug</a></li>
+                </ul>
+            </div>
+
+            <div class="main_content">
+                @if (Model != null)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <h2>@Model.Title</h2><br>
+                            <hr>
+                            @Html.Raw(@Model.Description)
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="col">
+                            <p>By: @Model.CreatedBy - @Model.CreatedDate.ToString("dd, MMM, yyyy")</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs -->
+@section scripts{
+    <script src="~/client/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="~/client/js/single_custom.js"></script>
+}

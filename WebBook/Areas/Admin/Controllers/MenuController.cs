@@ -1,5 +1,10 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 using WebBook.Common;
 using WebBook.Data;
 using WebBook.Models;
@@ -8,14 +13,17 @@ using X.PagedList;
 namespace WebBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Super, Admin")]
     public class MenuController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         public INotyfService _notifyService { get; }
-        public MenuController(ApplicationDbContext context, INotyfService notifyService)
+        public MenuController(ApplicationDbContext context, INotyfService notifyService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _notifyService = notifyService;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int? page, string searchString, string currentFilter)
@@ -54,13 +62,19 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Menu model)
+        public async Task<IActionResult> Create(Menu model)
         {
             if (ModelState.IsValid)
             {
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
-                _context.Menus!.Add(model);
-                _context.SaveChanges();
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
+                model.CreatedBy = loggedInUser?.FullName;
+                model.ModifiedBy = loggedInUser?.FullName;
+
+                await _context.Menus!.AddAsync(model);
+                await _context.SaveChangesAsync();
                 _notifyService.Success("Menu created successfully!");
                 
                 return RedirectToAction("Index", "menu", new
@@ -85,13 +99,18 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Menu model)
+        public async Task<IActionResult> Edit(Menu model)
         {
             if (ModelState.IsValid)
             {
-                model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
-                _context.Menus!.Update(model);
-                _context.SaveChanges();
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
+                model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
+                model.ModifiedBy = loggedInUser?.FullName;
+                model.ModifiedDate = DateTime.Now;
+
+                _context.Menus.Update(model);
+                await _context.SaveChangesAsync();
+              
                 _notifyService.Success("Menu updated successfully!");
                 return RedirectToAction("Index", "menu", new
                 {

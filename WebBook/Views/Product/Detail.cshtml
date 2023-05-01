@@ -1,6 +1,16 @@
 ﻿@model WebBook.ViewModels.ProductVM
 @using WebBook.ViewComponents
 @using WebBook.Common
+@using WebBook.ViewComponents
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> _userManager;
+@{
+    var loggedInUser = new ApplicationUser();
+    loggedInUser = _userManager.Users?.FirstOrDefault(x => x.UserName == User.Identity!.Name);
+}
+
+
+
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -121,13 +131,23 @@
             <div class="product_details">
                 <div class="product_details_title">
                     <h2>@Model.Name</h2>
-                    <p>@Html.Raw(Model.Detail)</p>
+                    <p>Tác giả:  <span style="font-weight: bold">@Model.Author</span></p>
+                    <p>Thể loại: <span style="font-weight: bold">@Model.CategoryName</span></p>
+                    <p>Nhà cung cấp:  <span style="font-weight: bold">@Model.SupplierName</span></p>
                 </div>
-                <div class="free_delivery d-flex flex-row align-items-center justify-content-center">
-                    <span class="ti-truck"></span><span>free delivery</span>
+                <div class="free_delivery d-flex flex-row align-items-center justify-content-center" style="margin-top: 20px; margin-bottom: 15px">
+                    <i class="fa fa-truck" aria-hidden="true"></i><span style="padding-left: 10px"> Giao hàng tiêu chuẩn</span>
                 </div>
-                <div class="original_price">@ExtensionHelper.ToVnd(Model.Price)</div>
-                <div class="product_price">@ExtensionHelper.ToVnd(Model.PriceSale)</div>
+                @if (Model.PriceSale > 0)
+                {
+                    <div class="original_price">@ExtensionHelper.ToVnd(Model.Price)</div>
+                    <div class="product_price">@ExtensionHelper.ToVnd(Model.PriceSale)</div>
+                }
+                else
+                {
+                    <div class="product_price">@ExtensionHelper.ToVnd(Model.Price)</div>
+                }
+
                 <ul class="star_rating">
                     <li><i class="fa fa-star" aria-hidden="true"></i></li>
                     <li><i class="fa fa-star" aria-hidden="true"></i></li>
@@ -168,9 +188,8 @@
             <div class="col">
                 <div class="tabs_container">
                     <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
-                        <li class="tab active" data-active-tab="tab_1"><span>Description</span></li>
-                        @*<li class="tab" data-active-tab="tab_2"><span>Additional Information</span></li>*@
-                        <li class="tab" data-active-tab="tab_3"><span>Reviews (2)</span></li>
+                        <li class="tab  active" data-active-tab="tab_3"><span style="font-size: 20px">Reviews</span></li>
+                        <li class="tab" data-active-tab="tab_1"><span style="font-size: 20px">Description</span></li>
                     </ul>
                 </div>
             </div>
@@ -178,110 +197,14 @@
         <div class="row">
             <div class="col">
 
-                <!-- Tab Description -->
-
-                <div id="tab_1" class="tab_container active">
-                    <div class="row">
-                        @Html.Raw(Model.Description)
-                        @*<div class="col-lg-5 desc_col">
-                        <div class="tab_title">
-                        <h4>Description</h4>
-                        </div>
-                        <div class="tab_text_block">
-                        <h2>Pocket cotton sweatshirt</h2>
-                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                        </div>
-                        <div class="tab_image">
-                        <img src="images/desc_1.jpg" alt="">
-                        </div>
-                        <div class="tab_text_block">
-                        <h2>Pocket cotton sweatshirt</h2>
-                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                        </div>
-                        </div>
-                        <div class="col-lg-5 offset-lg-2 desc_col">
-                        <div class="tab_image">
-                        <img src="images/desc_2.jpg" alt="">
-                        </div>
-                        <div class="tab_text_block">
-                        <h2>Pocket cotton sweatshirt</h2>
-                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                        </div>
-                        <div class="tab_image desc_last">
-                        <img src="images/desc_3.jpg" alt="">
-                        </div>
-                        </div>*@
-                    </div>
-                </div>
-
-                <!-- Tab Additional Info -->
-                @*	<div id="tab_2" class="tab_container">
-                <div class="row">
-                <div class="col additional_info_col">
-                <div class="tab_title additional_info_title">
-                <h4>Additional Information</h4>
-                </div>
-                <p>COLOR:<span>Gold, Red</span></p>
-                <p>SIZE:<span>L,M,XL</span></p>
-                </div>
-                </div>
-                </div>*@
-
                 <!-- Tab Reviews -->
 
-                <div id="tab_3" class="tab_container">
+                <div id="tab_3" class="tab_container active">
                     <div class="row">
 
                         <!-- User Reviews -->
-
                         <div class="col-lg-6 reviews_col">
-                            <div class="tab_title reviews_title">
-                                <h4>Reviews (2)</h4>
-                            </div>
-
-                            <!-- User Review -->
-
-                            <div class="user_review_container d-flex flex-column flex-sm-row">
-                                <div class="user">
-                                    <div class="user_pic"></div>
-                                    <div class="user_rating">
-                                        <ul class="star_rating">
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="review">
-                                    <div class="review_date">27 Aug 2016</div>
-                                    <div class="user_name">Brandon William</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-
-                            <!-- User Review -->
-
-                            <div class="user_review_container d-flex flex-column flex-sm-row">
-                                <div class="user">
-                                    <div class="user_pic"></div>
-                                    <div class="user_rating">
-                                        <ul class="star_rating">
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="review">
-                                    <div class="review_date">27 Aug 2016</div>
-                                    <div class="user_name">Brandon William</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
+                            @await Component.InvokeAsync(typeof(ReviewViewComponent), new{productId = Model?.Id});
                         </div>
 
                         <!-- Add Review -->
@@ -290,13 +213,10 @@
 
                             <div class="add_review">
                                 <form id="review_form" action="post">
+                                    <h1>Add Review</h1>
+                                    <p class="text-danger" id="review_error"></p>
                                     <div>
-                                        <h1>Add Review</h1>
-                                        <input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
-                                        <input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
-                                    </div>
-                                    <div>
-                                        <h1>Your Rating:</h1>
+                                        Your Rating:
                                         <ul class="user_star_rating">
                                             <li><i class="fa fa-star" aria-hidden="true"></i></li>
                                             <li><i class="fa fa-star" aria-hidden="true"></i></li>
@@ -304,6 +224,9 @@
                                             <li><i class="fa fa-star" aria-hidden="true"></i></li>
                                             <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
                                         </ul>
+                                        <input type="hidden" id="rating_value" value="3" />
+                                        <input type="hidden" id="user_id" value="@loggedInUser?.Id" />
+                                        <input type="hidden" id="product_id" value="@Model?.Id" />
                                         <textarea id="review_message" class="input_review" name="message" placeholder="Your Review" rows="4" required data-error="Please, leave us a review."></textarea>
                                     </div>
                                     <div class="text-left text-sm-right">
@@ -317,6 +240,14 @@
                     </div>
                 </div>
 
+                <!-- Tab Description -->
+
+                <div id="tab_1" class="tab_container">
+                    <div class="row">
+                        @Html.Raw(Model.Description)
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

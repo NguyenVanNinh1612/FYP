@@ -103,7 +103,10 @@ namespace WebBook.Controllers
                 TotalAmount = carts.Sum(x => x.TotalPrice),
                 PaymentMethod = vm.PaymentMethod,
                 Code = "DH" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9),
-                Status = 0
+                Status = 0,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
+           
             };
 
             _context.Orders?.Add(order);
@@ -117,8 +120,7 @@ namespace WebBook.Controllers
                     OrderId = order.Id,
                     ProductId = item.ProductId,
                     Price = item.TotalPrice,
-                    Quantity = item.Quantity
-
+                    Quantity = item.Quantity,
                 };
                 _context.OrderDetails?.Add(od);
                 _context.SaveChanges();

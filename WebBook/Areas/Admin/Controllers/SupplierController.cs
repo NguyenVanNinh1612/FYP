@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebBook.Common;
 using WebBook.Data;
@@ -8,6 +9,7 @@ using X.PagedList;
 namespace WebBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Super, Admin")]
     public class SupplierController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -57,6 +59,9 @@ namespace WebBook.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
+                    
                 _context.Suppliers!.Add(model);
                 _context.SaveChanges();
                 _notifyService.Success("Supplier created successfully!");
@@ -87,6 +92,7 @@ namespace WebBook.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.ModifiedDate = DateTime.Now;
                 _context.Suppliers!.Update(model);
                 _context.SaveChanges();
                 _notifyService.Success("Supplier updated successfully!");

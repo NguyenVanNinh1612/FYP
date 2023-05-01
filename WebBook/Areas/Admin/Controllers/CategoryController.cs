@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebBook.Common;
 using WebBook.Data;
@@ -8,6 +9,7 @@ using X.PagedList;
 namespace WebBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Super, Admin")]
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -57,6 +59,8 @@ namespace WebBook.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
                 _context.Categories!.Add(model);
                 _context.SaveChanges();
                 _notifyService.Success("Category created successfully!");
@@ -88,6 +92,7 @@ namespace WebBook.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
+                model.ModifiedDate = model.CreatedDate;
                 _context.Categories!.Update(model);
                 _context.SaveChanges();
                 _notifyService.Success("Category updated successfully!");

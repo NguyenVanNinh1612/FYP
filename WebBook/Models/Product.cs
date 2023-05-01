@@ -44,6 +44,7 @@ namespace WebBook.Models
 
         public virtual ICollection<ProductImage>? ProductImage { get; set; }
         public virtual ICollection<OrderDetail>? OrderDetail { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
         
     }
 }

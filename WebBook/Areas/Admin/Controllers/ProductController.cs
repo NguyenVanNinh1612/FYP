@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net.NetworkInformation;
@@ -12,6 +13,7 @@ using X.PagedList;
 namespace WebBook.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Super, Admin")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -112,6 +114,8 @@ namespace WebBook.Areas.Admin.Controllers
                 }
                 
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
                 _context.Products!.Add(model);
                 _context.SaveChanges();
 
@@ -189,6 +193,7 @@ namespace WebBook.Areas.Admin.Controllers
                 product.SeoTitle = vm.SeoTitle;
                 product.SeoDescription = vm.SeoDescription;
                 product.SeoKeywords = vm.SeoKeywords;
+                product.ModifiedDate = DateTime.Now;
 
                 _context.SaveChanges();
                 _notifyService.Success("Product updated successfully!");

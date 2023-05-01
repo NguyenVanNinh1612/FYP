@@ -1,0 +1,16 @@
+﻿.userLogout {
+    width: 150px;
+    position: fixed;
+    background: #d5d8db;
+    color: black;
+    margin-top: 5px;
+    z-index: 11;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+#user-name:hover .userLogout{
+    visibility: visible;
+    opacity: 1;
+}

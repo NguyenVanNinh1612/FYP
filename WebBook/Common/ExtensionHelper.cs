@@ -28,6 +28,15 @@ namespace WebBook.Common
             return $"{value: #,##0.00} đ";
         }
 
+        public static string ShorterText(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return "";
+            if (text.Length < 35)
+                return text;
+            return text[..35] + "...";
+        }
+
         public static void Set<T>(this ISession session, string key, T value)
         {
             session.SetString(key, JsonSerializer.Serialize(value));

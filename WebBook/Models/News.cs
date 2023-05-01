@@ -16,7 +16,7 @@ namespace WebBook.Models
         public string? SeoDescription { get; set; }
         public string? SeoKeywords { get; set; }
 
-        public virtual Menu? Menu { get; set; }
+      
        
     }
 }

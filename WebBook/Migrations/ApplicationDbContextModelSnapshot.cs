@@ -271,46 +271,6 @@ namespace WebBook.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("WebBook.Models.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DisLike")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Like")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("WebBook.Models.Contact", b =>
                 {
                     b.Property<int>("Id")
@@ -407,14 +367,14 @@ namespace WebBook.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -424,25 +384,19 @@ namespace WebBook.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SeoDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeoKeywords")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeoTitle")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte>("Position")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Menus");
                 });
@@ -470,9 +424,6 @@ namespace WebBook.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MenuId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -496,8 +447,6 @@ namespace WebBook.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
 
                     b.ToTable("News");
                 });
@@ -599,8 +548,8 @@ namespace WebBook.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -614,23 +563,11 @@ namespace WebBook.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("SeoDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeoKeywords")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeoTitle")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
@@ -644,7 +581,7 @@ namespace WebBook.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MenuId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Posts");
                 });
@@ -767,6 +704,40 @@ namespace WebBook.Migrations
                     b.ToTable("ProductImages");
                 });
 
+            modelBuilder.Entity("WebBook.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("Rating")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("WebBook.Models.Subscribe", b =>
                 {
                     b.Property<int>("Id")
@@ -779,6 +750,7 @@ namespace WebBook.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -853,8 +825,7 @@ namespace WebBook.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Avatar")
-                        .IsRequired()
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
@@ -915,13 +886,13 @@ namespace WebBook.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebBook.Models.News", b =>
+            modelBuilder.Entity("WebBook.Models.Menu", b =>
                 {
-                    b.HasOne("WebBook.Models.Menu", "Menu")
-                        .WithMany("News")
-                        .HasForeignKey("MenuId");
+                    b.HasOne("WebBook.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Menus")
+                        .HasForeignKey("ApplicationUserId");
 
-                    b.Navigation("Menu");
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("WebBook.Models.OrderDetail", b =>
@@ -945,13 +916,11 @@ namespace WebBook.Migrations
 
             modelBuilder.Entity("WebBook.Models.Post", b =>
                 {
-                    b.HasOne("WebBook.Models.Menu", "Menu")
+                    b.HasOne("WebBook.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Posts")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
-                    b.Navigation("Menu");
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("WebBook.Models.Product", b =>
@@ -984,16 +953,28 @@ namespace WebBook.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("WebBook.Models.Review", b =>
+                {
+                    b.HasOne("WebBook.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebBook.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("WebBook.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("WebBook.Models.Menu", b =>
-                {
-                    b.Navigation("News");
-
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("WebBook.Models.Order", b =>
@@ -1006,11 +987,22 @@ namespace WebBook.Migrations
                     b.Navigation("OrderDetail");
 
                     b.Navigation("ProductImage");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("WebBook.Models.Supplier", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("WebBook.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Menus");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

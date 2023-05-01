@@ -55,10 +55,11 @@
                                     <th style="width: 20px;"><input type="checkbox" id="SelectAll" /></th>
                                     <th>STT</th>
                                     <th>Name</th>
-                                    <th>Description</th>
                                     <th>Position</th>
                                     <th>Created Date</th>
+                                    <th>Created By</th>
                                     <th>Modifed Date</th>
+                                    <th>Modified By</th>
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
@@ -76,10 +77,11 @@
                                             <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
                                             <td>@stt</td>
                                             <td>@item.Name</td>
-                                            <td>@Html.Raw(item.Description)</td>
                                             <td>@item.Position</td>
-                                            <td>@item.CreatedDate.ToShortDateString()</td>
-                                            <td>@item.ModifiedDate.ToShortDateString()</td>
+                                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CreatedBy</td>
+                                            <td>@item.ModifiedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.ModifiedBy</td>
                                             <td style="text-align:center">
                                                 <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Menu" asp-route-id="@item.Id">
                                                     <i class="fas fa-pencil-alt"></i>

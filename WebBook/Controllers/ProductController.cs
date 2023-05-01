@@ -91,6 +91,7 @@ namespace WebBook.Controllers
                     Quantity = product.Quantity,
                     Avatar = _context.ProductImages.FirstOrDefault(x => x.ProductId == product.Id && x.IsAvatar)?.ImageName,
                     Detail = product.Detail,
+                    Author = product.Author,
                     CategoryId = product.CategoryId,
                     SupplierId = product.SupplierId,
                     CategoryName = _context.Categories?.FirstOrDefault(x => x.Id == product.CategoryId)?.Name,

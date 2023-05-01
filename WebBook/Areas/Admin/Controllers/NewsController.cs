@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebBook.Common;
 using WebBook.Data;
@@ -9,6 +10,7 @@ using X.PagedList;
 namespace WebBook.Areas.Admin.Controllers
 { 
     [Area("Admin")]
+    [Authorize(Roles = "Super, Admin")]
     public class NewsController : Controller
     {
         private readonly ApplicationDbContext _context;

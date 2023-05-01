@@ -84,7 +84,13 @@
                         <div class="row" style="margin-top: 15px">
                             <div>
                                 <p style="font-weight: bold">Giao hàng tiêu chuẩn 30.0000 đ</p>
-                                <p>Thứ Ba - 02/05</p>
+                                @{
+                                    var datenow = DateTime.Now;
+                                    var deliveryDate = datenow.AddDays(6);
+                                    var dateDay = deliveryDate.DayOfWeek;
+                                    <p>Dự kiến giao: @dateDay - @deliveryDate.ToString("dd/MM/yyyy")</p>
+                                }
+                                
                             </div>
                         </div>
                     </div>

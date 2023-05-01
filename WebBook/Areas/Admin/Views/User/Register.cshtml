@@ -1,0 +1,74 @@
+﻿@model WebBook.ViewModels.RegisterVM
+
+@{
+    ViewData["Title"] = "Resgister";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form asp-action="Register" asp-controller="User" asp-area="Admin">
+                            <div class="mb-2">
+                                <label>Full Name</label>
+                                <input type="text" asp-for="FullName" class="form-control">
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                            <div class="mb-2">
+                                <label>Address</label>
+                                <input type="text" asp-for="Address" class="form-control">
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="mb-2">
+                                <label>Email</label>
+                                <input type="email" asp-for="Email" class="form-control">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="mb-2">
+                                <label>Username</label>
+                                <input type="text" asp-for="UserName" class="form-control">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="mb-2">
+                                <label>Password</label>
+                                <input type="password" asp-for="Password" class="form-control">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class=mb-2>
+                                <input type="checkbox" class="custom-checkbox" asp-for="IsSuper">
+                                <label>Is Super?</label>
+                            </div>
+                            <div class="mb-2">
+                                <button class="btn btn-primary w-100" type="submit">Register</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+
+</section>
+

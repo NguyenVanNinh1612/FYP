@@ -9,6 +9,7 @@ using System.Globalization;
 using WebBook.Data;
 using WebBook.Models;
 using WebBook.Payment;
+using WebBook.Utilites;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 
@@ -48,8 +51,16 @@ builder.Services.AddSession(options =>
 });
 ///
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/admin/login";
+    options.AccessDeniedPath = "/AccessDenied";
+});
+
 
 var app = builder.Build();
+
+DataSeeding();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -69,6 +80,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();//
+
 app.UseAuthorization();
 
 app.UseSession();
@@ -83,7 +96,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
     );
-
 
 var defaultDateCulture = "en-US";
 var ci = new CultureInfo(defaultDateCulture);
@@ -107,3 +119,11 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 
 app.Run();
 
+void DataSeeding()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var DbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        DbInitialize.Initialize();
+    }
+}

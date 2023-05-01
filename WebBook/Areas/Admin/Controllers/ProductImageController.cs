@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebBook.Data;
 using WebBook.Models;
 
 namespace WebBook.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	public class ProductImageController : Controller
+    [Authorize(Roles = "Super, Admin")]
+    public class ProductImageController : Controller
 	{
 		private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
