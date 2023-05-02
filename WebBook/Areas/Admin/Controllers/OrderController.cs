@@ -47,9 +47,12 @@ namespace WebBook.Areas.Admin.Controllers
                     OrderId = id,
                     ProductId = item.ProductId,
                     ProductName = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Name,
-                    Price = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale > 0 ?
-                    _context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale :
-                    _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price,
+                    //Price = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale > 0 ?
+                    //_context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale :
+                    //_context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price,
+                    Price = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price -
+                    (_context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price * 
+                    (decimal)0.01 * _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Discount),
                     Quantity = item.Quantity,
                     TotalPrice = item.Price
                 };
@@ -66,6 +69,7 @@ namespace WebBook.Areas.Admin.Controllers
             var order = _context.Orders.First(x => x.Id == id);
             if (order != null)
             {
+                
                 if(status>=1 && status<=4)
                 { 
                     order.Status = status;
@@ -73,6 +77,11 @@ namespace WebBook.Areas.Admin.Controllers
                 }
                 else if (status == 5)
                 {
+                    if (order.IsPay)
+                    {
+                        _notifyService.Error("Đơn hàng đã thanh toán không thể hủy");
+                        return Json(new { success = false });
+                    }
                     if (order.Status == 3)
                     {
                         _notifyService.Error("Đơn hàng đang giao không thể hủy");
@@ -107,9 +116,12 @@ namespace WebBook.Areas.Admin.Controllers
                     OrderId = id,
                     ProductId = item.ProductId,
                     ProductName = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Name,
-                    Price = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale > 0 ?
-                    _context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale :
-                    _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price,
+                    //Price = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale > 0 ?
+                    //_context.Products.FirstOrDefault(x => x.Id == item.ProductId).PriceSale :
+                    //_context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price,
+                    Price = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price -
+                    (_context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price *
+                    (decimal)0.01 * _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Discount),
                     Quantity = item.Quantity,
                     TotalPrice = item.Price
                 };

@@ -16,8 +16,8 @@ namespace WebBook.Data
         public DbSet<Menu>? Menus { get; set; }
         public DbSet<Event>? Events { get; set; }
         public DbSet<Post>? Posts { get; set; }
-        public DbSet<News>? News { get; set; }
-        public DbSet<SystemSetting>? SystemSettings { get; set; }
+        //public DbSet<News>? News { get; set; }
+        //public DbSet<SystemSetting>? SystemSettings { get; set; }
         public DbSet<Category>? Categories { get; set; }
         public DbSet<Supplier>? Suppliers{get; set;}
         public DbSet<Review>? Reviews { get; set; }

@@ -5,19 +5,29 @@ using WebBook.Models;
 using WebBook.Common;
 using WebBook.Data;
 using WebBook.Payment;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebBook.Controllers
 {
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public INotyfService _notifyService { get; }
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IVnPayService _vnPayService;
-        public CartController(ApplicationDbContext context, INotyfService notifyService, IVnPayService vnPayService)
+        private readonly IEmailService _emailService;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public INotyfService _notifyService { get; }
+        public CartController(ApplicationDbContext context, INotyfService notifyService, IVnPayService vnPayService,
+            IWebHostEnvironment webHostEnviroment, UserManager<ApplicationUser> userManager, IEmailService emailService)
         {
             _context = context;
             _notifyService = notifyService;
             _vnPayService = vnPayService;
+            _webHostEnvironment = webHostEnviroment;
+                 _userManager = userManager;
+       _emailService = emailService;
         }
 
 
@@ -93,6 +103,8 @@ namespace WebBook.Controllers
                 }
             }
             Random rd = new();
+
+           
             Order order = new()
             {
                 CustomerName = vm.Name,
@@ -108,6 +120,11 @@ namespace WebBook.Controllers
                 ModifiedDate = DateTime.Now
            
             };
+            var loggedInUser = _userManager.Users.FirstOrDefault(u => u.UserName == User.Identity!.Name);
+            if(loggedInUser != null)
+            {
+                order.CreatedBy = loggedInUser.UserName;
+            }
 
             _context.Orders?.Add(order);
             _context.SaveChanges();
@@ -142,7 +159,38 @@ namespace WebBook.Controllers
                 return Redirect(url);
             }
 
+            //Gui mail 
+            var strSanpham = "";
+            decimal thanhtien = 0;
+
+
+            
+            foreach(var sp in carts)
+            { 
+                strSanpham += "<tr>";
+                strSanpham += "<td>" + sp.ProductName + "</td>";
+                strSanpham += "<td>" + sp.Quantity + "</td>";
+                strSanpham += "<td>" + ExtensionHelper.ToVnd(sp.TotalPrice) + "</td>";
+                strSanpham += "</tr>";
+                thanhtien += sp.TotalPrice;
+            }
+            string pathContent = System.IO.File.ReadAllText( Path.Combine(_webHostEnvironment.WebRootPath, "templates/mail_contents/send2.html"));
+            pathContent = pathContent.Replace("{{MaDon}}", order.Code);
+            pathContent = pathContent.Replace("{{SanPham}}", strSanpham);
+            pathContent = pathContent.Replace("{{TenKhachHang}}", order.CustomerName);
+            pathContent = pathContent.Replace("{{SoDienThoai}}", order.Phone);
+            pathContent = pathContent.Replace("{{Email}}", order.Email);
+            pathContent = pathContent.Replace("{{DiaChi}}", order.Address);
+            pathContent = pathContent.Replace("{{NgayDat}}", order.CreatedDate.ToString("dd/MM/yyyy"));
+            pathContent = pathContent.Replace("{{ThanhTien}}", ExtensionHelper.ToVnd(thanhtien));
+            pathContent = pathContent.Replace("{{TongTien}}", ExtensionHelper.ToVnd(thanhtien + 30000));
+            pathContent = pathContent.Replace("{{PhuongThuc}}", "Thanh toán tiền mặt");
+            _emailService.Send("VNBOOK", "Đơn hàng #"+order.Code.ToString(), pathContent.ToString(), order.Email);
            
+
+
+
+
             return View("CheckOutSuccess");
         }
 
@@ -154,6 +202,8 @@ namespace WebBook.Controllers
                 var order = _context.Orders?.FirstOrDefault(x => x.Id == response.Id);
                 if (order != null) order.IsPay = true;
                 _context.SaveChanges();
+
+
                 return View("PaymentSuccess");
             }
             else
@@ -193,7 +243,8 @@ namespace WebBook.Controllers
                     ProductName = product!.Name,
                     ProductImage = _context.ProductImages.FirstOrDefault(x => x.ProductId == id && x.IsAvatar).ImageName,
                     Price = product.Price,
-                    PriceSale = product.PriceSale,
+                    Discount = product.Discount,
+                    //PriceSale = product.PriceSale,
                     Quantity = quantity,
                 };
                 myCart.Add(item);

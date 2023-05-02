@@ -148,12 +148,14 @@
                                                     </a>
                                                 </div>
                                                 <div class="favorite favorite_left"></div>
-                                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                               @if(item.Discount>0){
+                                                     <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-@item.Discount%</span></div>
+                                                }
                                                 <div class="product_info">
                                                     <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-slug="@item.Slug" asp-route-id="@item.Id">@item.Name</a></h6>
-                                                    @if (item.PriceSale > 0)
+                                                    @if (item.Discount > 0)
                                                     {
-                                                        <div class="product_price">@ExtensionHelper.ToVnd(item.PriceSale)<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
+                                                        <div class="product_price">@ExtensionHelper.ToVnd(item.Price - (item.Price*(decimal)0.01*item.Discount))<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
                                                     }
                                                     else
                                                     {

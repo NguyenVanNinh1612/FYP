@@ -2,13 +2,8 @@
 
 namespace WebBook.Models
 {
-    public class Supplier : CommonAbstract
+    public class Supplier : Common
     {
-        public Supplier()
-        {
-            Products = new HashSet<Product>();
-        }
-        [Key]
         public int Id { get; set; }
         [Required]
         [StringLength(255)]
@@ -17,7 +12,7 @@ namespace WebBook.Models
         public string Email { get; set; }
         public string Address { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
 
     }
 }

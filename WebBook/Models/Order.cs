@@ -2,12 +2,8 @@
 
 namespace WebBook.Models
 {
-    public class Order : CommonAbstract
+    public class Order : Common
     {
-        public Order()
-        {
-            this.OrderDetails = new HashSet<OrderDetail>(); 
-        }
         [Key]
         public int Id { get; set; }
         [Required]

@@ -25,7 +25,8 @@ namespace WebBook.ViewComponents
                         Id = item.Id,
                         Name = item.Name,
                         Price = item.Price,
-                        PriceSale = item.PriceSale,
+                        Discount = item.Discount,
+                        //PriceSale = item.PriceSale,
                         Avatar = _context?.ProductImages?.Where(x => x.ProductId == item.Id).ToList()?.FirstOrDefault(x => x.IsAvatar)?.ImageName
                     };
                     listProductSale.Add(vm);
@@ -44,7 +45,8 @@ namespace WebBook.ViewComponents
                         Id = item.Id,
                         Name = item.Name,
                         Price = item.Price,
-                        PriceSale = item.PriceSale,
+                        Discount = item.Discount,
+                        //PriceSale = item.PriceSale,
                         CategorySlug = _context?.Categories?.FirstOrDefault(x => x.Id == item.CategoryId)?.Slug,
 
                         Avatar = _context?.ProductImages?.Where(x => x.ProductId == item.Id).ToList()?.FirstOrDefault(x => x.IsAvatar)?.ImageName

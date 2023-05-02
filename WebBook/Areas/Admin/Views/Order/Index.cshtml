@@ -57,10 +57,11 @@
                                     <th>STT</th>
                                     <th>Mã đơn hàng</th>
                                     <th>Tên khách hàng</th>
-                                    <th>Điện thoại</th>
-                                    <th>Địa chỉ</th>
+                                   @* <th>Điện thoại</th>
+                                    <th>Địa chỉ</th>*@
                                     <th>Tổng số lượng</th>
                                     <th>Thành tiền</th>
+                                    <th>Thanh toán</th>
                                     <th>Trạng thái</th>
                                     <th style="text-align:center">Action</th>
                                 </tr>
@@ -80,10 +81,16 @@
                                             <td>@stt</td>
                                             <td>@item.Code</td>
                                             <td>@item.CustomerName</td>
-                                            <td>@item.Phone</td>
-                                            <td>@item.Address</td>
+                                           @* <td>@item.Phone</td>
+                                            <td>@item.Address</td>*@
                                             <td>@item.Quantity</td>
                                             <td>@item.TotalAmount</td>
+                                            @if(item.IsPay){
+                                                <td style="color: #007bff">Đã thanh toán</td>
+                                            }
+                                            else{
+                                                <td style="color: #ffc107">Chưa thanh toán</td>
+                                            }
                                             <td>@ExtensionHelper.Status(@item.Status)</td>
                                             <td style="text-align:center">
                                                 <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Detail" asp-controller="Order" asp-route-id="@item.Id">

@@ -116,17 +116,17 @@
                                         </ul>
                                     </li>
                                 </ul>
-                               @* <div class="pages d-flex flex-row align-items-center">
-                                    <div class="page_current">
-                                        <span>1</span>
-                                        <ul class="page_selection">
-                                            <li><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="page_total"><span>of</span> 3</div>
-                                    <div id="next_page" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                                @* <div class="pages d-flex flex-row align-items-center">
+                                <div class="page_current">
+                                <span>1</span>
+                                <ul class="page_selection">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                </ul>
+                                </div>
+                                <div class="page_total"><span>of</span> 3</div>
+                                <div id="next_page" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
                                 </div>*@
 
                             </div>
@@ -146,18 +146,21 @@
                                                     <img src="~/uploads/images/product/@item.Avatar" alt="@item.Name">
                                                 </div>
                                                 <div class="favorite favorite_left"></div>
-                                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                                <div class="product_info">
-                                                    <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-slug="@item.Slug" asp-route-id="@item.Id">@item.Name</a></h6>
-                                                    @if (item.PriceSale > 0)
-                                                    {
-                                                        <div class="product_price">@ExtensionHelper.ToVnd(item.PriceSale)<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
-                                                    }
-                                                    else
-                                                    {
+                                                @if (item.Discount > 0)
+                                                {
+                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-@item.Discount%</span></div>
+                                                    <div class="product_info">
+                                                        <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-slug="@item.Slug" asp-route-id="@item.Id">@item.Name</a></h6>
+                                                        <div class="product_price">@ExtensionHelper.ToVnd(item.Price - (item.Price*(decimal)0.01*item.Discount))<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="product_info">
+                                                        <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-slug="@item.Slug" asp-route-id="@item.Id">@item.Name</a></h6>
                                                         <div class="product_price">@ExtensionHelper.ToVnd(item.Price)</div>
-                                                    }
-                                                </div>
+                                                    </div>
+                                                }
                                             </div>
                                             <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" dataa-id="@item.Id">add to cart</a></div>
                                         </div>
@@ -175,31 +178,31 @@
                                 LiElementClasses = new string[] { "page-item" },
                                 PageClasses = new string[] { "page-link" }
                                 })
-                               @* <ul class="product_sorting">
-                                    <li>
-                                        <span>Show:</span>
-                                        <span class="num_sorting_text">04</span>
-                                        <i class="fa fa-angle-down"></i>
-                                        <ul class="sorting_num">
-                                            <li class="num_sorting_btn"><span>01</span></li>
-                                            <li class="num_sorting_btn"><span>02</span></li>
-                                            <li class="num_sorting_btn"><span>03</span></li>
-                                            <li class="num_sorting_btn"><span>04</span></li>
-                                        </ul>
-                                    </li>
+                                @* <ul class="product_sorting">
+                                <li>
+                                <span>Show:</span>
+                                <span class="num_sorting_text">04</span>
+                                <i class="fa fa-angle-down"></i>
+                                <ul class="sorting_num">
+                                <li class="num_sorting_btn"><span>01</span></li>
+                                <li class="num_sorting_btn"><span>02</span></li>
+                                <li class="num_sorting_btn"><span>03</span></li>
+                                <li class="num_sorting_btn"><span>04</span></li>
+                                </ul>
+                                </li>
                                 </ul>
                                 <span class="showing_results">Showing 1–3 of 12 results</span>
                                 <div class="pages d-flex flex-row align-items-center">
-                                    <div class="page_current">
-                                        <span>1</span>
-                                        <ul class="page_selection">
-                                            <li><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="page_total"><span>of</span> 3</div>
-                                    <div id="next_page_1" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
+                                <div class="page_current">
+                                <span>1</span>
+                                <ul class="page_selection">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                </ul>
+                                </div>
+                                <div class="page_total"><span>of</span> 3</div>
+                                <div id="next_page_1" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
                                 </div>*@
 
                             </div>

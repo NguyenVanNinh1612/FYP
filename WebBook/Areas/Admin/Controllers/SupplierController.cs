@@ -1,6 +1,8 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebBook.Common;
 using WebBook.Data;
 using WebBook.Models;
@@ -13,12 +15,14 @@ namespace WebBook.Areas.Admin.Controllers
     public class SupplierController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         public INotyfService _notifyService;
 
-        public SupplierController(ApplicationDbContext context, INotyfService notifyService)
+        public SupplierController(ApplicationDbContext context, INotyfService notifyService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _notifyService = notifyService;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int? page, string searchString, string currentFilter)
@@ -55,15 +59,19 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Supplier model)
+        public async Task<IActionResult> Create(Supplier model)
         {
             if (ModelState.IsValid)
             {
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
+                model.CreatedBy = loggedInUser?.FullName;
+                model.ModifiedBy = loggedInUser?.FullName;
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
                     
-                _context.Suppliers!.Add(model);
-                _context.SaveChanges();
+                await _context.Suppliers!.AddAsync(model);
+                await _context.SaveChangesAsync();
+
                 _notifyService.Success("Supplier created successfully!");
 
                 return RedirectToAction("Index", "supplier", new
@@ -88,13 +96,16 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Supplier model)
+        public async Task<IActionResult> Edit(Supplier model)
         {
             if (ModelState.IsValid)
             {
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
                 model.ModifiedDate = DateTime.Now;
+                model.ModifiedBy = loggedInUser?.FullName;
+                
                 _context.Suppliers!.Update(model);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 _notifyService.Success("Supplier updated successfully!");
                 return RedirectToAction("Index", "supplier", new { area = "admin" });
             }

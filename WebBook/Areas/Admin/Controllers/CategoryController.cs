@@ -1,6 +1,8 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebBook.Common;
 using WebBook.Data;
 using WebBook.Models;
@@ -13,12 +15,14 @@ namespace WebBook.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         public INotyfService _notifyService;
 
-        public CategoryController(ApplicationDbContext context, INotyfService notifyService)
+        public CategoryController(ApplicationDbContext context, INotyfService notifyService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _notifyService = notifyService;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int? page, string searchString, string currentFilter)
@@ -54,15 +58,19 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category model)
+        public async Task<IActionResult> Create(Category model)
         {
             if (ModelState.IsValid)
             {
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
-                _context.Categories!.Add(model);
-                _context.SaveChanges();
+                model.CreatedBy = loggedInUser?.FullName;
+                model.ModifiedBy = loggedInUser?.FullName;
+
+                await _context.Categories!.AddAsync(model);
+                await _context.SaveChangesAsync();
                 _notifyService.Success("Category created successfully!");
 
                 return RedirectToAction("Index", "category", new
@@ -87,14 +95,18 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Category model)
+        public async Task<IActionResult> Edit(Category model)
         {
             if (ModelState.IsValid)
             {
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name!);
-                model.ModifiedDate = model.CreatedDate;
+                model.ModifiedDate = DateTime.Now;
+                model.ModifiedBy = loggedInUser?.FullName;
+
                 _context.Categories!.Update(model);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+
                 _notifyService.Success("Category updated successfully!");
                 return RedirectToAction("Index", "category", new
                 {

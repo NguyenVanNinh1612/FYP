@@ -7,9 +7,9 @@
         <tr class="text-center">
             <td><img width="100" src="~/uploads/images/product/@item.ProductImage" /></td>
             <td><a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a></td>
-            @if (item.PriceSale > 0)
+            @if (item.Discount > 0)
             {
-                <td>@ExtensionHelper.ToVnd(item.PriceSale)</td>
+                <td>@ExtensionHelper.ToVnd(item.Price - (item.Price * (decimal)0.01*item.Discount))</td>
             }
             else
             {

@@ -27,3 +27,8 @@
     visibility: visible;
     opacity: 1;
 }
+
+
+.footer a {
+    color: #b5aec4 !important;
+}

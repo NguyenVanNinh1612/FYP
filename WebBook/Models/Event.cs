@@ -2,7 +2,7 @@
 
 namespace WebBook.Models
 {
-    public class Event : CommonAbstract
+    public class Event : Common
     {
         [Key]
         public int Id { get; set; }

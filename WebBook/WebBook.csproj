@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\uploads\images\post\" />
     <Folder Include="wwwroot\uploads\images\product\" />
+    <Folder Include="wwwroot\uploads\images\post\" />
   </ItemGroup>
 
 </Project>

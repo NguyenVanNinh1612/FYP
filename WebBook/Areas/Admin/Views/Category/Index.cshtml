@@ -57,7 +57,9 @@
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Created Date</th>
+                                    <th>Created By</th>
                                     <th>Modifed Date</th>
+                                    <th>Modify By</th>
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
@@ -76,8 +78,10 @@
                                             <td>@stt</td>
                                             <td>@item.Name</td>
                                             <td>@Html.Raw(item.Description)</td>
-                                            <td>@item.CreatedDate.ToShortDateString()</td>
-                                            <td>@item.ModifiedDate.ToShortDateString()</td>
+                                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CreatedBy</td>
+                                            <td>@item.ModifiedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.ModifiedBy</td>
                                             <td style="text-align:center">
                                                 <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id">
                                                     <i class="fas fa-pencil-alt"></i>

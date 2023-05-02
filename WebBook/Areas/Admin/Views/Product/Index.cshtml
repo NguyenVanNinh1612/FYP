@@ -62,9 +62,10 @@
                                     <th>Category</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
-                                    <th>Price Sale</th>
+                                    <th>Discount</th>
+                                   @* <th>Price Sale</th>*@
                                     <th>Supplier</th>
-                                 
+
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
@@ -72,12 +73,13 @@
                                 @if (Model != null && Model.Any())
                                 {
                                     var stt = 1;
+                                    if (ViewBag.Page > 1)
+                                    {
+                                        stt = ViewBag.PageSize * (ViewBag.Page - 1) + 1;
+                                    }
                                     foreach (var item in Model)
                                     {
-                                        if (ViewBag.Page > 1)
-                                        {
-                                            stt = ViewBag.PageSize * (ViewBag.Page - 1) + 1;
-                                        }
+
                                         <tr id="trow_@item.Id">
                                             <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
                                             <td>@stt</td>
@@ -86,16 +88,17 @@
                                             <td>@item.CategoryName</td>
                                             <td>@item.Quantity</td>
                                             <td>@item.Price</td>
-                                            <td>@item.PriceSale</td>
-                                           
+                                            <td>@item.Discount%</td>
+                                           @* <td>@item.PriceSale</td>*@
+
                                             <td>@item.SupplierName</td>
-                                           
+
                                             <td style="text-align:center">
                                                 <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Product" asp-route-id="@item.Id">
                                                     <i class="fas fa-pencil-alt"></i>
                                                     Edit
                                                 </a>
-                                                <a class="btn btn-sm btn-danger btnDelete"  data-id="@item.Id">
+                                                <a class="btn btn-sm btn-danger btnDelete" data-id="@item.Id">
                                                     <i class="fas fa-trash"></i>
                                                     Delete
                                                 </a>
@@ -211,7 +214,7 @@
                 }
             });
 
-            
+
 
             //------------------
         });

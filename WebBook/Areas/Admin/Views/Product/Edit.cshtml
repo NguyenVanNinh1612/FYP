@@ -54,11 +54,11 @@
                                             <input asp-for="Name" type="text" class="form-control" placeholder="Name">
                                             <span asp-validation-for="Name" class="text-danger"></span>
                                         </div>
-                                        <div class="form-group">
+                                       @* <div class="form-group">
                                             <label>Product Code</label>
                                             <input asp-for="ProductCode" class="form-control" placeholder="Product Code">
                                             <span asp-validation-for="ProductCode" class="text-danger"></span>
-                                        </div>
+                                        </div>*@
                                         <div class="form-group">
                                             <label>Author</label>
                                             <input asp-for="Author" class="form-control" placeholder="Author">
@@ -78,16 +78,6 @@
                                             </select>
                                             <span asp-validation-for="SupplierId" class="text-danger"></span>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea asp-for="Description" type="text" class="form-control" placeholder="Description"></textarea>
-                                            <span asp-validation-for="Description" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Detail</label>
-                                            <textarea asp-for="Detail" type="text" class="form-control" placeholder="Detail"></textarea>
-                                            <span asp-validation-for="Detail" class="text-danger"></span>
-                                        </div>
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="form-group">
@@ -106,15 +96,28 @@
                                             <div class="col-3">
                                                 <div class="form-group">
                                                     <label>Price</label>
-                                                    <input asp-for="Price" type="number" class="form-control"  placeholder="Price">
+                                                    <input asp-for="Price" type="number" class="form-control" placeholder="Price">
                                                     <span asp-validation-for="Price" class="text-danger"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-3">
+                                           @* <div class="col-3">
                                                 <div class="form-group">
                                                     <label>Price Sale</label>
                                                     <input asp-for="PriceSale" type="number" class="form-control" placeholder="Price Sale">
                                                     <span asp-validation-for="PriceSale" class="text-danger"></span>
+                                                </div>
+                                            </div>*@
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label>Discount</label>
+                                                    <select asp-for="Discount" class="form-control">
+                                                        <option selected value="0">0%</option>
+                                                        @for (int i = 5; i <= 100; i += 5)
+                                                        {
+                                                            <option value="@i">@i%</option>
+                                                        }
+                                                    </select>
+                                                    <span asp-validation-for="Discount" class="text-danger"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -152,10 +155,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea asp-for="Description" type="text" class="form-control" placeholder="Description" rows="15"></textarea>
+                                            <span asp-validation-for="Description" class="text-danger"></span>
+                                        </div>
                                     </div>
                                     <!-- /.tab-pane -->
 
-                                    <div class="tab-pane" id="seo">
+                                   @* <div class="tab-pane" id="seo">
 
                                         <div class="form-group row">
                                             <label asp-for="SeoTitle" class="col-sm-2 col-form-label">SeoTitle</label>
@@ -178,7 +186,7 @@
                                                 <span asp-validation-for="SeoDescription" class="text-danger"></span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>*@
                                     <!-- /.tab-pane -->
                                 </div>
                                 <!-- /.tab-content -->

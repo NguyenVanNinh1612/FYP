@@ -59,7 +59,9 @@
                                     <th>Email</th>
                                     <th>Address</th>
                                     <th>Created Date</th>
+                                    <th>Created By</th>
                                     <th>Modifed Date</th>
+                                    <th>Modified By</th>
                                     <th style="text-align:center">Action</th>
                                 </tr>
                             </thead>
@@ -80,8 +82,10 @@
                                             <td>@item.Phone</td>
                                             <td>@item.Email</td>
                                             <td>@item.Address</td>
-                                            <td>@item.CreatedDate.ToShortDateString()</td>
-                                            <td>@item.ModifiedDate.ToShortDateString()</td>
+                                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CreatedBy</td>
+                                            <td>@item.ModifiedDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.ModifiedBy</td>
                                             <td style="text-align:center">
                                                 <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Supplier" asp-route-id="@item.Id">
                                                     <i class="fas fa-pencil-alt"></i>

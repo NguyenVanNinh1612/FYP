@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<WebBook.ViewModels.ProductVM>
 @using WebBook.Common
-@if(Model != null && Model.Any()){
+@if (Model != null && Model.Any())
+{
     <div class="best_sellers">
         <div class="container">
             <div class="row">
@@ -14,7 +15,7 @@
                 <div class="col">
                     <div class="product_slider_container">
                         <div class="owl-carousel owl-theme product_slider">
-                            @foreach(var item in Model)
+                            @foreach (var item in Model)
                             {
                                 <div class="owl-item product_slider_item">
                                     <div class="product-item">
@@ -26,9 +27,9 @@
                                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>Sale</span></div>
                                             <div class="product_info">
                                                 <h6 class="product_name"><a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a></h6>
-                                                @if (item.PriceSale > 0)
+                                                @if (item.Discount > 0)
                                                 {
-                                                    <div class="product_price">@ExtensionHelper.ToVnd(item.PriceSale)<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
+                                                    <div class="product_price">@ExtensionHelper.ToVnd(item.Price*(decimal)0.01*item.Discount))<span>@ExtensionHelper.ToVnd(item.Price)</span></div>
                                                 }
                                                 else
                                                 {
@@ -40,7 +41,7 @@
                                 </div>
                             }
                         </div>
-                            
+
 
                         <!-- Slider Navigation -->
 

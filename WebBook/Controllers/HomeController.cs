@@ -55,6 +55,12 @@ namespace WebBook.Controllers
             return Json(new { success = false });
         }
 
+        [Route("about")]
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

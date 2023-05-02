@@ -2,7 +2,7 @@
 
 namespace WebBook.Models
 {
-    public class Menu : CommonAbstract
+    public class Menu : Common
     {
         public int Id { get; set; }
         [Required]

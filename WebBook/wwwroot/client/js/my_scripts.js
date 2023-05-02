@@ -62,20 +62,36 @@
             success: function (rs) {
                 if (rs.success) {
                     var str = "";
-                    for (var i = 0; i <= rating; i++)
-                    {
+                    for (var i = 0; i <= rating; i++) {
                         str += '<li><i class="fa fa-star" aria-hidden="true"></i></li>';
                     }
-                    for (var i = 0; i < 4 - rating; i++)
-                    {
+                    for (var i = 0; i < 4 - rating; i++) {
                         str += '<li><i class="fa fa-star-o" aria-hidden="true"></i></li>';
                     }
-                    var html = '<div class="user_review_container d-flex flex-column flex-sm-row"><div class="user"><div class="user_pic"><img width="100%" id="user_pic"/></div><div class="user_rating"><ul class="star_rating">'+str+'</ul></div> </div><div class="review"><div class="review_date">' + rs.createdDate + '</div> <div class="user_name">' + rs.fullName + '</div><p>' + content + '</p></div></div>';
+                    var html = '<div class="user_review_container d-flex flex-column flex-sm-row"><div class="user"><div class="user_pic"><img width="100%" id="user_pic"/></div><div class="user_rating"><ul class="star_rating">' + str + '</ul></div> </div><div class="review"><div class="review_date">' + rs.createdDate + '</div> <div class="user_name">' + rs.fullName + '</div><p>' + content + '</p></div></div>';
                     $('#prepend_review').prepend(html);
                     $('#user_pic').attr('src', $('#get_user_pic').attr('src'));
                     $('#count_review').val(parseInt($(this).text()) + 1);
                 }
             }
         });
-    })
+    });
+
+
+
+    //Acive linke menu
+    var pathMenuCurrent = window.location.pathname;
+    var menuCurrentName = pathMenuCurrent.split('/');
+    $('.navbar_menu li').each(function () {
+        if ($(this).data('id') == menuCurrentName[1].toLowerCase()) {
+            $(this).css({ "border-bottom": "2px solid #fe4c50" });
+            $(this).children().css({ "color": "#fe4c50" });
+        }
+        else if ($(this).data('id') == 'home' && menuCurrentName[1] == '') {
+            $(this).css({ "border-bottom": "2px solid #fe4c50" });
+            $(this).children().css({ "color": "#fe4c50" });
+        }
+        
+    });
+
 });

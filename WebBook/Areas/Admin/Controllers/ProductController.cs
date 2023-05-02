@@ -1,7 +1,9 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using WebBook.Common;
@@ -17,14 +19,16 @@ namespace WebBook.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public INotyfService _notifyService { get; }
 
-        public ProductController(ApplicationDbContext context, INotyfService notifyService, IWebHostEnvironment webHostEnvironment)
+        public ProductController(ApplicationDbContext context, INotyfService notifyService, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _notifyService = notifyService;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int? page, string searchString, string currentFilter)
@@ -54,7 +58,8 @@ namespace WebBook.Areas.Admin.Controllers
                     Id = item.Id,
                     Name = item.Name,
                     Price = item.Price,
-                    PriceSale = item.PriceSale,
+                    Discount = item.Discount,
+                   // PriceSale = item.PriceSale,
                     Quantity = item.CategoryId,
                     SupplierId = item.SupplierId,
                     CategoryName = _context?.Categories?.Find(item.CategoryId)?.Name,
@@ -83,7 +88,7 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product model, List<IFormFile> Files, string isDefault)
+        public async Task<IActionResult> Create(Product model, List<IFormFile> Files, string isDefault)
         {
             if (ModelState.IsValid)
             {
@@ -112,12 +117,16 @@ namespace WebBook.Areas.Admin.Controllers
                     }
 
                 }
-                
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
+                model.CreatedBy = loggedInUser?.FullName;
+                model.ModifiedBy = loggedInUser?.FullName;
+
                 model.Slug = SeoUrlHelper.FrientlyUrl(model.Name);
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
-                _context.Products!.Add(model);
-                _context.SaveChanges();
+
+                await _context.Products!.AddAsync(model);
+                await _context.SaveChangesAsync();
 
                 _notifyService.Success("Product created successfully!");
                 return RedirectToAction("Index", "product", new {area="admin"});
@@ -131,25 +140,25 @@ namespace WebBook.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Edit(int id)
+        public ActionResult Edit(int id)
         {
             var product = _context.Products!.FirstOrDefault(x => x.Id == id);
             if (product == null)
             {
                 return View();
             }
-
             ProductVM vm = new()
             {
                 Id = product.Id,
                 Name = product.Name,
-                ProductCode = product.ProductCode,
+                //ProductCode = product.ProductCode,
                 Description = product.Description,
-                Detail = product.Detail,
+                //Detail = product.Detail,
                 NumberOfPage = product.NumberOfPage,
                 Author = product.Author,
                 Price = product.Price,
-                PriceSale = product.PriceSale,
+                Discount = product.Discount,
+                //PriceSale = product.PriceSale,
                 Quantity = product.Quantity,
                 IsFeature = product.IsFeature,
                 IsHome = product.IsHome,
@@ -157,9 +166,10 @@ namespace WebBook.Areas.Admin.Controllers
                 IsSale = product.IsSale,
                 CategoryId = product.CategoryId,
                 SupplierId = product.SupplierId,
-                SeoTitle = product.SeoTitle,
-                SeoDescription = product.SeoDescription,
-                SeoKeywords = product.SeoKeywords
+               
+                //SeoTitle = product.SeoTitle,
+                //SeoDescription = product.SeoDescription,
+                //SeoKeywords = product.SeoKeywords
             };
 
             ViewBag.CategoryList = new SelectList(_context.Categories!.ToList(), "Id", "Name");
@@ -168,21 +178,24 @@ namespace WebBook.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(ProductVM vm)
+        public async Task<IActionResult> Edit(ProductVM vm)
         {
             if (ModelState.IsValid)
             {
+                var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity!.Name);
+
                 var product = _context.Products!.FirstOrDefault(x => x.Id == vm.Id);
 
                 product!.Name = vm.Name;
                 product.Slug = SeoUrlHelper.FrientlyUrl(product.Name);
-                product.ProductCode = vm.ProductCode;
+               // product.ProductCode = vm.ProductCode;
                 product.Description = vm.Description;
-                product.Detail = vm.Detail;
+               // product.Detail = vm.Detail;
                 product.NumberOfPage = vm.NumberOfPage;
                 product.Author = vm.Author;
                 product.Price = vm.Price;
-                product.PriceSale = vm.PriceSale;
+                product.Discount = vm.Discount;
+                //product.PriceSale = vm.PriceSale;
                 product.Quantity = vm.Quantity;
                 product.IsFeature = vm.IsFeature;
                 product.IsHome = vm.IsHome;
@@ -190,12 +203,13 @@ namespace WebBook.Areas.Admin.Controllers
                 product.IsSale = vm.IsSale;
                 product.CategoryId = vm.CategoryId;
                 product.SupplierId = vm.SupplierId;
-                product.SeoTitle = vm.SeoTitle;
-                product.SeoDescription = vm.SeoDescription;
-                product.SeoKeywords = vm.SeoKeywords;
+                //product.SeoTitle = vm.SeoTitle;
+                //product.SeoDescription = vm.SeoDescription;
+                //product.SeoKeywords = vm.SeoKeywords;
                 product.ModifiedDate = DateTime.Now;
+                product.ModifiedBy = loggedInUser?.FullName;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 _notifyService.Success("Product updated successfully!");
                 return RedirectToAction("Index", "product", new { area = "admin" });
             }

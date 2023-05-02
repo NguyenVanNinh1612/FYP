@@ -12,16 +12,15 @@ namespace WebBook.ViewModels
         [StringLength(250)]
         public string Name { get; set; }
         public string? Slug { get; set; }
-        public string ProductCode { get; set; }
         public string Description { get; set; }
-        public string Detail { get; set; }
         public string? Avatar { get; set; }
         public int NumberOfPage { get; set; }
         [Required]
         [StringLength(255)]
         public string Author { get; set; }
         public decimal Price { get; set; }
-        public decimal PriceSale { get; set; }
+        public byte Discount { get; set; }
+        //public decimal PriceSale { get; set; }
         public int Quantity { get; set; }
         public bool IsFeature { get; set; }
         public bool IsHome { get; set; }
@@ -29,9 +28,6 @@ namespace WebBook.ViewModels
         public bool IsSale { get; set; }
         public int CategoryId { get; set; }
         public int SupplierId { get; set; }
-        public string? SeoTitle { get; set; }
-        public string? SeoDescription { get; set; }
-        public string? SeoKeywords { get; set; }
         
         public string? CategoryName { get; set; }
         public string? SupplierName { get; set; }

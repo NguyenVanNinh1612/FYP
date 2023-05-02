@@ -2,7 +2,7 @@
 
 namespace WebBook.Models
 {
-    public class Post:CommonAbstract
+    public class Post:Common
     {
         [Key]
         public int Id { get; set; }

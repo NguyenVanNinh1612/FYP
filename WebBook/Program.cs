@@ -32,6 +32,9 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
 builder.Services.AddNotyf(config =>
 {
     config.DurationInSeconds = 3;

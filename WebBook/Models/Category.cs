@@ -2,12 +2,8 @@
 
 namespace WebBook.Models
 {
-    public class Category : CommonAbstract
+    public class Category : Common
     {
-        public Category()
-        {
-            Products = new HashSet<Product>();
-        }
         [Key]
         public int Id { get; set; }
         [Required]
@@ -15,10 +11,10 @@ namespace WebBook.Models
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? Slug { get; set; }
-        public string? SeoTitle { get; set; }
-        public string? SeoDescription { get; set; }
-        public string? SeoKeywords { get; set; }
+        ///public string? SeoTitle { get; set; }
+        //public string? SeoDescription { get; set; }
+        //public string? SeoKeywords { get; set; }
        
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
     }
 }

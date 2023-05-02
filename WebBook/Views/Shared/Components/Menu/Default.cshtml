@@ -10,7 +10,6 @@
     loggedInUser = _userManager.Users?.FirstOrDefault(x => x.UserName == User.Identity!.Name);
 }
 
-
 <div class="main_nav_container" style="height: 70px">
     <div class="container">
         <div class="row" style="height: 70px">
@@ -24,7 +23,7 @@
                         {
                             @foreach (var item in Model)
                             {
-                                <li><a href="/@item.Slug">@item.Name</a></li>
+                                <li data-id="@item.Slug"><a href="/@item.Slug">@item.Name</a></li>
                             }
                         }
                     </ul>
@@ -36,7 +35,9 @@
                             <li class="account_user">
                                 <a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
                                 <ul class="account_select">
-                                    <li><a asp-controller="Account" asp-action="Logout" class="btn btn-sm btn-danger"><i class="fa fa-sign-in" aria-hidden="true"></i>Logout</a></li>
+                                    <li><a asp-controller="Account" asp-action="Logout" class="btn btn-sm btn-danger">Logout</a></li>
+                                    <li><a asp-controller="Account" asp-action="YourOrder" asp-route-userName="@loggedInUser.UserName" class="btn btn-sm btn-danger">Đơn hàng của bạn</a></li>
+
                                 </ul>
                             </li>
                             <li><p style="padding-right: 10px" class="account_user">@loggedInUser.UserName</p></li>

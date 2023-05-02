@@ -43,14 +43,15 @@
                                 <td><input type="checkbox" id="checkboxItem" data-id="@item.ProductId" /></td>
                                 <td><img width="100" src="~/uploads/images/product/@item.ProductImage" /></td>
                                 <td><a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a></td>
-                                @if (item.PriceSale > 0)
+                               @* @if (item.PriceSale > 0)
                                 {
                                     <td>@ExtensionHelper.ToVnd(item.PriceSale)</td>
                                 }
                                 else
                                 {
                                     <td>@ExtensionHelper.ToVnd(item.Price)</td>
-                                }
+                                }*@
+                                <td>@ExtensionHelper.ToVnd(item.Price - (item.Price * (decimal)0.01 * item.Discount))</td>
                                 <td>
                                     <div class="quantity_selector">
                                         <span class="minus updateQuantity" data-id="@item.ProductId"><i class="fa fa-minus" aria-hidden="true"></i></span>

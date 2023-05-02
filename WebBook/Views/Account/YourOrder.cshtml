@@ -1,0 +1,78 @@
+﻿@model IEnumerable<WebBook.Models.Order>
+@using WebBook.Data
+@using WebBook.Common
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<link rel="stylesheet" type="text/css" href="~/client/styles/single_styles.css">
+<link rel="stylesheet" type="text/css" href="~/client/styles/single_responsive.css">
+
+
+
+
+<div class="container single_product_container" style="margin-top: 130px">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Đơn hàng của bạn</a></li>
+                </ul>
+            </div>
+
+            <div class="main_content">
+                @if (Model != null && Model.Any())
+                {
+                    var stt = 1;
+                    foreach(var item in Model)
+                    {
+                        <div class="row" style="border-top: 1px solid #bfbfbf; margin-bottom: 35px; padding-top: 10px">
+                            <div class="col-md-6">
+                                <p>@stt. Đơn hàng <b>#@item.Code</b></p>
+                                <p>Số lượng: <b>@item.Quantity</b></p>
+                                <p>Tổng tiền: <b>@ExtensionHelper.ToVnd(@item.TotalAmount + 30000)</b></p>
+
+                            </div>
+                            <div class="col-md-6">
+                                <p>Tình trạng: <span style="color: blue">@ExtensionHelper.Status(@item.Status)</span></p>
+                                @if (item.PaymentMethod)
+                                {
+                                    <p>Phương thức thanh toán: VNPAY</p>
+                                    @if (item.IsPay)
+                                    {
+                                        <p style="color: blue">Đã thanh toán</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Phương thức thanh toán: Thanh toán tiền mặt khi nhận hàng</p>
+                                }
+                  
+                                <a asp-controller="Account" asp-action="OrderDetail" asp-route-id="@item.Id">Xem chi tiết >></a>
+                            </div>
+                        </div>
+                        stt++;
+                    }
+                }
+
+                else
+                {
+                    <div class="text-center">
+                        <p>Bạn không có đơn hàng nào</p>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-danger">Mua sắm ngay</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs -->
+@section scripts{
+    <script src="~/client/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="~/client/js/single_custom.js"></script>
+}

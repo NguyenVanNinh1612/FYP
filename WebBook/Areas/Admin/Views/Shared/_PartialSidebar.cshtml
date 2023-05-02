@@ -15,14 +15,14 @@
             </a>
         </li>
 
-        <li class="nav-item">
+      @*  <li class="nav-item">
             <a asp-area="Admin" asp-controller="Menu" asp-action="Index" class="nav-link">
                 <i class="nav-icon fas fa-table"></i>
                 <p>Menu</p>
             </a>
-        </li>
+        </li>*@
 
-        <li class="nav-item">
+      @*  <li class="nav-item">
             <a asp-area="Admin" asp-action="Index" asp-controller="News" class="nav-link">
                 <i class="nav-icon fas fa-copy"></i>
                 <p>
@@ -30,7 +30,7 @@
                     <span class="right badge badge-danger">New</span>
                 </p>
             </a>
-        </li>
+        </li>*@
 
         <li class="nav-item">
             <a asp-area="Admin" asp-controller="Post" asp-action="Index" class="nav-link">
@@ -39,12 +39,12 @@
             </a>
         </li>
 
-        <li class="nav-item">
+      @*  <li class="nav-item">
             <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
                 <p>Event</p>
             </a>
-        </li>
+        </li>*@
         <li class="nav-item">
             <a asp-area="Admin" asp-controller="Supplier" asp-action="Index" class="nav-link">
                 <i class=" nav-icon far fa-plus-square"></i>
@@ -78,16 +78,41 @@
 
         <li class="nav-item">
             <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                 <i class="nav-icon fas fa-table"></i>
                 <p>Order</p>
             </a>
         </li>
 
-        <li class="nav-item">
+       @* <li class="nav-item">
             <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
                 <p>System</p>
             </a>
+        </li>*@
+
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                    System
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Menu" asp-action="Index" class="nav-link">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>Menu</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-image"></i>
+                        <p>Event</p>
+                    </a>
+                </li>
+            </ul>
         </li>
+
     </ul>
 </nav>

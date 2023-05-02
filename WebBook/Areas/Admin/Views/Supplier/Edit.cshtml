@@ -34,6 +34,8 @@
             <div class="bs-stepper-content">
                 <!-- your steps content here -->
                 <form asp-action="Edit" asp-controller="Supplier" asp-area="Admin" method="post" enctype="multipart/form-data">
+                    <input asp-for="CreatedDate" type="hidden" class="form-control">
+                    <input asp-for="CreatedBy" type="hidden" class="form-control">
                     <div class="form-group">
                         <label>Name</label>
                         <input asp-for="Name" type="text" class="form-control">

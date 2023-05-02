@@ -138,10 +138,10 @@
                 <div class="free_delivery d-flex flex-row align-items-center justify-content-center" style="margin-top: 20px; margin-bottom: 15px">
                     <i class="fa fa-truck" aria-hidden="true"></i><span style="padding-left: 10px"> Giao hàng tiêu chuẩn</span>
                 </div>
-                @if (Model.PriceSale > 0)
+                @if (Model.Discount > 0)
                 {
                     <div class="original_price">@ExtensionHelper.ToVnd(Model.Price)</div>
-                    <div class="product_price">@ExtensionHelper.ToVnd(Model.PriceSale)</div>
+                    <div class="product_price">@ExtensionHelper.ToVnd(Model.Price - (Model.Price*(decimal)0.01*Model.Discount))</div>
                 }
                 else
                 {
