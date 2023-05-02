@@ -6,7 +6,6 @@ namespace WebBook.Models
     public class Product : CommonAbstract
     {
         public Product()
-        {
             ProductImage = new HashSet<ProductImage>();
             OrderDetail = new HashSet<OrderDetail>();
 
