@@ -60,8 +60,9 @@ namespace WebBook.Areas.Admin.Controllers
                     Price = item.Price,
                     Discount = item.Discount,
                    // PriceSale = item.PriceSale,
-                    Quantity = item.CategoryId,
+                    Quantity = item.Quantity,
                     SupplierId = item.SupplierId,
+                    CategoryId = item.CategoryId,
                     CategoryName = _context?.Categories?.Find(item.CategoryId)?.Name,
                     SupplierName = _context?.Suppliers?.Find(item.SupplierId)?.Name,
                     Avatar = _context?.ProductImages?.Where(x => x.ProductId == item.Id).ToList()?.FirstOrDefault(x => x.IsAvatar)?.ImageName

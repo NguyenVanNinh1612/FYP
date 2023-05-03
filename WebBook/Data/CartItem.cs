@@ -8,6 +8,7 @@
         public decimal Price { get; set; } 
         public byte Discount { get; set; }
         //public decimal PriceSale { get; set; }
+        public int MaxQuantity { get; set; }
         public int Quantity { get; set; }
         // public decimal TotalPrice => PriceSale > 0 ? PriceSale * Quantity : Price * Quantity;
         public decimal TotalPrice => (Price - (Price * (decimal)0.01 * Discount))*Quantity;

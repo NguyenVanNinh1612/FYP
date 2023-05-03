@@ -114,7 +114,7 @@ namespace WebBook.Controllers
                 Quantity = carts.Sum(x => x.Quantity),
                 TotalAmount = carts.Sum(x => x.TotalPrice),
                 PaymentMethod = vm.PaymentMethod,
-                Code = "DH" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9),
+                Code = "DH" + DateTime.Now.ToString("yyss") + rd.Next(0, 9),
                 Status = 0,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now
@@ -129,7 +129,7 @@ namespace WebBook.Controllers
             _context.Orders?.Add(order);
             _context.SaveChanges();
 
-            
+
             foreach (var item in carts)
             {
                 OrderDetail od = new()
@@ -185,18 +185,26 @@ namespace WebBook.Controllers
             pathContent = pathContent.Replace("{{ThanhTien}}", ExtensionHelper.ToVnd(thanhtien));
             pathContent = pathContent.Replace("{{TongTien}}", ExtensionHelper.ToVnd(thanhtien + 30000));
             pathContent = pathContent.Replace("{{PhuongThuc}}", "Thanh toán tiền mặt");
-            _emailService.Send("VNBOOK", "Đơn hàng #"+order.Code.ToString(), pathContent.ToString(), order.Email);
-           
+            
+            var checkSend = _emailService.Send("VNBOOK", "Đơn hàng #"+order.Code.ToString(), pathContent.ToString(), order.Email);
 
-
-
-
-            return View("CheckOutSuccess");
+            if (checkSend)
+            {
+                return View("CheckOutSuccess");
+              
+            }            
+            else
+            {
+                _notifyService.Error("Có lỗi xảy ra trong quá trình xử lý");
+                return RedirectToAction("CheckOut");
+            }
+            
         }
 
         public IActionResult PaymentCallback()
         {
             var response = _vnPayService.PaymentExecute(Request.Query);
+            //Kiem tra xem thanh toan thanh con hay chua
             if (response.IsPay)
             {
                 var order = _context.Orders?.FirstOrDefault(x => x.Id == response.Id);
@@ -206,7 +214,7 @@ namespace WebBook.Controllers
 
                 return View("PaymentSuccess");
             }
-            else
+            else // neu thanh toan ko thanh cong thi xoa don hang
             {
                 var orderDetails = _context.OrderDetails?.Where(x => x.OrderId == response.Id).ToList();
                 if (orderDetails.Count > 0)
@@ -245,6 +253,7 @@ namespace WebBook.Controllers
                     Price = product.Price,
                     Discount = product.Discount,
                     //PriceSale = product.PriceSale,
+                    MaxQuantity = product.Quantity,
                     Quantity = quantity,
                 };
                 myCart.Add(item);

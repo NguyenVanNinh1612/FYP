@@ -127,32 +127,33 @@ namespace WebBook.Controllers
                 return View();
             }
 
-            var order = _context.Orders.Where(x => x.CreatedBy == checkUser.UserName).ToList();
+            var order = _context.Orders.OrderByDescending(x=>x.Id).Where(x => x.CreatedBy == checkUser.UserName).ToList();
 
             return View(order);
         }
 
         public IActionResult OrderDetail(int id)
         {
-            var order = _context.Orders.FirstOrDefault(x => x.Id == id);
+            var order = _context.Orders?.FirstOrDefault(x => x.Id == id);
             if (order != null)
             {
-                var orderDetails = _context.OrderDetails.Where(x => x.OrderId == order.Id).ToList();
-                var carts = new List<CartItem>();
-                foreach(var item in orderDetails)
+                var orderDetails = _context.OrderDetails?.Where(x => x.OrderId == order.Id).ToList();
+            var carts = new List<CartItem>();
+            foreach (var item in orderDetails)
+            {
+                CartItem cart = new()
                 {
-                    CartItem cart = new()
-                    {
-                        ProductId = item.ProductId,
-                        ProductName = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Name,
-                        ProductImage = _context.ProductImages.FirstOrDefault(x => x.ProductId == item.ProductId && x.IsAvatar).ImageName,
-                        Price = item.Price,
-                        Quantity = item.Quantity
-                    };
-                    carts.Add(cart);
-                }
+                    ProductId = item.ProductId,
+                    ProductName = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Name,
+                    ProductImage = _context.ProductImages.FirstOrDefault(x => x.ProductId == item.ProductId && x.IsAvatar).ImageName,
+                    Price = (decimal)(_context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price - (_context.Products.FirstOrDefault(x => x.Id == item.ProductId).Price * (decimal)0.01
+                    * _context.Products?.FirstOrDefault(x => x.Id == item.ProductId).Discount)),
+                    Quantity = item.Quantity
+                };
+                carts.Add(cart);
+            }
 
-                ViewBag.carts = carts;
+            ViewBag.carts = carts;
 
             }
             return View(order);

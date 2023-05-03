@@ -213,18 +213,24 @@ jQuery(document).ready(function($)
 			var plus = $('.plus');
 			var minus = $('.minus');
 			var value = $('#quantity_value');
-
+			var max = parseInt(value.data('id'));
 
 			plus.on('click', function()
 			{
 				var id = $(this).data('id');
 				if (id != null) {
 					var x = parseInt($('.quantity_value-' + id).text());
-					$('.quantity_value-' + id).text(x + 1);
+					if (x < max) {
+						$('.quantity_value-' + id).text(x + 1);
+					}
+					
 				}
 				else {
-					var quantity = parseInt(value.text()) + 1;
-					$('#quantity_value').text(quantity);
+					var quantity = parseInt(value.text());
+					if (quantity < max) {
+						$('#quantity_value').text(quantity + 1);
+					}
+					
 				}
 				
 			});

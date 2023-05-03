@@ -72,6 +72,17 @@ namespace WebBook.Areas.Admin.Controllers
                 
                 if(status>=1 && status<=4)
                 { 
+                    if(status == 4)
+                    {
+                        var orderdetails = _context.OrderDetails?.Where(x => x.OrderId == order.Id).ToList();
+                        
+                        foreach(var item in orderdetails)
+                        {
+                            var product = _context.Products?.FirstOrDefault(x => x.Id == item.ProductId);
+                            product!.Quantity -= item.Quantity;
+                        }
+                        _context.SaveChanges();
+                    }
                     order.Status = status;
                     _notifyService.Success("Thay đổi trạng thái thành công");
                 }

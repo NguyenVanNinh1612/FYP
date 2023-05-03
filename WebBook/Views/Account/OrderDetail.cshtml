@@ -9,7 +9,7 @@
 }
 
 @{
-    ViewData["Title"] = "Giỏ hàng";
+    ViewData["Title"] = "Chi tiết đơn hàng";
 }
 
 <link rel="stylesheet" type="text/css" href="~/client/styles/single_styles.css">
@@ -27,7 +27,7 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a asp-controller="Account" asp-action="YourOrder" asp-route-userName="@loggedInUser.UserName"><i class="fa fa-angle-right" aria-hidden="true"></i>Đơn hàng của bạn</a></li>
+                    <li><a asp-controller="Account" asp-action="YourOrder" asp-route-userName="@loggedInUser?.UserName"><i class="fa fa-angle-right" aria-hidden="true"></i>Đơn hàng của bạn</a></li>
                     <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>#@Model?.Code</a></li>
                 </ul>
             </div>
@@ -38,13 +38,21 @@
                     <div class="row">
                         <div class="col-md-6">
                             <p>Đơn hàng <b>#@Model.Code</b></p>
-                            <p>Số lượng: <b>@Model.Quantity</b></p>
-                            <p>Tổng tiền: <b>@ExtensionHelper.ToVnd(@Model.TotalAmount + 30000)</b></p>
+                            @*<p>Số lượng: <b>@Model.Quantity</b></p>*@
+                            @*<p>Tổng tiền: <b>@ExtensionHelper.ToVnd(@Model.TotalAmount + 30000)</b></p>*@
+                            @if (Model.PaymentMethod)
+                            {
+                                <p>Phương thức thanh toán: VNPAY</p>
+                            }
+                            else
+                            {
+                                <p>Phương thức thanh toán: Thanh toán tiền mặt khi nhận hàng</p>
+                            }
 
                         </div>
                         <div class="col-md-6">
                             <p>Tình trạng: <span style="color: blue">@ExtensionHelper.Status(@Model.Status)</span></p>
-                            @if (Model.PaymentMethod)
+                            @*@if (Model.PaymentMethod)
                             {
                                 <p>Phương thức thanh toán: VNPAY</p>
                                 @if (Model.IsPay)
@@ -55,8 +63,16 @@
                             else
                             {
                                 <p>Phương thức thanh toán: Thanh toán tiền mặt khi nhận hàng</p>
+                            }*@
+                            @if (Model.IsPay)
+                            {
+                                <p style="color: blue">Đã thanh toán</p>
                             }
-                           
+                            else
+                            {
+                                <p style="color: #ffc107">Chưa thanh toán</p>
+                            }
+
                         </div>
                     </div>
 

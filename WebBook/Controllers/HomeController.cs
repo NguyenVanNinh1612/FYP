@@ -61,6 +61,49 @@ namespace WebBook.Controllers
             return View();
         }
 
+
+        
+        public IActionResult OrderLookup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult OrderLookup(IFormCollection file)
+        {
+
+            var order = _context.Orders.FirstOrDefault(x => x.Code == file["Code"].ToString() && x.Email == file["Email"].ToString());
+            if(order == null)
+            {
+                _notifyService.Error("Đơn hàng này không tồn tại!");
+                return View();
+            }
+            var orderDetails = _context.OrderDetails.Where(x => x.OrderId == order.Id).ToList();
+            var carts = new List<CartItem>();
+            foreach (var item in orderDetails)
+            {
+                CartItem cart = new()
+                {
+                    ProductId = item.ProductId,
+                    ProductName = _context.Products.FirstOrDefault(x => x.Id == item.ProductId).Name,
+                    ProductImage = _context.ProductImages.FirstOrDefault(x => x.ProductId == item.ProductId && x.IsAvatar).ImageName,
+                    Price = item.Price,
+                    Quantity = item.Quantity
+                };
+                carts.Add(cart);
+            }
+
+            ViewBag.carts = carts;
+            return View("~/Views/Account/OrderDetail.cshtml", order);
+        }
+
+
+
+
+
+
+
+
         public IActionResult Privacy()
         {
             return View();
