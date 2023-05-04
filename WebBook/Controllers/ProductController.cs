@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.WebSockets;
 using WebBook.Data;
 using WebBook.ViewModels;
 using X.PagedList;
@@ -14,8 +15,17 @@ namespace WebBook.Controllers
         }
 
         [Route("product")]
-        public IActionResult Index(int? page)
+        public IActionResult Index(int? page, string searchString, string currentFilter)
         {
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
 
             int pageSize = 12;
 			int pageNumber = (page ?? 1);
@@ -38,6 +48,11 @@ namespace WebBook.Controllers
                 };
                 listVM.Add(vm);
             }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                listVM = listVM.Where(x => x.Name.ToLower().Contains(searchString.ToLower())).ToList();
+            }
+
             return View(listVM.ToPagedList(pageNumber, pageSize));
         }
 
@@ -106,5 +121,7 @@ namespace WebBook.Controllers
             }
             return NotFound();
         }
+
+       
     }
 }

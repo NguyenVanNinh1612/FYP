@@ -87,6 +87,12 @@
                 <!-- Products -->
 
                 <div class="products_iso">
+                    @if (ViewBag.CurrentFilter != null)
+                    {
+                        <div>
+                            <p style="color:rgb(254, 76, 80); font-size: 18px">Kết quả tìm kiếm cho: @ViewBag.CurrentFilter</p>
+                        </div>
+                    }
                     <div class="row">
                         <div class="col">
 
@@ -197,7 +203,7 @@
                                             <li><a href="#">3</a></li>
                                         </ul>
                                     </div>*@
-                                    @Html.PagedListPager(Model, page=> Url.Action("Index",new{page}),
+                                    @Html.PagedListPager(Model, page=> Url.Action("Index",new{page, currentFilter = ViewBag.CurrentFilter}),
                                     new PagedListRenderOptions{
                                     LiElementClasses = new string[] { "page-item" },
                                     PageClasses = new string[] { "page-link" }

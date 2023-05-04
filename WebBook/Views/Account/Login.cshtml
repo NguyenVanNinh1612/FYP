@@ -23,7 +23,7 @@
                     <h5>ĐĂNG NHẬP</h5>
                 </div>
             </div>
-            <form type="POST" enctype="multipart/form-data" asp-controller="Account" asp-action="Login">
+            <form type="POST" enctype="multipart/form-data" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewBag.returnUrl">
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
@@ -38,7 +38,7 @@
                         </div>
                          <div class="form-group">
                             <button style="cursor: pointer; margin-bottom: 10px" type="submit" class="btn btn-danger">Đăng nhập</button>
-                            <p>Bạn chưa có tài khoản?<a style="color: blue" asp-controller="Account" asp-action="Register">Tạo tài khoản mới</a></p>
+                            <p>Bạn chưa có tài khoản?<a style="color: blue" asp-controller="Account" asp-action="Register"> Tạo tài khoản mới</a></p>
                         </div>
                     </div>
                 </div>

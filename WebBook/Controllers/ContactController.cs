@@ -30,10 +30,12 @@ namespace WebBook.Controllers
 				{
 					Name = form["name"],
 					Email = form["email"],
-					Message = form["message"]
+					Message = form["message"],
+					CreatedDate = DateTime.Now,
+					ModifiedDate = DateTime.Now
 
 				};
-				_context.Contact.Add(contact);
+				_context.Contact?.Add(contact);
 				_context.SaveChanges();
 				_notifyService.Success("Submit successfully!");
 				return View("Index");

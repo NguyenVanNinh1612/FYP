@@ -71,7 +71,8 @@
                     var html = '<div class="user_review_container d-flex flex-column flex-sm-row"><div class="user"><div class="user_pic"><img width="100%" id="user_pic"/></div><div class="user_rating"><ul class="star_rating">' + str + '</ul></div> </div><div class="review"><div class="review_date">' + rs.createdDate + '</div> <div class="user_name">' + rs.fullName + '</div><p>' + content + '</p></div></div>';
                     $('#prepend_review').prepend(html);
                     $('#user_pic').attr('src', $('#get_user_pic').attr('src'));
-                    $('#count_review').val(parseInt($(this).text()) + 1);
+                    var count = parseInt($('#count_review').text());
+                    $('#count_review').text(count + 1);
                 }
             }
         });
@@ -93,5 +94,11 @@
         }
         
     });
+
+
+    searchForm = document.querySelector('.search-form');
+    document.querySelector("#search-btn").onclick = () => {
+        searchForm.classList.toggle('active');
+    }
 
 });

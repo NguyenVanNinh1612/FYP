@@ -75,10 +75,11 @@ namespace WebBook.Controllers
         }
 
         [HttpGet("Login")]
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl)
         {
             if (!HttpContext.User.Identity!.IsAuthenticated)
             {
+                ViewBag.returnUrl = returnUrl;
                 return View(new LoginVM());
             }
             return RedirectToAction("Index", "Home");
@@ -87,7 +88,7 @@ namespace WebBook.Controllers
 
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginVM vm)
+        public async Task<IActionResult> Login(LoginVM vm, string? returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -97,17 +98,23 @@ namespace WebBook.Controllers
             if (existingUser == null)
             {
                 _notifyService.Error("Username không tồn tại");
+                ViewBag.returnUrl = returnUrl;
                 return View(vm);
             }
             var verifyPassword = await _userManager.CheckPasswordAsync(existingUser, vm.Password);
             if (!verifyPassword)
             {
                 _notifyService.Error("Mật khẩu không chính xác");
+                ViewBag.returnUrl = returnUrl;
                 return View(vm);
             }
             await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, vm.RememberMe, true);
 
             _notifyService.Success("Đăng nhập thành công!");
+            if(returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
             return RedirectToAction("Index", "Home");
         }
 

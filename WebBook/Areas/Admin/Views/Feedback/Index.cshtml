@@ -1,0 +1,210 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+@model IPagedList<WebBook.Models.Contact>
+@using WebBook.Common
+
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewData["Title"] Management</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+            
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20px;"><input type="checkbox" id="SelectAll" /></th>
+                                    <th>STT</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Message</th>
+                                    <th>Read</th>
+                                    <th>Date sent</th>
+                                    <th style="text-align:center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var stt = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        if (ViewBag.Page > 1)
+                                        {
+                                            stt = ViewBag.PageSize * (ViewBag.Page - 1) + 1;
+                                        }
+                                        <tr id="trow_@item.Id">
+                                            <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
+                                            <td>@stt</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Email</td>
+                                            <td>@ExtensionHelper.ShorterText(item.Message)</td>
+                                            <td>
+                                               @if(item.IsRead)
+                                               {
+                                                    <input id="isRead" data-id="@item.Id" type="checkbox" checked>
+                                               }
+                                               else
+                                               {
+                                                    <input id="isRead" data-id="@item.Id" type="checkbox">
+                                               }
+                                            </td>
+                                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                            <td style="text-align:center">
+                                                <a class="btn btn-sm btn-success" asp-area="Admin" asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    Feedback
+                                                </a>
+                                               @* <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">
+                                                    <i class="fas fa-trash"></i>
+                                                    Delete
+                                                </a>*@
+                                            </td>
+                                        </tr>
+                                        stt++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">There are no records!</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <div class="row float-right">
+                            @* Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount*@
+                            @Html.PagedListPager(Model, page=> Url.Action("Index",new{Area="Admin", page, currentFilter = ViewBag.CurrentFilter}),
+                            new PagedListRenderOptions{
+                            LiElementClasses = new string[] { "page-item" },
+                            PageClasses = new string[] { "page-link" }
+                            })
+                        </div>
+                    </div>
+                    <!--/.card-footer -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#isRead', function(){
+                var isRead = $(this).prop('checked');
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '/admin/feedback/read',
+                    type: 'POST',
+                    data: {id: id, isRead: isRead},
+                    success: function(rs){
+
+                    }
+                });
+            });
+
+            //$('body').on('click', '#btnDeleteAll', function (e) {
+            //    e.preventDefault();
+            //    var str = "";
+            //    var checkbox = $(this).parents('.card').find('tr td input:checkbox');
+            //    var i = 0;
+            //    checkbox.each(function () {
+            //        if (this.checked) {
+            //            checkbox.attr('selected', 'checked');
+            //            var _id = $(this).val();
+            //            if (i == 0) {
+            //                str += _id;
+            //            }
+            //            else {
+            //                str += "," + _id;
+            //            }
+            //            i++;
+            //        }
+            //        else {
+            //            checkbox.attr('selected', '');
+
+            //        }
+            //    });
+            //    if (str.length > 0) {
+            //        var conf = confirm("Do you want to delete all selected records?");
+            //        if (conf == true) {
+            //            $.ajax({
+            //                url: '/admin/Feedback/deleteAll',
+            //                type: 'POST',
+            //                data: { ids: str },
+            //                success: function (rs) {
+            //                    if (rs.success) {
+            //                        location.reload();
+            //                    }
+            //                }
+            //            });
+            //        }
+            //    }
+            //});
+
+
+            //$('body').on('change', '#SelectAll', function () {
+            //    var checkStatus = this.checked;
+            //    var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+            //    checkbox.each(function () {
+            //        this.checked = checkStatus;
+            //        if (this.checked) {
+            //            checkbox.attr('selected', 'checked');
+            //        }
+            //        else {
+            //            checkbox.attr('selected', '');
+            //        }
+            //    });
+            //});
+
+
+
+            //$('body').on('click', '.btnDelete', function () {
+            //    var id = $(this).data('id');
+            //    var conf = confirm('Do you want to delete this record??');
+            //    if (conf == true) {
+            //        $.ajax({
+            //            url: '/admin/category/delete',
+            //            type: 'POST',
+            //            data: { id: id },
+            //            success: function (rs) {
+            //                if (rs.success) {
+            //                    $('#trow_' + id).remove();
+            //                }
+            //            }
+            //        });
+            //    }
+            //});
+        });
+    </script>
+}

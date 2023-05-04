@@ -16,7 +16,7 @@ namespace WebBook.ViewComponents
         {
             if (name == "ProductSale")
             {
-                var productSale = _context.Products!.Where(x => x.IsHome).Take(12).ToList();
+                var productSale = _context.Products!.Where(x => x.IsHome).Take(10).ToList();
                 var listProductSale = new List<ProductVM>();
                 foreach(var item in productSale)
                 {
@@ -36,7 +36,7 @@ namespace WebBook.ViewComponents
             }
             else
             {
-                var products = _context.Products!.Where(x => x.IsHome).Take(12).ToList();
+                var products = _context.Products!.Where(x => x.IsHome).Take(10).ToList();
                 var listProducts = new List<ProductVM>();
                 foreach (var item in products)
                 {

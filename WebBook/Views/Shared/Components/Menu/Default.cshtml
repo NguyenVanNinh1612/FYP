@@ -1,5 +1,6 @@
 ﻿@using WebBook.Data;
 @using WebBook.Common
+@using Microsoft.AspNetCore.Http.Extensions;
 @model IEnumerable<WebBook.Models.Menu>
 
 
@@ -28,7 +29,14 @@
                         }
                     </ul>
                     <ul class="navbar_user" style="margin-left: 110px">
-                        <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                        <li>
+                            <a style="cursor: pointer" id="search-btn"><i class="fa fa-search" aria-hidden="true"></i></a>
+                            <form class="search-form" asp-controller="Product" asp-action="Index">
+                                <input type="search" id="search-box" name="searchString" value="@ViewBag.CurrentFilter" placeholder="Tìm kiếm sản phẩm mong muốn...." />
+                                <button class="fa fa-search" type="submit"></button>
+                            </form>
+                          
+                        </li>
 
                         @if (loggedInUser != null)
                         {
@@ -52,7 +60,7 @@
                             <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                             </ul>*@
                                 <ul class="account_select">
-                                    <li><a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-danger"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                    <li><a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.GetDisplayUrl()" class="btn btn-sm btn-danger"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
                                     <li><a asp-controller="Account" asp-action="Register" class="btn btn-sm btn-success"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                                 </ul>
                             </li>
