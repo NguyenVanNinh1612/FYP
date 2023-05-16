@@ -181,16 +181,19 @@ jQuery(document).ready(function($)
 	*/
 
 	function initTimer()
-    {
-    	if($('.timer').length)
+	{
+		if ($('.timer').length)
     	{
     		// Uncomment line below and replace date
 	    	// var target_date = new Date("Dec 7, 2017").getTime();
 
 	    	// comment lines below
-	    	var date = new Date();
-	    	date.setDate(date.getDate() + 3);
-	    	var target_date = date.getTime();
+	  //  	var date = new Date();
+			//date.setDate(date.getDate() + 3);
+			
+
+
+	    
 	    	//----------------------------------------
 	 
 			// variables for time units
@@ -201,12 +204,24 @@ jQuery(document).ready(function($)
 			var m = $('#minute');
 			var s = $('#second');
 
-			setInterval(function ()
+			var currentDate = new Date();
+			var date = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + parseInt(d.text()), currentDate.getHours() + parseInt(h.text()), currentDate.getMinutes() + parseInt(m.text()));
+
+			
+			var target_date = date.getTime();
+
+			
+
+			const FlashSaleTimer = setInterval(function ()
 			{
 			    // find the amount of "seconds" between now and target
 			    var current_date = new Date().getTime();
-			    var seconds_left = (target_date - current_date) / 1000;
-			 
+				//var seconds_left = (target_date - current_date) / 1000;
+				var seconds_left = (target_date - current_date) / 1000;
+				if (seconds_left < 0) {
+					clearInterval(FlashSaleTimer);
+				}
+
 			    // do some time calculations
 			    days = parseInt(seconds_left / 86400);
 			    seconds_left = seconds_left % 86400;

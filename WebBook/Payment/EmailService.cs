@@ -9,11 +9,11 @@ namespace WebBook.Payment
         {
             bool rs = false;
             string email = "vnbookonline.shop@gmail.com";
-            string password = "jwzhnhsrfuftpikj";
+            string password = "yntlespjneadgnuz";
 
             try
             {
-                MailMessage message = new MailMessage();
+                MailMessage message = new();
                 var smtp = new System.Net.Mail.SmtpClient();
                 {
                     smtp.Host = "smtp.gmail.com";
@@ -29,7 +29,7 @@ namespace WebBook.Payment
                     };
                    
                 }
-                MailAddress fromAddress = new MailAddress(email, name);
+                MailAddress fromAddress = new(email, name);
                 message.From = fromAddress;
                 message.To.Add(toMail);
                 message.Subject = subject;

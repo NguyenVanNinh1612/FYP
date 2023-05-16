@@ -1,10 +1,12 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using System.Net.WebSockets;
+using System.Text;
 using WebBook.Data;
 using WebBook.Models;
+using WebBook.Payment;
 using WebBook.Utilites;
 using WebBook.ViewModels;
 
@@ -15,13 +17,17 @@ namespace WebBook.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
         public INotyfService _notifyService { get; }
-        public AccountController(UserManager<ApplicationUser> userManager, INotyfService notifyService, ApplicationDbContext context, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, INotyfService notifyService,
+            ApplicationDbContext context, SignInManager<ApplicationUser> signInManager, IEmailService emailService)
         {
             _userManager = userManager;
             _notifyService = notifyService;
             _context = context;
             _signInManager = signInManager;
+            _emailService = emailService;
+       
         }
         public IActionResult Index()
         {
@@ -111,6 +117,13 @@ namespace WebBook.Controllers
             await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, vm.RememberMe, true);
 
             _notifyService.Success("Đăng nhập thành công!");
+            var roles = await _userManager.GetRolesAsync(existingUser);
+            if (roles[0] == "Admin" || roles[0] == "Super")
+            {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
+
+          
             if(returnUrl != null)
             {
                 return Redirect(returnUrl);
@@ -166,5 +179,96 @@ namespace WebBook.Controllers
             return View(order);
         }
 
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(vm.Email);
+                if (user == null)
+                {
+                    _notifyService.Error("Email không chính xác");
+                    return View(vm);
+                }
+
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                //var callbackUrl = Url.Page(
+                //    "/Account/ResetPassword",
+                //    pageHandler: null,
+                //    values: new { code },
+                //    protocol: Request.Scheme
+                //    );
+
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol:Request.Scheme);
+
+                _emailService.Send("VNBOOK", "Đặt lại mật khẩu", $"Để đặt lại mật khẩu hãy <a href='{callbackUrl}'>Bấm vào đây</a>.", vm.Email);
+
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+            return View(vm);
+        }
+
+        public IActionResult ResetPassword(string? code)
+        {
+            if (code == null)
+            {
+                return BadRequest("Mã Token không tồn tại");
+            }
+            else
+            {
+                ResetPasswordVM vm = new()
+                {
+                    Code = code
+                };
+
+                return View(vm);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM vm)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(vm);
+            //}
+
+            //Tim user theo email
+            var user = await _userManager.FindByEmailAsync(vm.Email);
+            if (user == null)
+            {
+                return RedirectToAction("ForgotEmailConfirmation");
+            }
+            //Dat lai password cho user, co kiem tra ma token khi doi
+            var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(vm.Code));
+            var result = await _userManager.ResetPasswordAsync(user, code, vm.NewPassword);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordSuccess");
+            }
+            
+            foreach(var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(vm);
+        }
+
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+        public IActionResult ResetPasswordSuccess()
+        {
+            return View();
+        }
     }
 }

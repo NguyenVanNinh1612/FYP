@@ -70,12 +70,13 @@
                                 @if (Model != null && Model.Any())
                                 {
                                     var stt = 1;
+                                    if (ViewBag.Page > 1)
+                                    {
+                                        stt = ViewBag.PageSize * (ViewBag.Page - 1) + 1;
+                                    }
                                     foreach (var item in Model)
                                     {
-                                        if (ViewBag.Page > 1)
-                                        {
-                                            stt = ViewBag.PageSize * (ViewBag.Page - 1) + 1;
-                                        }
+                                        
                                         <tr id="trow_@item.Id">
                                             <td style="width: 20px"><input type="checkbox" value="@item.Id" /></td>
                                             <td>@stt</td>
@@ -98,10 +99,10 @@
                                                     <i class="fas fa-eye"></i>
                                                     View
                                                 </a>
-                                                <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">
+                                               @* <a class="btn btn-sm btn-danger btnDelete" href="#" data-id="@item.Id">
                                                     <i class="fas fa-trash"></i>
                                                     Delete
-                                                </a>
+                                                </a>*@
                                             </td>
                                         </tr>
                                         stt++;

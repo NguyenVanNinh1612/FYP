@@ -79,6 +79,8 @@ namespace WebBook.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         public IActionResult PaymentConfirm(OrderVM vm, string ids)
         {
@@ -102,9 +104,9 @@ namespace WebBook.Controllers
 
                 }
             }
-            Random rd = new();
 
-           
+            Random rd = new();
+    
             Order order = new()
             {
                 CustomerName = vm.Name,
@@ -210,6 +212,34 @@ namespace WebBook.Controllers
                 var order = _context.Orders?.FirstOrDefault(x => x.Id == response.Id);
                 if (order != null) order.IsPay = true;
                 _context.SaveChanges();
+
+
+                var orderDetails = _context.OrderDetails.Where(x => x.OrderId == order.Id).ToList();
+                var strSanpham = "";
+                decimal thanhtien = 0;
+
+                foreach (var sp in orderDetails)
+                {
+                    strSanpham += "<tr>";
+                    strSanpham += "<td>" + _context.Products.FirstOrDefault(x=>x.Id == sp.ProductId).Name+ "</td>";
+                    strSanpham += "<td>" + sp.Quantity + "</td>";
+                    strSanpham += "<td>" + ExtensionHelper.ToVnd(sp.Price * sp.Quantity) + "</td>";
+                    strSanpham += "</tr>";
+                    thanhtien += (sp.Price * sp.Quantity);
+                }
+                string pathContent = System.IO.File.ReadAllText(Path.Combine(_webHostEnvironment.WebRootPath, "templates/mail_contents/send2.html"));
+                pathContent = pathContent.Replace("{{MaDon}}", order.Code);
+                pathContent = pathContent.Replace("{{SanPham}}", strSanpham);
+                pathContent = pathContent.Replace("{{TenKhachHang}}", order.CustomerName);
+                pathContent = pathContent.Replace("{{SoDienThoai}}", order.Phone);
+                pathContent = pathContent.Replace("{{Email}}", order.Email);
+                pathContent = pathContent.Replace("{{DiaChi}}", order.Address);
+                pathContent = pathContent.Replace("{{NgayDat}}", order.CreatedDate.ToString("dd/MM/yyyy"));
+                pathContent = pathContent.Replace("{{ThanhTien}}", ExtensionHelper.ToVnd(thanhtien));
+                pathContent = pathContent.Replace("{{TongTien}}", ExtensionHelper.ToVnd(thanhtien + 30000));
+                pathContent = pathContent.Replace("{{PhuongThuc}}", "VNPAY (Đã thanh toán)");
+
+                var checkSend = _emailService.Send("VNBOOK", "Đơn hàng #" + order.Code.ToString(), pathContent.ToString(), order.Email);
 
 
                 return View("PaymentSuccess");

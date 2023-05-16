@@ -6,7 +6,10 @@ namespace WebBook.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext()
+        {
 
+        }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
                 
@@ -18,10 +21,10 @@ namespace WebBook.Data
         public DbSet<Post>? Posts { get; set; }
         //public DbSet<News>? News { get; set; }
         //public DbSet<SystemSetting>? SystemSettings { get; set; }
-        public DbSet<Category>? Categories { get; set; }
+        public virtual DbSet<Category>? Categories { get; set; }
         public DbSet<Supplier>? Suppliers{get; set;}
-        public DbSet<Review>? Reviews { get; set; }
-        public DbSet<Product>? Products { get; set; }
+        public virtual DbSet<Review>? Reviews { get; set; }
+        public virtual DbSet<Product>? Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Contact>? Contact { get; set; }
         public DbSet<Order>? Orders { get; set; }

@@ -23,6 +23,11 @@ namespace WebBook.Controllers
         [Route("")]
         public IActionResult Index()
         {
+            var flashsale = _context.Events?.FirstOrDefault(x => x.Name == "Flash Sale")?.FlashSale?.Split('.');
+            ViewBag.ngay = flashsale[0];
+            ViewBag.gio = flashsale[1];
+            ViewBag.phut = flashsale[2];
+
             return View();
         }
 

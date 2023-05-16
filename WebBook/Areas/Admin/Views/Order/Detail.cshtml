@@ -37,14 +37,14 @@
                 <!-- Main content -->
                 <div class="invoice p-3 mb-3">
                     <!-- title row -->
-                  @*  <div class="row">
-                        <div class="col-12">
-                            <h4>
-                                @order.Code
-                                <small class="float-right">Ngày tạo: @order.CreatedDate</small>
-                            </h4>
-                        </div>
-                        <!-- /.col -->
+                    @*  <div class="row">
+                    <div class="col-12">
+                    <h4>
+                    @order.Code
+                    <small class="float-right">Ngày tạo: @order.CreatedDate</small>
+                    </h4>
+                    </div>
+                    <!-- /.col -->
                     </div>*@
                     <!-- info row -->
                     <div class="row invoice-info">
@@ -110,7 +110,7 @@
                             @*<p class="lead">Phương thức thanh toán:</p>*@
                             @if (order.PaymentMethod)
                             {
-                                <p><span style ="font-weight: bold">Phương thức thanh toán:</span> VNPAY</p>
+                                <p><span style="font-weight: bold">Phương thức thanh toán:</span> VNPAY</p>
                             }
                             else
                             {
@@ -156,20 +156,23 @@
                     <!-- this row will not appear when printing -->
                     <div class="row no-print">
                         <div class="col-6">
-                            <button type="button" class="btn btn-success btnStatus" value="1" data-id="@order.Id">Xác nhận</button>
-                            <button type="button" class="btn btn-success btnStatus" value="2" data-id="@order.Id">Sẵn sàng giao hàng</button>
-                            <button type="button" class="btn btn-success btnStatus" value="3" data-id="@order.Id">Đang giao hàng</button>
-                            <button type="button" class="btn btn-success btnStatus" value="4" data-id="@order.Id">Hoàn tất</button>
-                            <button type="button" class="btn btn-danger  btnStatus"   value="5" data-id="@order.Id">Hủy</button>
+                            @if (order.Status != 4)
+                            {
+                                <button type="button" class="btn btn-success btnStatus" value="1" data-id="@order.Id">Xác nhận</button>
+                                <button type="button" class="btn btn-success btnStatus" value="2" data-id="@order.Id">Sẵn sàng giao hàng</button>
+                                <button type="button" class="btn btn-success btnStatus" value="3" data-id="@order.Id">Đang giao hàng</button>
+                                <button type="button" class="btn btn-success btnStatus" value="4" data-id="@order.Id">Hoàn tất</button>
+                                <button type="button" class="btn btn-danger  btnStatus" value="5" data-id="@order.Id">Hủy</button>
+                            }
                         </div>
                         <div class="col-6">
                             <a asp-area="Admin" asp-controller="Order" asp-action="Print" asp-route-id="@order.Id" rel="noopener" target="_blank" class="btn btn-primary float-right"><i class="fas fa-print"></i> Print</a>
                             @*<button type="button" class="btn btn-success float-right">
-                                <i class="far fa-credit-card"></i> Submit
-                                Payment
+                            <i class="far fa-credit-card"></i> Submit
+                            Payment
                             </button>
                             <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                                <i class="fas fa-download"></i> Generate PDF
+                            <i class="fas fa-download"></i> Generate PDF
                             </button>*@
                         </div>
                     </div>
@@ -182,17 +185,17 @@
 </section>
 @section scripts{
     <script>
-        $(document).ready(function(){
-            $('.btnStatus').on('click', function(e){
+        $(document).ready(function () {
+            $('.btnStatus').on('click', function (e) {
                 e.preventDefault();
-                var id = parseInt( $(this).data('id'))
+                var id = parseInt($(this).data('id'))
                 var status = parseInt($(this).val());
                 $.ajax({
                     url: '/admin/order/changestatus',
                     type: 'POST',
-                    data: {id: id, status: status},
-                    success: function(rs){
-                        if(rs.success){
+                    data: { id: id, status: status },
+                    success: function (rs) {
+                        if (rs.success) {
                             $('#trangthai').html(rs.status);
                         }
                     }

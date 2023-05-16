@@ -13,5 +13,6 @@ namespace WebBook.Models
         public string? Image { get; set; }
         public string? Link { get; set; }
         public int Position { get; set; }
+        public string? FlashSale { get; set; }
     }
 }

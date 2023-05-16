@@ -8,8 +8,11 @@ namespace WebBook.ViewModels
         public string? UserName { get; set; }
         [Required]
         public string? NewPassword { get; set; }
-        [Compare(nameof(NewPassword))]
+        [Compare(nameof(NewPassword), ErrorMessage = "Mật khẩu không khớp")]
         [Required]
         public string? ConfirmPassword { get; set; }
+
+        public string? Email { get; set; }
+        public string? Code { get; set; }
     }
 }

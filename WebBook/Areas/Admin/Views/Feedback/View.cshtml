@@ -1,0 +1,94 @@
+﻿@model WebBook.Models.Contact
+
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Compose</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Read</h3>
+                        @*
+                        <div class="card-tools">
+                        <a href="#" class="btn btn-tool" title="Previous"><i class="fas fa-chevron-left"></i></a>
+                        <a href="#" class="btn btn-tool" title="Next"><i class="fas fa-chevron-right"></i></a>
+                        </div>*@
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="mailbox-read-info">
+                            <h5>@Model.Name</h5>
+                            <h6>
+                                From: @Model.Email
+                                <span class="mailbox-read-time float-right">@Model.CreatedDate.ToString("dd/MM/yyyy")</span>
+                            </h6>
+                        </div>
+
+                        <div class="mailbox-read-message">
+                            <p>@Model.Message</p>
+                        </div>
+                        <!-- /.mailbox-read-message -->
+                    </div>
+
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Reply</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <form method="post" asp-area="Admin" asp-controller="Feedback" asp-action="Reply">
+                        <div class="card-body">
+                            <input class="form-control" type="hidden" name="id" placeholder="To:" value="@Model.Id">
+                            <div class="form-group">
+                                <input class="form-control" name="email" placeholder="To:" value="@Model.Email">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" name="subject" placeholder="Subject:">
+                            </div>
+                            <div class="form-group">
+                                <textarea  class="form-control" name="content" rows="15"></textarea>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button  type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Send</button>
+                        </div>
+                    </form>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+

@@ -42,6 +42,16 @@ namespace WebBook.Utilites
 
 
             }
+            if(_context.Events.Count() == 0)
+            {
+                Event e = new()
+                {
+                    Name = "Flash Sale",
+                    FlashSale = "0.0.0"
+                };
+                _context.Events.Add(e);
+                _context.SaveChanges();
+            }
         }
     }
 }

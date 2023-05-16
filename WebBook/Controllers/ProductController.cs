@@ -43,14 +43,22 @@ namespace WebBook.Controllers
                    // PriceSale = item.PriceSale,
                     Avatar = _context.ProductImages.Where(x => x.ProductId == item.Id).ToList().FirstOrDefault(x => x.IsAvatar)?.ImageName,
                     CategorySlug = _context.Categories?.FirstOrDefault(x => x.Id == item.CategoryId)?.Slug,
-                    Slug = item.Slug
+                    Slug = item.Slug,
+                    CategoryName = _context.Categories?.FirstOrDefault(x=>x.Id == item.CategoryId)?.Name,
+                    Author = item.Author,
+                    SupplierName = _context.Suppliers?.FirstOrDefault(x=>x.Id == item.SupplierId)?.Name
 
                 };
                 listVM.Add(vm);
             }
             if (!string.IsNullOrEmpty(searchString))
             {
-                listVM = listVM.Where(x => x.Name.ToLower().Contains(searchString.ToLower())).ToList();
+                searchString = searchString.ToLower();
+                listVM = listVM.Where(x => x.Name.ToLower().Contains(searchString)
+                || x.Author.ToLower().Contains(searchString) 
+                || x.CategoryName.ToLower().Contains(searchString)
+                || x.SupplierName.ToLower().Contains(searchString)
+                ).ToList();
             }
 
             return View(listVM.ToPagedList(pageNumber, pageSize));
@@ -115,6 +123,23 @@ namespace WebBook.Controllers
                     CategoryName = _context.Categories?.FirstOrDefault(x => x.Id == product.CategoryId)?.Name,
                     SupplierName = _context.Suppliers?.FirstOrDefault(x => x.Id == product.SupplierId)?.Name
                 };
+
+                var reviews = _context.Reviews.Where(x => x.ProductId == product.Id).ToList();
+                int rating = 0;
+                foreach(var item in reviews)
+                {
+                    rating += item.Rating + 1;
+                }
+
+                if (reviews.Count > 0)
+                {
+                    ViewBag.rating = Math.Round(((float)rating / reviews.Count));
+                }
+                else
+                {
+                    ViewBag.rating = 0;
+                }
+               
                 ViewBag.categoryName = vm.CategoryName;
                 ViewBag.categorySlug = _context.Categories?.FirstOrDefault(x => x.Id == product.CategoryId)?.Slug;
                 return View(vm);

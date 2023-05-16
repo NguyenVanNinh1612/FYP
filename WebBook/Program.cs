@@ -1,14 +1,13 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using WebBook.Data;
 using WebBook.Models;
 using WebBook.Payment;
+using WebBook.Repositories.IRepository;
 using WebBook.Utilites;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +33,7 @@ builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+builder.Services.AddScoped<ICategoryRepository, WebBook.Repositories.Repository.CategoryRepository>();
 
 builder.Services.AddNotyf(config =>
 {

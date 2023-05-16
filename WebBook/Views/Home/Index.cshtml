@@ -42,7 +42,7 @@
 		</div>
 		<div class="col-md-4" style="padding-top: 80px">
 			<h2 style="font-weight: bold">Deal Sốc 50%</h2>
-			<div class="red_button shop_now_button"><a href="#">Mua ngay</a></div>
+			<div class="red_button shop_now_button"><a asp-controller="Product" asp-action="Index">Mua ngay</a></div>
 		</div>
 	</div>
 </div>
@@ -68,19 +68,19 @@
             <div class="col-lg-6 text-right deal_ofthe_week_col">
                 <div class="deal_ofthe_week_content d-flex flex-column align-items-center float-right">
                     <div class="section_title">
-                        <h3>DEAL OF THE WEEK
+                        <h3>FLASH SALE
                     </div>
                     <ul class="timer">
                         <li class="d-inline-flex flex-column justify-content-center align-items-center">
-                            <div id="day" class="timer_num">03</div>
+							<div id="day" class="timer_num" >@ViewBag.ngay</div>
                             <div class="timer_unit">Day</div>
                         </li>
                         <li class="d-inline-flex flex-column justify-content-center align-items-center">
-                            <div id="hour" class="timer_num">15</div>
+							<div id="hour" class="timer_num" >@ViewBag.gio</div>
                             <div class="timer_unit">Hours</div>
                         </li>
                         <li class="d-inline-flex flex-column justify-content-center align-items-center">
-                            <div id="minute" class="timer_num">45</div>
+							<div id="minute" class="timer_num" >@ViewBag.phut</div>
                             <div class="timer_unit">Mins</div>
                         </li>
                         <li class="d-inline-flex flex-column justify-content-center align-items-center">
@@ -88,7 +88,7 @@
                             <div class="timer_unit">Sec</div>
                         </li>
                     </ul>
-                    <div class="red_button deal_ofthe_week_button"><a href="#">shop now</a></div>
+                    <div class="red_button deal_ofthe_week_button"><a asp-controller="Product" asp-action="Index">MUA NGAY</a></div>
                 </div>
             </div>
         </div>

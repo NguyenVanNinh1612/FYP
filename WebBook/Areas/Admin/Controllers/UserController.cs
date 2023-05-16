@@ -146,49 +146,50 @@ namespace WebBook.Areas.Admin.Controllers
             return View(vm);
         }
 
-        [HttpGet("Admin/Login")]
-        public IActionResult Login()
-        {
-            if (!HttpContext.User.Identity!.IsAuthenticated)
-            {
-                return View(new LoginVM());
-            }
-            return RedirectToAction("Index", "Home", new { area = "Admin" });
+        //[HttpGet("Admin/Login")]
+        //public IActionResult Login()
+        //{
+        //    if (!HttpContext.User.Identity!.IsAuthenticated)
+        //    {
+        //        return View(new LoginVM());
+        //    }
+        //    return RedirectToAction("Index", "Home", new { area = "Admin" });
 
-        }
+        //}
 
 
-        [HttpPost("Admin/login")]
-        public async Task<IActionResult> Login(LoginVM vm)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(vm);
-            }
-            var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == vm.Username);
-            if (existingUser == null)
-            {
-                _notifyService.Error("Username does not exist");
-                return View(vm);
-            }
-            var verifyPassword = await _userManager.CheckPasswordAsync(existingUser, vm.Password);
-            if (!verifyPassword)
-            {
-                _notifyService.Error("Password does not match");
-                return View(vm);
-            }
-            await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, vm.RememberMe, true);
+        //[HttpPost("Admin/login")]
+        //public async Task<IActionResult> Login(LoginVM vm)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(vm);
+        //    }
+        //    var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == vm.Username);
+        //    if (existingUser == null)
+        //    {
+        //        _notifyService.Error("Username does not exist");
+        //        return View(vm);
+        //    }
+        //    var verifyPassword = await _userManager.CheckPasswordAsync(existingUser, vm.Password);
+        //    if (!verifyPassword)
+        //    {
+        //        _notifyService.Error("Password does not match");
+        //        return View(vm);
+        //    }
+        //    await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, vm.RememberMe, true);
             
-            _notifyService.Success("Login successfully!");
-            return RedirectToAction("Index", "Home", new { area = "Admin" });
-        }
+        //    _notifyService.Success("Login successfully!");
+        //    return RedirectToAction("Index", "Home", new { area = "Admin" });
+        //}
 
         [HttpPost]
         [Authorize]
         public IActionResult Logout()
         {
             _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home", new { area = "Admin" });
+            //return RedirectToAction("Index", "Home", new { area = "Admin" });
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet("AccessDenied")]
